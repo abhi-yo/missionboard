@@ -1,0 +1,274 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?   // Was avatar, maps to NextAuth's image
+  
+  // App-specific fields (previously Member fields)
+  phoneNumber   String?
+  status        MemberStatus @default(active)
+  role          MemberRole   @default(ADMIN) // All platform users are admins
+  joinDate      DateTime?    @default(now())
+  lastPayment   DateTime?
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  subscriptions Subscription[]
+  payments      Payment[]      // Added payments relation
+  accounts      Account[]     // For NextAuth
+  sessions      Session[]     // For NextAuth
+
+  // Relations for Event Management
+  organizedEvents    Event[]             @relation("OrganizedEvents")
+  eventRegistrations EventRegistration[]
+  createdMembershipPlans MembershipPlan[] @relation("AdminCreatedPlans") // Added for plans created by admin
+  
+  // Relation to Profile Image
+  profileImage      Image?              @relation("UserProfileImage", fields: [profileImageId], references: [id])
+  profileImageId    String?             @unique
+}
+
+// NextAuth specific models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String  
+  expires      DateTime
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum MemberStatus {
+  active
+  pending
+  inactive
+  cancelled
+}
+
+// Defines roles for platform operators
+enum MemberRole {
+  ADMIN  // Everyone who can log in is an admin of their organization's data
+}
+
+enum BillingInterval {
+  MONTHLY
+  YEARLY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  PAST_DUE
+  INCOMPLETE
+  TRIALING
+}
+
+model MembershipPlan {
+  id                 String            @id @default(cuid())
+  name               String
+  description        String?
+  price              Decimal
+  currency           String            @default("USD")
+  interval           BillingInterval
+  active             Boolean           @default(true)
+  stripePriceId      String?           @unique
+  features           String[]
+  
+  createdById        String?   // ID of the admin who created this plan
+  createdBy          User?     @relation("AdminCreatedPlans", fields: [createdById], references: [id], onDelete: SetNull) // If admin deleted, plan can remain or be reassigned
+
+  subscriptions      Subscription[]
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+}
+
+enum PaymentStatus {
+  COMPLETED
+  PENDING
+  FAILED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  BANK_TRANSFER
+  CASH
+  OTHER
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  amount      Decimal
+  currency    String        @default("USD")
+  status      PaymentStatus @default(COMPLETED)
+  method      PaymentMethod @default(OTHER)
+  description String?
+  
+  // Relation to the User/Member who made the payment
+  userId      String
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Optional relation to a specific subscription
+  subscriptionId String?
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+  
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId               String            
+  plan                 MembershipPlan     @relation(fields: [planId], references: [id])
+  planId               String
+  
+  stripeSubscriptionId String?            @unique
+  status               SubscriptionStatus
+  
+  startDate            DateTime           @default(now())
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  
+  cancelAtPeriodEnd    Boolean            @default(false)
+  canceledAt           DateTime?
+  
+  trialStartDate       DateTime?
+  trialEndDate         DateTime?
+  
+  // Relation to payments for this subscription
+  payments             Payment[]
+  
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+}
+
+// Event Management Models
+
+// Enum for Event Status
+enum EventStatus {
+  SCHEDULED // Event is planned and open for registration or viewing
+  CANCELED  // Event has been canceled
+  COMPLETED // Event has finished
+  DRAFT     // Event is being planned, not yet visible to public/members
+  ARCHIVED  // Event is completed and archived, not prominent in lists
+}
+
+// Enum for Registration Status
+enum RegistrationStatus {
+  CONFIRMED          // User is confirmed for the event
+  WAITLISTED         // User is on the waitlist (if event has capacity and is full)
+  CANCELED_BY_USER   // User canceled their registration
+  CANCELED_BY_ADMIN  // Admin canceled the user's registration
+  ATTENDED           // User attended the event (marked post-event)
+  NO_SHOW            // User was confirmed but did not attend
+}
+
+model Event {
+  id                   String    @id @default(cuid())
+  name                 String
+  description          String?
+  date                 DateTime  // Start date and time
+  endDate              DateTime? // Optional end date and time
+  location             String?   // e.g., "123 Main St", "Online"
+  locationDetails      String?   // e.g., "Room 5", "Zoom Link: ..."
+  
+  organizerId          String?   
+  organizer            User?     @relation("OrganizedEvents", fields: [organizerId], references: [id], onDelete: SetNull)
+  
+  capacity             Int?      // Max attendees, null for unlimited
+  registrationDeadline DateTime? // When registration closes
+  
+  status               EventStatus @default(DRAFT)
+  isPrivate            Boolean   @default(false)
+  coverImage           String?   // URL for event image (legacy field)
+
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  registrations        EventRegistration[]
+  
+  // Relation to Event Cover Image
+  eventImage           Image?    @relation("EventCoverImage", fields: [eventImageId], references: [id])
+  eventImageId         String?   @unique
+}
+
+model EventRegistration {
+  id                 String             @id @default(cuid())
+  eventId            String
+  event              Event              @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId             String
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  registrationDate   DateTime           @default(now())
+  status             RegistrationStatus @default(CONFIRMED)
+  notes              String?
+  guestsCount        Int                @default(0)
+  
+  updatedAt          DateTime           @updatedAt
+
+  @@unique([eventId, userId])
+  @@index([userId])
+  @@index([eventId])
+}
+
+// Image storage model
+model Image {
+  id          String    @id @default(cuid())
+  data        Bytes     // Binary data for the image
+  filename    String?   // Original filename
+  mimeType    String    // MIME type (e.g., image/jpeg)
+  size        Int       // Size in bytes
+  width       Int?      // Image width (optional)
+  height      Int?      // Image height (optional)
+  alt         String?   // Alt text for accessibility
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  user        User?     @relation("UserProfileImage")
+  event       Event?    @relation("EventCoverImage")
+}
