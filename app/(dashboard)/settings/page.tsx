@@ -20,41 +20,22 @@ export default function SettingsPage() {
   const { data: session, update: updateSession } = useSession();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [animations, setAnimations] = useState(true);
+  const [animations, setAnimations] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState(false);
 
   // Profile form state
-  const [profileData, setProfileData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    role: ""
-  });
+  const [profileData, setProfileData] = useState<{ name: string; email: string; phone: string; role: string }>({ name: "", email: "", phone: "", role: "" });
 
   // Password form state
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: ""
-  });
+  const [passwordData, setPasswordData] = useState<{ currentPassword: string; newPassword: string; confirmPassword: string }>({ currentPassword: "", newPassword: "", confirmPassword: "" });
 
   // Organization form state
-  const [orgData, setOrgData] = useState({
-    name: "Apex Community Club",
-    email: "contact@apexcommunity.org",
-    phone: "555-987-6543",
-    website: "https://apexcommunity.org",
-    autoRenew: true,
-    gracePeriod: true
-  });
+  const [orgData, setOrgData] = useState<{ name: string; email: string; phone: string; website: string; autoRenew: boolean; gracePeriod: boolean }>({ name: "", email: "", phone: "", website: "", autoRenew: false, gracePeriod: false });
+  const [isOrgLoading, setIsOrgLoading] = useState(false);
+  const [isSavingOrg, setIsSavingOrg] = useState(false);
 
   // Notification settings state
-  const [notificationSettings, setNotificationSettings] = useState({
-    notifyMembers: true,
-    notifyPayments: true,
-    notifyEvents: true,
-    appAll: true
-  });
+  const [notificationSettings, setNotificationSettings] = useState<{ notifyMembers: boolean; notifyPayments: boolean; notifyEvents: boolean; appAll: boolean }>({ notifyMembers: true, notifyPayments: true, notifyEvents: true, appAll: true });
 
   // Fetch user data
   useEffect(() => {
@@ -63,10 +44,44 @@ export default function SettingsPage() {
         name: session.user.name || "",
         email: session.user.email || "",
         phone: "555-123-4567",
-        role: session.user.role || "Administrator"
+        role: "Administrator"
       });
     }
   }, [session]);
+
+  // Add code to fetch organization settings
+  useEffect(() => {
+    const fetchOrgSettings = async () => {
+      setIsOrgLoading(true);
+      try {
+        const response = await fetch('/api/settings/organization');
+        if (response.ok) {
+          const data = await response.json();
+          if (orgData.name === "" || orgData.name === "My Organization") {
+            setOrgData({
+              name: data.name || "My Organization",
+              email: data.email || "",
+              phone: data.phone || "",
+              website: data.website || "",
+              autoRenew: data.autoRenew === true,
+              gracePeriod: data.gracePeriod === true
+            });
+          }
+        } else {
+          toast.error("Failed to load organization settings.");
+        }
+      } catch (error) {
+        console.error("Failed to fetch organization settings:", error);
+        toast.error("An error occurred while loading organization settings.");
+      } finally {
+        setIsOrgLoading(false);
+      }
+    };
+
+    if (session?.user?.id && !isSavingOrg) {
+      fetchOrgSettings();
+    }
+  }, [session?.user?.id, isSavingOrg, orgData.name]);
 
   // Avoid hydration mismatch by only rendering client-side
   useEffect(() => {
@@ -83,7 +98,7 @@ export default function SettingsPage() {
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setProfileData(prev => ({
+    setProfileData((prev: { name: string; email: string; phone: string; role: string }) => ({
       ...prev,
       [id]: value
     }));
@@ -97,7 +112,7 @@ export default function SettingsPage() {
       'confirm-password': 'confirmPassword'
     };
     
-    setPasswordData(prev => ({
+    setPasswordData((prev: { currentPassword: string; newPassword: string; confirmPassword: string }) => ({
       ...prev,
       [fieldMap[id]]: value
     }));
@@ -105,39 +120,23 @@ export default function SettingsPage() {
 
   const handleOrgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    const fieldMap: Record<string, string> = {
-      'org-name': 'name',
-      'org-email': 'email',
-      'org-phone': 'phone',
-      'org-website': 'website'
-    };
-    
-    setOrgData(prev => ({
+    setOrgData((prev: { name: string; email: string; phone: string; website: string; autoRenew: boolean; gracePeriod: boolean }) => ({
       ...prev,
-      [fieldMap[id]]: value
+      [id]: value
     }));
   };
 
   const handleSwitchChange = (id: string, checked: boolean) => {
-    switch(id) {
-      case 'auto-renew':
-        setOrgData(prev => ({ ...prev, autoRenew: checked }));
-        break;
-      case 'grace-period':
-        setOrgData(prev => ({ ...prev, gracePeriod: checked }));
-        break;
-      case 'notify-members':
-        setNotificationSettings(prev => ({ ...prev, notifyMembers: checked }));
-        break;
-      case 'notify-payments':
-        setNotificationSettings(prev => ({ ...prev, notifyPayments: checked }));
-        break;
-      case 'notify-events':
-        setNotificationSettings(prev => ({ ...prev, notifyEvents: checked }));
-        break;
-      case 'app-all':
-        setNotificationSettings(prev => ({ ...prev, appAll: checked }));
-        break;
+    if (id === 'autoRenew' || id === 'gracePeriod') {
+      setOrgData((prev: { name: string; email: string; phone: string; website: string; autoRenew: boolean; gracePeriod: boolean }) => ({
+        ...prev,
+        [id]: checked
+      }));
+    } else if (['notifyMembers', 'notifyPayments', 'notifyEvents', 'appAll'].includes(id)) {
+      setNotificationSettings((prev: { notifyMembers: boolean; notifyPayments: boolean; notifyEvents: boolean; appAll: boolean }) => ({
+        ...prev,
+        [id]: checked
+      }));
     }
   };
 
@@ -215,19 +214,29 @@ export default function SettingsPage() {
   };
 
   const handleSaveOrganization = async () => {
+    setIsSavingOrg(true);
     try {
-      setIsLoading(true);
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
+      const response = await fetch('/api/settings/organization', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orgData),
+      });
       
-      // In a real app you would call your API here
-      
-      toast.success("Organization settings saved!");
+      if (response.ok) {
+        toast.success("Organization settings saved successfully!");
+      } else {
+        const errorData = await response.json().catch(() => null);
+        toast.error("Failed to save organization settings.", {
+          description: errorData?.message || response.statusText
+        });
+      }
     } catch (error) {
-      toast.error("Failed to update organization settings");
-      console.error(error);
+      console.error("Error saving organization settings:", error);
+      toast.error("An error occurred while saving organization settings.");
     } finally {
-      setIsLoading(false);
+      setIsSavingOrg(false);
     }
   };
 
@@ -341,7 +350,7 @@ export default function SettingsPage() {
               
               <div className="flex justify-end">
                 <Button 
-                  className="bg-[#4EA8DE] hover:bg-[#4EA8DE]/90"
+                  className="bg-[#AD49E1] hover:bg-[#AD49E1]/90"
                   onClick={handleSaveProfile}
                   disabled={isLoading}
                 >
@@ -392,7 +401,7 @@ export default function SettingsPage() {
               
               <div className="flex justify-end">
                 <Button 
-                  className="bg-[#4EA8DE] hover:bg-[#4EA8DE]/90"
+                  className="bg-[#AD49E1] hover:bg-[#AD49E1]/90"
                   onClick={handleUpdatePassword}
                   disabled={isLoading}
                 >
@@ -414,34 +423,34 @@ export default function SettingsPage() {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="org-name">Organization Name</Label>
+                  <Label htmlFor="name">Organization Name</Label>
                   <Input 
-                    id="org-name" 
+                    id="name" 
                     value={orgData.name}
                     onChange={handleOrgChange}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="org-email">Contact Email</Label>
+                  <Label htmlFor="email">Contact Email</Label>
                   <Input 
-                    id="org-email" 
+                    id="email" 
                     type="email" 
                     value={orgData.email}
                     onChange={handleOrgChange}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="org-phone">Contact Phone</Label>
+                  <Label htmlFor="phone">Contact Phone</Label>
                   <Input 
-                    id="org-phone" 
+                    id="phone" 
                     value={orgData.phone}
                     onChange={handleOrgChange}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="org-website">Website</Label>
+                  <Label htmlFor="website">Website</Label>
                   <Input 
-                    id="org-website" 
+                    id="website" 
                     value={orgData.website}
                     onChange={handleOrgChange}
                   />
@@ -455,36 +464,32 @@ export default function SettingsPage() {
                 
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="auto-renew" className="block">Automatic Renewal Reminders</Label>
+                    <Label htmlFor="autoRenew" className="block">Automatic Renewal Reminders</Label>
                     <p className="text-xs text-muted-foreground">Send automatic reminders before membership expiration.</p>
                   </div>
                   <Switch 
-                    id="auto-renew" 
+                    id="autoRenew" 
                     checked={orgData.autoRenew}
-                    onCheckedChange={(checked) => handleSwitchChange('auto-renew', checked)}
+                    onCheckedChange={(checked) => handleSwitchChange('autoRenew', checked)}
                   />
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="grace-period" className="block">Grace Period for Payments</Label>
+                    <Label htmlFor="gracePeriod" className="block">Grace Period for Payments</Label>
                     <p className="text-xs text-muted-foreground">Allow a grace period after membership expiration.</p>
                   </div>
                   <Switch 
-                    id="grace-period" 
+                    id="gracePeriod" 
                     checked={orgData.gracePeriod}
-                    onCheckedChange={(checked) => handleSwitchChange('grace-period', checked)}
+                    onCheckedChange={(checked) => handleSwitchChange('gracePeriod', checked)}
                   />
                 </div>
               </div>
               
               <div className="flex justify-end">
-                <Button 
-                  className="bg-[#4EA8DE] hover:bg-[#4EA8DE]/90"
-                  onClick={handleSaveOrganization}
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Saving..." : "Save Organization Settings"}
+                <Button onClick={handleSaveOrganization} disabled={isSavingOrg || isOrgLoading}>
+                  {isSavingOrg ? "Saving..." : "Save Organization Settings"}
                 </Button>
               </div>
             </CardContent>
@@ -532,7 +537,7 @@ export default function SettingsPage() {
               
               <div className="flex justify-end">
                 <Button 
-                  className="bg-[#4EA8DE] hover:bg-[#4EA8DE]/90"
+                  className="bg-[#AD49E1] hover:bg-[#AD49E1]/90"
                   onClick={handleSaveAppearance}
                   disabled={isLoading}
                 >
@@ -612,7 +617,7 @@ export default function SettingsPage() {
               
               <div className="flex justify-end">
                 <Button 
-                  className="bg-[#4EA8DE] hover:bg-[#4EA8DE]/90"
+                  className="bg-[#AD49E1] hover:bg-[#AD49E1]/90"
                   onClick={handleSaveNotifications}
                   disabled={isLoading}
                 >
@@ -639,7 +644,7 @@ export default function SettingsPage() {
                     <p className="text-2xl font-bold">Pro Plan</p>
                     <p className="text-xs text-muted-foreground mt-1">Billed annually</p>
                   </div>
-                  <Badge className="bg-[#4EA8DE]">Active</Badge>
+                  <Badge className="bg-[#AD49E1]">Active</Badge>
                 </div>
               </div>
               
@@ -648,7 +653,7 @@ export default function SettingsPage() {
               <div className="space-y-2">
                 <h3 className="text-md font-medium">Payment Method</h3>
                 <div className="flex items-center gap-3 bg-primary/5 rounded-md p-3">
-                  <CreditCard size={18} className="text-[#4EA8DE]" />
+                  <CreditCard size={18} className="text-[#AD49E1]" />
                   <div>
                     <p className="text-sm font-medium">•••• •••• •••• 4242</p>
                     <p className="text-xs text-muted-foreground">Expires 12/25</p>

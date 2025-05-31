@@ -7,7 +7,6 @@ import { sidebarItems } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { LogOut, X } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
-import { MemberRole } from "@/lib/generated/prisma";
 import { LucideIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -116,7 +115,7 @@ export function Sidebar({ isMobile, isMobileOpen, setIsMobileOpen }: SidebarProp
               >
                 <item.icon size={20} className={cn(
                   "min-w-5 transition-colors flex-shrink-0",
-                  isActive ? "text-[#4EA8DE]" : "text-muted-foreground group-hover:text-foreground"
+                  isActive ? "text-[#AD49E1]" : "text-muted-foreground group-hover:text-foreground"
                 )} />
                 
                 {shouldShowText && (
@@ -131,7 +130,7 @@ export function Sidebar({ isMobile, isMobileOpen, setIsMobileOpen }: SidebarProp
                 {/* Active indicator only for desktop expanded, or always on mobile if item is active */}
                 {isActive && (
                    <div className={cn(
-                     "absolute w-1 h-6 bg-[#4EA8DE] rounded-r-full left-0"
+                     "absolute w-1 h-6 bg-[#AD49E1] rounded-r-full left-0"
                      
                    )} />
                 )}

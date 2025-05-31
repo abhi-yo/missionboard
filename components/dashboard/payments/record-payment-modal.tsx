@@ -19,25 +19,34 @@ import { PaymentMethod, PaymentStatus, User, Subscription } from '@/lib/generate
 interface RecordPaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onPaymentRecorded: () => void;
+  onPaymentRecorded?: () => void;
 }
 
-type SelectUser = Pick<User, 'id' | 'name' | 'email'>;
-type SelectSubscription = { id: string; planName: string; userId: string };
+type SelectMember = {
+  id: string;
+  name: string;
+  email?: string | null;
+};
+
+type SelectSubscription = { 
+  id: string; 
+  planName: string; 
+  memberId?: string;
+};
 
 export function RecordPaymentModal({ isOpen, onClose, onPaymentRecorded }: RecordPaymentModalProps) {
   const [amount, setAmount] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [selectedUserId, setSelectedUserId] = useState<string>('');
+  const [selectedMemberId, setSelectedMemberId] = useState<string>('');
   const [selectedSubscriptionId, setSelectedSubscriptionId] = useState<string>('');
   const [selectedStatus, setSelectedStatus] = useState<PaymentStatus>(PaymentStatus.COMPLETED);
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>(PaymentMethod.OTHER);
   
-  const [users, setUsers] = useState<SelectUser[]>([]);
+  const [members, setMembers] = useState<SelectMember[]>([]);
   const [subscriptions, setSubscriptions] = useState<SelectSubscription[]>([]);
   const [filteredSubscriptions, setFilteredSubscriptions] = useState<SelectSubscription[]>([]);
   
-  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
+  const [isLoadingMembers, setIsLoadingMembers] = useState(false);
   const [isLoadingSubscriptions, setIsLoadingSubscriptions] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -55,36 +64,37 @@ export function RecordPaymentModal({ isOpen, onClose, onPaymentRecorded }: Recor
     [PaymentMethod.OTHER]: 'Other',
   };
 
-  // Fetch users and subscriptions when modal opens
+  // Fetch members and subscriptions when modal opens
   useEffect(() => {
     if (isOpen) {
       // Reset form
       setAmount('');
       setDescription('');
-      setSelectedUserId('');
+      setSelectedMemberId('');
       setSelectedSubscriptionId('');
       setSelectedStatus(PaymentStatus.COMPLETED);
       setSelectedMethod(PaymentMethod.OTHER);
       
-      // Fetch users
-      setIsLoadingUsers(true);
-      fetch('/api/users')
+      // Fetch members
+      setIsLoadingMembers(true);
+      fetch('/api/members')
         .then(res => {
-          if (!res.ok) throw new Error('Failed to fetch users');
+          if (!res.ok) throw new Error('Failed to fetch members');
           return res.json();
         })
-        .then((data: User[]) => {
-          setUsers(data.map(u => ({ 
-            id: u.id, 
-            name: u.name ?? 'Unnamed User', 
-            email: u.email ?? 'No Email' 
+        .then((data) => {
+          console.log("Members data:", data);
+          setMembers(data.map((m: any) => ({ 
+            id: m.id, 
+            name: m.name || 'Unnamed Member', 
+            email: m.email || '' 
           })));
         })
         .catch(err => {
-          toast.error("Failed to fetch users", { description: err.message });
-          setUsers([]);
+          toast.error("Failed to fetch members", { description: err.message });
+          setMembers([]);
         })
-        .finally(() => setIsLoadingUsers(false));
+        .finally(() => setIsLoadingMembers(false));
       
       // Fetch all subscriptions
       setIsLoadingSubscriptions(true);
@@ -94,10 +104,11 @@ export function RecordPaymentModal({ isOpen, onClose, onPaymentRecorded }: Recor
           return res.json();
         })
         .then((data: any[]) => {
+          console.log("Subscriptions data:", data);
           const formattedSubscriptions = data.map(sub => ({
             id: sub.id,
-            planName: sub.plan.name,
-            userId: sub.userId
+            planName: sub.plan?.name || "Unknown Plan",
+            memberId: sub.memberId || sub.userId
           }));
           setSubscriptions(formattedSubscriptions);
           setFilteredSubscriptions(formattedSubscriptions);
@@ -111,16 +122,16 @@ export function RecordPaymentModal({ isOpen, onClose, onPaymentRecorded }: Recor
     }
   }, [isOpen]);
   
-  // Filter subscriptions when user changes
+  // Filter subscriptions when member changes
   useEffect(() => {
-    if (selectedUserId) {
-      const filtered = subscriptions.filter(sub => sub.userId === selectedUserId);
+    if (selectedMemberId) {
+      const filtered = subscriptions.filter(sub => sub.memberId === selectedMemberId);
       setFilteredSubscriptions(filtered);
     } else {
       setFilteredSubscriptions(subscriptions);
     }
-    setSelectedSubscriptionId(''); // Reset subscription selection when user changes
-  }, [selectedUserId, subscriptions]);
+    setSelectedSubscriptionId(''); // Reset subscription selection when member changes
+  }, [selectedMemberId, subscriptions]);
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -130,8 +141,8 @@ export function RecordPaymentModal({ isOpen, onClose, onPaymentRecorded }: Recor
       toast.error("Please enter a valid amount");
       return;
     }
-    if (!selectedUserId) {
-      toast.error("Please select a user");
+    if (!selectedMemberId) {
+      toast.error("Please select a member");
       return;
     }
     
@@ -144,10 +155,10 @@ export function RecordPaymentModal({ isOpen, onClose, onPaymentRecorded }: Recor
         },
         body: JSON.stringify({
           amount: parseFloat(amount),
-          userId: selectedUserId,
-          subscriptionId: selectedSubscriptionId === "none" ? undefined : selectedSubscriptionId || undefined,
-          method: selectedMethod,
+          memberId: selectedMemberId,
+          subscriptionId: selectedSubscriptionId === "none" ? undefined : selectedSubscriptionId,
           status: selectedStatus,
+          method: selectedMethod,
           description: description || undefined,
         }),
       });
@@ -157,11 +168,12 @@ export function RecordPaymentModal({ isOpen, onClose, onPaymentRecorded }: Recor
         throw new Error(errorData.message || 'Failed to record payment');
       }
       
-      toast.success('Payment recorded successfully');
-      onPaymentRecorded();
+      toast.success("Payment recorded successfully");
+      onPaymentRecorded?.();
       onClose();
-    } catch (error: any) {
-      toast.error('Failed to record payment', { description: error.message });
+    } catch (error) {
+      console.error('Error recording payment:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to record payment');
     } finally {
       setIsSubmitting(false);
     }
@@ -179,25 +191,25 @@ export function RecordPaymentModal({ isOpen, onClose, onPaymentRecorded }: Recor
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="user" className="text-right">
-                User
+              <Label htmlFor="member" className="text-right">
+                Member
               </Label>
               <Select
-                value={selectedUserId}
-                onValueChange={setSelectedUserId}
-                disabled={isLoadingUsers}
+                value={selectedMemberId}
+                onValueChange={setSelectedMemberId}
+                disabled={isLoadingMembers}
               >
                 <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder={isLoadingUsers ? "Loading users..." : "Select a user"} />
+                  <SelectValue placeholder={isLoadingMembers ? "Loading members..." : "Select a member"} />
                 </SelectTrigger>
                 <SelectContent>
-                  {users.map(user => (
-                    <SelectItem key={user.id} value={user.id}>
-                      {user.name} ({user.email})
+                  {members.map(member => (
+                    <SelectItem key={member.id} value={member.id}>
+                      {member.name} ({member.email})
                     </SelectItem>
                   ))}
-                  {!isLoadingUsers && users.length === 0 && 
-                    <SelectItem value="no-users" disabled>No users found</SelectItem>
+                  {!isLoadingMembers && members.length === 0 && 
+                    <SelectItem value="no-members" disabled>No members found</SelectItem>
                   }
                 </SelectContent>
               </Select>
@@ -210,14 +222,14 @@ export function RecordPaymentModal({ isOpen, onClose, onPaymentRecorded }: Recor
               <Select
                 value={selectedSubscriptionId}
                 onValueChange={setSelectedSubscriptionId}
-                disabled={isLoadingSubscriptions || !selectedUserId}
+                disabled={isLoadingSubscriptions || !selectedMemberId}
               >
                 <SelectTrigger className="col-span-3">
                   <SelectValue placeholder={
                     isLoadingSubscriptions 
                       ? "Loading subscriptions..." 
-                      : !selectedUserId
-                      ? "Select a user first"
+                      : !selectedMemberId
+                      ? "Select a member first"
                       : "Select subscription (optional)"
                   } />
                 </SelectTrigger>
@@ -228,9 +240,9 @@ export function RecordPaymentModal({ isOpen, onClose, onPaymentRecorded }: Recor
                       {sub.planName}
                     </SelectItem>
                   ))}
-                  {!isLoadingSubscriptions && filteredSubscriptions.length === 0 && selectedUserId && (
+                  {!isLoadingSubscriptions && filteredSubscriptions.length === 0 && selectedMemberId && (
                     <SelectItem value="no-subscriptions" disabled>
-                      No subscriptions found for this user
+                      No subscriptions found for this member
                     </SelectItem>
                   )}
                 </SelectContent>

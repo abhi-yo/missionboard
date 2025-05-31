@@ -2,9 +2,8 @@
 
 import { useSession } from "next-auth/react";
 import { PageContainer } from "@/components/layout/page-container";
-import { HeroPanel } from "@/components/dashboard/hero-panel";
-import { StatsCard } from "@/components/dashboard/stats-card";
 import { ActivityFeed } from "@/components/dashboard/activity-feed";
+import { ActivityChart } from "@/components/dashboard/activity-chart";
 import { UserList } from "@/components/dashboard/user-list";
 import { EventCard } from "@/components/dashboard/event-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,13 +11,20 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle, User, Calendar, CreditCard } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { MemberRole } from "@/lib/generated/prisma";
+import { toast } from "sonner";
+
+interface DashboardStats {
+  totalMembers: number;
+  activeSubscriptions: number;
+  upcomingEvents: number;
+  totalRevenue: number;
+}
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [stats, setStats] = useState({
-    totalUsers: 0,
+  const [stats, setStats] = useState<DashboardStats>({
+    totalMembers: 0,
     activeSubscriptions: 0,
     upcomingEvents: 0,
     totalRevenue: 0
@@ -27,25 +33,22 @@ export default function Dashboard() {
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   
-  // No role check - all users should access the dashboard now
-  
   // Fetch dashboard data
   useEffect(() => {
     const fetchDashboardData = async () => {
+      setIsLoading(true);
       try {
-        // You would fetch real data from your API here
-        // For now, we'll just simulate loading
-        setTimeout(() => {
-          setStats({
-            totalUsers: 1,
-            activeSubscriptions: 2,
-            upcomingEvents: 0,
-            totalRevenue: 198
-          });
-          setIsLoading(false);
-        }, 1000);
+        const response = await fetch('/api/dashboard/stats');
+        if (!response.ok) {
+          throw new Error(`Failed to fetch dashboard stats: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        setStats(data);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
+        toast.error("Failed to load dashboard data");
+      } finally {
         setIsLoading(false);
       }
     };
@@ -55,15 +58,13 @@ export default function Dashboard() {
   
   return (
     <PageContainer>
-      <HeroPanel className="mb-6" />
-      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <Card className="border-border/40 bg-card/40 backdrop-blur-md">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Total Users</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.totalUsers}</div>
+            <div className="text-2xl font-bold">{stats.totalMembers}</div>
             <p className="text-xs text-muted-foreground">All registered users</p>
           </CardContent>
         </Card>
@@ -97,6 +98,10 @@ export default function Dashboard() {
             <p className="text-xs text-muted-foreground">From all subscriptions</p>
           </CardContent>
         </Card>
+      </div>
+      
+      <div className="mb-6">
+        <ActivityChart />
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -161,14 +166,14 @@ export default function Dashboard() {
           <h2 className="text-xl font-semibold">Recent Users</h2>
           <Button 
             variant="link" 
-            className="text-[#4EA8DE]"
+            className="text-[#9D43CC]"
             onClick={() => router.push('/users')}
           >
             View All
           </Button>
         </div>
         
-        <UserList limit={5} />
+        <UserList />
       </div>
     </PageContainer>
   );

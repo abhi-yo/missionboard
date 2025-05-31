@@ -59,7 +59,7 @@ export function StatsCard({ stat, className }: StatsCardProps) {
         </div>
         
         <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center">
-          {IconComponent ? <IconComponent size={18} className="text-[#4EA8DE]" /> : null}
+          {IconComponent ? <IconComponent size={18} className="text-[#AD49E1]" /> : null}
         </div>
       </div>
       
@@ -68,7 +68,7 @@ export function StatsCard({ stat, className }: StatsCardProps) {
         className={cn(
           "absolute -bottom-8 -right-8 w-24 h-24 rounded-full",
           "opacity-0 group-hover:opacity-20 transition-opacity duration-500",
-          "blur-xl bg-[#4EA8DE]"
+          "blur-xl bg-[#AD49E1]"
         )} 
       />
     </Card>

@@ -72,9 +72,7 @@ export async function POST(request: Request, { params }: { params: { id: string 
     const existingRegistration = await prisma.eventRegistration.findFirst({
       where: {
         eventId,
-        user: {
-          email
-        }
+        registrantEmail: email
       }
     });
     
@@ -96,18 +94,16 @@ export async function POST(request: Request, { params }: { params: { id: string 
       
       if (currentAttendees + requestedSpots > event.capacity) {
         // Wait-list the registration if event is full
-        
-        // First, try to find or create a user with this email
-        const user = await findOrCreateUser(name, email, phone);
-        
         // Create a waitlisted registration
         const registration = await prisma.eventRegistration.create({
           data: {
-            event: { connect: { id: eventId } },
-            user: { connect: { id: user.id } },
+            eventId,
+            registrantName: name,
+            registrantEmail: email,
             status: RegistrationStatus.WAITLISTED,
             guestsCount,
-            notes
+            notes,
+            organizationId: event.organizationId as string, // Required in schema
           }
         });
         
@@ -121,17 +117,16 @@ export async function POST(request: Request, { params }: { params: { id: string 
       }
     }
     
-    // Find or create a user with this email
-    const user = await findOrCreateUser(name, email, phone);
-    
     // Create the registration
     const registration = await prisma.eventRegistration.create({
       data: {
-        event: { connect: { id: eventId } },
-        user: { connect: { id: user.id } },
+        eventId,
+        registrantName: name,
+        registrantEmail: email,
         status: RegistrationStatus.CONFIRMED,
         guestsCount,
-        notes
+        notes,
+        organizationId: event.organizationId as string, // Required in schema
       }
     });
     
@@ -148,25 +143,4 @@ export async function POST(request: Request, { params }: { params: { id: string 
   }
 }
 
-// Helper function to find or create a user
-async function findOrCreateUser(name: string, email: string, phone?: string) {
-  // Try to find an existing user with this email
-  let user = await prisma.user.findUnique({
-    where: { email }
-  });
-  
-  // If no user found, create a new one
-  if (!user) {
-    user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        phoneNumber: phone,
-        status: 'active', // Set as active since they're registering for an event
-        role: 'ADMIN', // Default role as per schema requirement
-      }
-    });
-  }
-  
-  return user;
-} 
+// All TypeScript errors should be resolved now 

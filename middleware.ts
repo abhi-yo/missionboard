@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-import { MemberRole } from "@/lib/generated/prisma";
 
 // All routes that require authentication
 const protectedRoutes = [

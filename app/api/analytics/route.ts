@@ -14,6 +14,16 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
+    const userId = session.user.id;
+    
+    const organization = await prisma.organization.findUnique({
+      where: { adminId: userId }
+    });
+    
+    if (!organization) {
+      return NextResponse.json({ message: "Organization not found" }, { status: 404 });
+    }
+
     const url = new URL(request.url);
     const timeframe = url.searchParams.get('timeframe') || 'last6months';
     
@@ -39,16 +49,16 @@ export async function GET(request: Request) {
     }
 
     // Get membership growth data
-    const monthlyUsers = await fetchMonthlyUsers(startDate, now);
+    const monthlyUsers = await fetchMonthlyUsers(startDate, now, organization.id);
     
     // Get revenue data
-    const monthlyRevenue = await fetchMonthlyRevenue(startDate, now);
+    const monthlyRevenue = await fetchMonthlyRevenue(startDate, now, organization.id);
     
     // Get membership status data
-    const statusDistribution = await fetchMembershipStatus();
+    const statusDistribution = await fetchMembershipStatus(organization.id);
     
     // Get event attendance data
-    const eventAttendance = await fetchEventAttendance();
+    const eventAttendance = await fetchEventAttendance(organization.id);
 
     return NextResponse.json({
       membershipData: monthlyUsers,
@@ -62,10 +72,11 @@ export async function GET(request: Request) {
   }
 }
 
-async function fetchMonthlyUsers(startDate: Date, endDate: Date) {
-  // Get all users within the date range
-  const users = await prisma.user.findMany({
+async function fetchMonthlyUsers(startDate: Date, endDate: Date, organizationId: string) {
+  // Get all members within the date range for this organization
+  const members = await prisma.member.findMany({
     where: {
+      organizationId: organizationId,
       joinDate: {
         gte: startDate,
         lte: endDate,
@@ -76,7 +87,7 @@ async function fetchMonthlyUsers(startDate: Date, endDate: Date) {
     },
   });
 
-  // Group users by month
+  // Group members by month
   const monthlyData: Record<string, number> = {};
   
   // Initialize months
@@ -87,14 +98,14 @@ async function fetchMonthlyUsers(startDate: Date, endDate: Date) {
     currentDate = startOfMonth(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
   }
 
-  // Count users per month (cumulative)
+  // Count members per month (cumulative)
   let total = 0;
   for (const monthKey of Object.keys(monthlyData)) {
-    const monthUsers = users.filter(user => 
-      user.joinDate && format(new Date(user.joinDate), 'MMM') === monthKey
+    const monthMembers = members.filter(member => 
+      member.joinDate && format(new Date(member.joinDate), 'MMM') === monthKey
     ).length;
     
-    total += monthUsers;
+    total += monthMembers;
     monthlyData[monthKey] = total;
   }
 
@@ -105,10 +116,11 @@ async function fetchMonthlyUsers(startDate: Date, endDate: Date) {
   }));
 }
 
-async function fetchMonthlyRevenue(startDate: Date, endDate: Date) {
-  // Get all payments within the date range
+async function fetchMonthlyRevenue(startDate: Date, endDate: Date, organizationId: string) {
+  // Get all payments within the date range for this organization
   const payments = await prisma.payment.findMany({
     where: {
+      organizationId: organizationId,
       createdAt: {
         gte: startDate,
         lte: endDate,
@@ -147,10 +159,13 @@ async function fetchMonthlyRevenue(startDate: Date, endDate: Date) {
   }));
 }
 
-async function fetchMembershipStatus() {
-  // Get counts of users by status
-  const statusCounts = await prisma.user.groupBy({
+async function fetchMembershipStatus(organizationId: string) {
+  // Get counts of members by status for this organization
+  const statusCounts = await prisma.member.groupBy({
     by: ['status'],
+    where: {
+      organizationId: organizationId
+    },
     _count: {
       id: true
     }
@@ -172,10 +187,11 @@ async function fetchMembershipStatus() {
   }));
 }
 
-async function fetchEventAttendance() {
-  // Get all events with their registrations
+async function fetchEventAttendance(organizationId: string) {
+  // Get all events with their registrations for this organization
   const events = await prisma.event.findMany({
     where: {
+      organizationId: organizationId,
       date: {
         lte: new Date()
       },

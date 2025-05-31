@@ -265,7 +265,7 @@ export default function EditPlanPage() {
               <Link href="/plans">
                 <Button type="button" variant="outline" disabled={isSubmitting}>Cancel</Button>
               </Link>
-              <Button type="submit" className="bg-[#4EA8DE] hover:bg-[#4EA8DE]/90" disabled={isSubmitting}>
+              <Button type="submit" className="bg-[#AD49E1] hover:bg-[#AD49E1]/90" disabled={isSubmitting}>
                 {isSubmitting ? 'Saving Changes...' : 'Save Changes'}
               </Button>
             </div>

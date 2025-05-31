@@ -3,113 +3,122 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
-import { MemberStatus, MemberRole } from '@/lib/generated/prisma'; // Import enums
+import { MemberStatus } from '@/lib/generated/prisma'; // MemberRole removed
 
 export const dynamic = 'force-dynamic';
 
-// Zod schema for user creation
-// Note: emailVerified, image are handled by NextAuth OAuth flow primarily
-const userSchema = z.object({
-  name: z.string().min(1, { message: "Full name is required" }),
-  email: z.string().email({ message: "Invalid email address" }),
-  phoneNumber: z.string().optional(),
-  // avatar is now 'image' in the model, but input might still be avatarUrl from a form
-  image: z.string().url({ message: "Invalid URL for avatar" }).optional().or(z.literal('')),
-  status: z.nativeEnum(MemberStatus), 
-  role: z.nativeEnum(MemberRole),
-  joinDate: z.string().datetime({ message: "Invalid date format for join date" }).optional(), // Made optional as it has a default
-  notes: z.string().optional(),
-});
-
-const userCreateSchema = z.object({
+// Zod schema for member creation
+const memberCreateSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-  email: z.string().email({ message: "Invalid email address" }),
-  status: z.string(),
+  email: z.string().email({ message: "Invalid email address" }).optional(), // Member email is optional
+  status: z.nativeEnum(MemberStatus), // Use MemberStatus enum
   phoneNumber: z.string().optional(),
-  joinDate: z.string().or(z.date()).optional(),
+  joinDate: z.string().optional(), // Will be converted to Date
   notes: z.string().optional(),
 });
 
 export async function GET() {
-  console.log("[/api/users GET] Attempting to fetch users.");
+  console.log("[/api/users GET] Attempting to fetch members.");
   try {
     const session = await getServerSession(authOptions);
-    console.log("[/api/users GET] Session object:", JSON.stringify(session, null, 2));
-    
-    if (!session) {
-      console.error("[/api/users GET] Unauthorized: No session found.");
+    if (!session?.user?.id) {
+      console.error("[/api/users GET] Unauthorized: No session or user ID.");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Add a more specific check, e.g., if a user ID is expected in the session
-    if (!session.user || !session.user.id) {
-      console.error("[/api/users GET] Unauthorized: Session found, but user or user.id is missing.", JSON.stringify(session.user, null, 2));
-      return NextResponse.json({ error: "Unauthorized: Incomplete session data" }, { status: 401 });
+    // Find the organization administered by the current user
+    const organization = await prisma.organization.findUnique({
+      where: { adminId: session.user.id },
+      select: { id: true }
+    });
+
+    if (!organization) {
+      console.error(`[/api/users GET] No organization found for admin ID: ${session.user.id}.`);
+      return NextResponse.json({ error: "User is not an admin of any organization or organization not found." }, { status: 404 });
     }
 
-    console.log(`[/api/users GET] Session valid for user ID: ${session.user.id}. Fetching users from DB.`);
+    console.log(`[/api/users GET] Fetching members for organization ID: ${organization.id}.`);
     
-    // Fetch all users except the currently logged-in user
-    const users = await prisma.user.findMany({
+    const members = await prisma.member.findMany({
       where: {
-        id: {
-          not: session.user.id // Exclude the currently logged-in user
-        }
+        organizationId: organization.id,
+      },
+      select: { // Select fields relevant for Member
+        id: true,
+        name: true,
+        email: true,
+        phoneNumber: true,
+        status: true,
+        joinDate: true,
+        notes: true,
+        createdAt: true,
+        updatedAt: true,
       },
       orderBy: {
         createdAt: 'desc',
       },
     });
 
-    return NextResponse.json(users);
+    return NextResponse.json(members);
   } catch (error) {
-    console.error("[USERS_GET]", error);
-    return NextResponse.json({ error: "Internal error" }, { status: 500 });
+    console.error("[MEMBERS_GET]", error);
+    return NextResponse.json({ error: "Internal error fetching members" }, { status: 500 });
   }
 }
 
 export async function POST(req: Request) {
   try {
+    console.log("[/api/users POST] Starting member creation");
     const session = await getServerSession(authOptions);
     
-    if (!session) {
+    if (!session?.user?.id) {
+      console.log("[/api/users POST] Unauthorized: No session or session.user.id");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Find the organization administered by the current user to associate the new member
+    const organization = await prisma.organization.findUnique({
+        where: { adminId: session.user.id },
+        select: { id: true }
+    });
+
+    if (!organization) {
+        console.log("[/api/users POST] Admin user not associated with an organization or organization not found");
+        return NextResponse.json({ error: "Admin user not associated with an organization or organization not found" }, { status: 404 });
+    }
+
     const body = await req.json();
+    console.log("[/api/users POST] Received body for new member:", JSON.stringify(body, null, 2));
     
-    const validation = userCreateSchema.safeParse(body);
+    const validation = memberCreateSchema.safeParse(body);
     if (!validation.success) {
+      console.log("[/api/users POST] Validation failed for new member:", validation.error.errors);
       return NextResponse.json({ error: validation.error.errors }, { status: 400 });
     }
 
     const { name, email, status, phoneNumber, joinDate, notes } = validation.data;
-
-    const existingUser = await prisma.user.findUnique({
-      where: {
-        email,
-      },
+    
+    console.log("[/api/users POST] Creating member with data:", { 
+      name, email, status, phoneNumber, joinDate, notes, organizationId: organization.id 
     });
 
-    if (existingUser) {
-      return NextResponse.json({ error: "Email already in use" }, { status: 400 });
-    }
-
-    const user = await prisma.user.create({
+    const member = await prisma.member.create({
       data: {
         name,
-        email,
-        status: status as MemberStatus,
-        role: MemberRole.ADMIN, // Always set to ADMIN
-        phoneNumber,
+        email: email || null, // Ensure email is null if not provided
+        status: status, // Already validated as MemberStatus by Zod
+        phoneNumber: phoneNumber || null,
         joinDate: joinDate ? new Date(joinDate) : new Date(),
-        notes,
+        notes: notes || "",
+        organizationId: organization.id, // Associate with the admin's organization
       },
     });
 
-    return NextResponse.json(user);
+    console.log("[/api/users POST] Member created successfully:", member.id);
+    return NextResponse.json(member);
   } catch (error) {
-    console.error("[USERS_POST]", error);
-    return NextResponse.json({ error: "Internal error" }, { status: 500 });
+    console.error("[MEMBERS_POST] Error:", error);
+    // Check for specific Prisma errors if needed, e.g., unique constraint violation if you add one for email per org
+    return NextResponse.json({ error: "Internal error creating member" }, { status: 500 });
   }
 } 

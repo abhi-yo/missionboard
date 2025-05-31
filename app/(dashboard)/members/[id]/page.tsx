@@ -3,11 +3,10 @@ import { PageContainer } from "@/components/layout/page-container";
 // import { useParams, useRouter } from "next/navigation"; // Removed: useRouter not needed, params is a prop
 import Link from "next/link";
 // import { members } from "@/lib/mock-data"; // Removed: Will fetch from API
-import { Member } from "@/types"; // Updated import
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { memberRoles, memberStatuses, subscriptionStatusColors, subscriptionStatusLabels } from "@/lib/constants";
+import { subscriptionStatusColors, subscriptionStatusLabels } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Pencil } from "lucide-react"; // Reduced imports to only what's used by current structure + Pencil for edit button
 import { notFound } from 'next/navigation'; // Added: For handling not found cases
@@ -15,7 +14,50 @@ import { ManageSubscriptionModal } from "../../../../components/dashboard/manage
 import { MemberActions } from "@/components/dashboard/member-actions"; // Added import
 import { format } from 'date-fns'; // For date formatting
 
-// The Member type from @/types now includes subscriptions with plan details
+type SubscriptionStatus = 'ACTIVE' | 'CANCELED' | 'PAST_DUE' | 'UNPAID' | 'TRIAL' | string;
+
+// Define a compatible interface for MembershipPlan
+interface MembershipPlan {
+  id: string;
+  name: string;
+  description?: string;
+  price: number;
+  currency: string;
+  interval: string;
+  active: boolean;
+  features?: string[];
+}
+
+// Define a compatible interface for Subscription
+interface Subscription {
+  id: string;
+  status: SubscriptionStatus;
+  startDate: string;
+  currentPeriodStart: string;
+  currentPeriodEnd: string;
+  cancelAtPeriodEnd: boolean;
+  canceledAt: string | null;
+  trialStartDate?: string | null;
+  trialEndDate?: string | null;
+  plan: MembershipPlan;
+}
+
+// Define a simple interface for Member instead of importing it
+interface Member {
+  id: string;
+  name: string;
+  email: string | null;
+  status: string;
+  joinDate: string | null;
+  role?: string;
+  notes: string | null;
+  avatar?: string;
+  phoneNumber: string | null;
+  createdAt: string;
+  updatedAt: string;
+  subscriptions?: Subscription[];
+}
+
 async function getMember(id: string): Promise<Member | null> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
   const res = await fetch(`${baseUrl}/api/members/${id}`, { cache: 'no-store' });
@@ -42,7 +84,8 @@ async function getMember(id: string): Promise<Member | null> {
         trialEndDate: sub.trialEndDate ? format(new Date(sub.trialEndDate), 'yyyy-MM-dd') : null,
         plan: {
             ...sub.plan,
-            price: Number(sub.plan.price) // Ensure price is a number
+            price: Number(sub.plan.price), // Ensure price is a number
+            active: sub.plan.active !== undefined ? sub.plan.active : true // Ensure active is present
         }
     })) || []
   } as Member;
@@ -83,13 +126,13 @@ export default async function MemberDetailPage({ params }: { params: { id: strin
             <h2 className="text-xl font-semibold mb-4">Member Information</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-sm">
               <p><strong>Status:</strong> 
-                <Badge variant="outline" className={cn("ml-1", memberStatuses[member.status]?.color)}>
-                  {memberStatuses[member.status]?.label || member.status}
+                <Badge variant="outline" className={cn("ml-1")}>
+                  {member.status}
                 </Badge>
               </p>
               <p><strong>Role:</strong> 
                 <Badge variant="secondary" className="ml-1">
-                  {memberRoles[member.role]?.label || member.role}
+                  {member.role || 'Member'}
                 </Badge>
               </p>
               <p><strong>Join Date:</strong> {member.joinDate ? format(new Date(member.joinDate), 'PPP') : 'N/A'}</p>
@@ -107,8 +150,9 @@ export default async function MemberDetailPage({ params }: { params: { id: strin
               <div className="space-y-2 text-sm">
                 <p><strong>Plan:</strong> {activeSubscription.plan.name}</p>
                 <p><strong>Status:</strong> 
-                    <Badge variant="outline" className={cn("ml-1", subscriptionStatusColors[activeSubscription.status])}>
-                        {subscriptionStatusLabels[activeSubscription.status] || activeSubscription.status}
+                    <Badge variant="outline" className={cn("ml-1", 
+                      subscriptionStatusColors[activeSubscription.status as keyof typeof subscriptionStatusColors])}>
+                        {subscriptionStatusLabels[activeSubscription.status as keyof typeof subscriptionStatusLabels] || activeSubscription.status}
                     </Badge>
                 </p>
                 <p><strong>Price:</strong> {new Intl.NumberFormat('en-US', { style: 'currency', currency: activeSubscription.plan.currency }).format(activeSubscription.plan.price)} / {activeSubscription.plan.interval.toLowerCase()}</p>

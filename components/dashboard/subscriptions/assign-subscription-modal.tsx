@@ -84,13 +84,32 @@ export function AssignSubscriptionModal({ isOpen, onClose, onSubscriptionAssigne
     }
     setIsSubmitting(true);
     try {
+      let formattedStartDate: string | undefined = undefined;
+      if (customStartDate) {
+        // Input type="date" gives YYYY-MM-DD.
+        // Backend expects ISO 8601 datetime string.
+        // Convert to Date object then toISOString() for UTC datetime.
+        const dateParts = customStartDate.split('-'); // [YYYY, MM, DD]
+        if (dateParts.length === 3) {
+          const year = parseInt(dateParts[0], 10);
+          const month = parseInt(dateParts[1], 10) - 1; // Month is 0-indexed
+          const day = parseInt(dateParts[2], 10);
+          formattedStartDate = new Date(Date.UTC(year, month, day, 0, 0, 0, 0)).toISOString();
+        } else {
+          // Fallback or error if date format is not as expected, though type="date" should ensure it.
+          console.warn('Unexpected date format for customStartDate:', customStartDate);
+          // Send it as is, or handle error - for now, send as is, Zod will catch it.
+          formattedStartDate = customStartDate;
+        }
+      }
+
       const response = await fetch('/api/manage/subscriptions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          userId: selectedUserId,
+          memberId: selectedUserId,
           planId: selectedPlanId,
-          customStartDate: customStartDate || undefined, 
+          customStartDate: formattedStartDate, 
         }),
       });
 

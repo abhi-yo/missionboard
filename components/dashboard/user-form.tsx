@@ -82,17 +82,25 @@ export function UserForm({ user }: UserFormProps) {
       
       const method = user ? "PUT" : "POST";
       
+      // Log the request for debugging
+      console.log("Submitting user form:", values);
+      
       const response = await fetch(url, {
         method,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          ...values,
+          // Convert the date to ISO string if it exists
+          joinDate: values.joinDate ? values.joinDate.toISOString() : undefined,
+        }),
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to save user");
+        const errorData = await response.json();
+        console.error("API Error:", errorData);
+        throw new Error(errorData.error || errorData.message || "Failed to save user");
       }
 
       toast.success(
@@ -102,6 +110,7 @@ export function UserForm({ user }: UserFormProps) {
       router.push("/users");
       router.refresh();
     } catch (error) {
+      console.error("Form submission error:", error);
       toast.error("Failed to save user", {
         description: error instanceof Error ? error.message : "Unknown error",
       });

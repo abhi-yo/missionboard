@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
-import { MemberRole, SubscriptionStatus } from '@/lib/generated/prisma';
+import { SubscriptionStatus } from '@/lib/generated/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
@@ -25,14 +25,13 @@ export async function GET(request: Request) {
       where: { id: session.user.id },
     });
 
-    if (!adminUser || adminUser.role !== MemberRole.ADMIN) {
+    if (!adminUser) {
       return NextResponse.json({ message: "Forbidden: Insufficient privileges or role mismatch" }, { status: 403 });
     }
 
     const subscriptions = await prisma.subscription.findMany({
       orderBy: { createdAt: 'desc' },
       include: {
-        user: { select: { id: true, name: true, email: true } },
         plan: { select: { id: true, name: true, price: true, interval: true, currency: true } },
       }
     });
@@ -55,7 +54,7 @@ export async function POST(request: Request) {
       where: { id: session.user.id },
     });
 
-    if (!adminUser || adminUser.role !== MemberRole.ADMIN) {
+    if (!adminUser) {
       return NextResponse.json({ message: "Forbidden: Insufficient privileges or role mismatch" }, { status: 403 });
     }
 
@@ -93,7 +92,6 @@ export async function POST(request: Request) {
 
     const newSubscription = await prisma.subscription.create({
       data: {
-        userId,
         planId,
         status: SubscriptionStatus.ACTIVE,
         startDate,
@@ -101,7 +99,6 @@ export async function POST(request: Request) {
         currentPeriodEnd,
       },
       include: {
-        user: { select: { id: true, name: true, email: true } },
         plan: { select: { id: true, name: true, price: true, interval: true, currency: true } },
       }
     });

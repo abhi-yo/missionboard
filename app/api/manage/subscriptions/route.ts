@@ -8,9 +8,9 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 export const dynamic = 'force-dynamic';
 
 const subscriptionCreateSchema = z.object({
-  userId: z.string().cuid({ message: "Invalid User ID" }),
+  memberId: z.string().cuid({ message: "Invalid Member ID" }).optional(),
   planId: z.string().cuid({ message: "Invalid Plan ID" }),
-  customStartDate: z.string().optional(),
+  customStartDate: z.string().datetime({ message: "Invalid start date" }).optional(),
 });
 
 export async function GET(request: Request) {
@@ -21,21 +21,23 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    // Fetch the current user to verify permissions
-    // We're using user.role, but not displaying "admin" in the UI
-    const currentUser = await prisma.user.findUnique({
+    const adminUser = await prisma.user.findUnique({
       where: { id: session.user.id },
+      include: { organization: true }
     });
 
-    if (!currentUser) {
-      return NextResponse.json({ message: "Forbidden: User not found" }, { status: 403 });
+    if (!adminUser || !adminUser.organization?.id) {
+      console.error(`[/api/manage/subscriptions GET] Admin user ${session.user.id} or their organization not found.`);
+      return NextResponse.json({ message: "Forbidden: Admin or Organization not found" }, { status: 403 });
     }
 
     const subscriptions = await prisma.subscription.findMany({
+      where: { organizationId: adminUser.organization.id },
       orderBy: { createdAt: 'desc' },
       include: {
-        user: { select: { id: true, name: true, email: true } },
+        managedBy: { select: { id: true, name: true, email: true } },
         plan: { select: { id: true, name: true, price: true, interval: true, currency: true } },
+        member: { select: { id: true, name: true, email: true } }
       }
     });
 
@@ -53,14 +55,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    // Verify the current user has permission to create subscriptions
-    const currentUser = await prisma.user.findUnique({
+    const adminUserWithOrg = await prisma.user.findUnique({
       where: { id: session.user.id },
+      select: { id: true, organization: { select: { id: true } } }
     });
 
-    if (!currentUser) {
-      return NextResponse.json({ message: "Forbidden: User not found" }, { status: 403 });
+    if (!adminUserWithOrg || !adminUserWithOrg.organization?.id) {
+      console.error(`[/api/manage/subscriptions POST] Admin user ${session.user.id} or their organization not found.`);
+      return NextResponse.json({ message: "Forbidden: Admin or Organization not found" }, { status: 403 });
     }
+    const organizationId = adminUserWithOrg.organization.id;
 
     const body = await request.json();
     const validation = subscriptionCreateSchema.safeParse(body);
@@ -69,16 +73,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "Validation failed", errors: validation.error.flatten().fieldErrors }, { status: 400 });
     }
 
-    const { userId, planId, customStartDate } = validation.data;
+    const { memberId, planId, customStartDate } = validation.data;
 
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    if (memberId) {
+      const member = await prisma.member.findUnique({ where: { id: memberId, organizationId: organizationId } });
+      if (!member) {
+        return NextResponse.json({ message: "Member not found in your organization" }, { status: 404 });
+      }
     }
 
-    const plan = await prisma.membershipPlan.findUnique({ where: { id: planId } });
+    const plan = await prisma.membershipPlan.findUnique({ where: { id: planId, organizationId: organizationId } });
     if (!plan) {
-      return NextResponse.json({ message: "Membership plan not found" }, { status: 404 });
+      return NextResponse.json({ message: "Membership plan not found in your organization" }, { status: 404 });
     }
     if (!plan.active) {
       return NextResponse.json({ message: "Cannot subscribe to an inactive plan" }, { status: 400 });
@@ -92,20 +98,34 @@ export async function POST(request: Request) {
       currentPeriodEnd.setMonth(currentPeriodStart.getMonth() + 1);
     } else if (plan.interval === 'YEARLY') {
       currentPeriodEnd.setFullYear(currentPeriodStart.getFullYear() + 1);
+    } else {
+        console.warn(`Unknown billing interval: ${plan.interval} for plan ${planId}`);
+        currentPeriodEnd.setMonth(currentPeriodStart.getMonth() + 1); 
+    }
+    
+    const newSubscriptionData: any = {
+      managedById: session.user.id,
+      organizationId: organizationId,
+      planId,
+      status: SubscriptionStatus.ACTIVE,
+      startDate,
+      currentPeriodStart,
+      currentPeriodEnd,
+    };
+
+    if (memberId) {
+      newSubscriptionData.memberId = memberId;
+    } else {
+      newSubscriptionData.memberId = null;
     }
 
     const newSubscription = await prisma.subscription.create({
-      data: {
-        userId,
-        planId,
-        status: SubscriptionStatus.ACTIVE,
-        startDate,
-        currentPeriodStart,
-        currentPeriodEnd,
-      },
+      data: newSubscriptionData,
       include: {
-        user: { select: { id: true, name: true, email: true } },
+        managedBy: { select: { id: true, name: true, email: true } },
         plan: { select: { id: true, name: true, price: true, interval: true, currency: true } },
+        organization: { select: { id: true, name: true } },
+        member: { select: { id: true, name: true, email: true } }
       }
     });
 
@@ -113,6 +133,9 @@ export async function POST(request: Request) {
 
   } catch (error) {
     console.error("Error creating subscription:", error);
+    if (error instanceof z.ZodError) {
+        return NextResponse.json({ message: "Validation failed", errors: error.flatten().fieldErrors }, { status: 400 });
+    }
     return NextResponse.json({ message: "Failed to create subscription" }, { status: 500 });
   }
 } 

@@ -7,9 +7,9 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { memberRoles, memberStatuses } from "@/lib/constants";
+import { userStatuses } from "@/lib/constants";
 import { useRouter, useParams } from "next/navigation";
-import { Member } from "@/types"; 
+import { Member } from "@/lib/generated/prisma";
 import { toast } from "sonner";
 
 export default function EditMemberPage() {
@@ -21,9 +21,7 @@ export default function EditMemberPage() {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [status, setStatus] = useState("pending");
-  const [role, setRole] = useState("member");
   const [joinDate, setJoinDate] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState("");
   const [notes, setNotes] = useState("");
   
   const [isLoading, setIsLoading] = useState(false);
@@ -42,12 +40,10 @@ export default function EditMemberPage() {
           }
           const data: Member = await response.json();
           setFullName(data.name);
-          setEmail(data.email);
+          setEmail(data.email || "");
           setPhoneNumber(data.phoneNumber || "");
           setStatus(data.status);
-          setRole(data.role);
           setJoinDate(data.joinDate ? new Date(data.joinDate).toISOString().split('T')[0] : "");
-          setAvatarUrl(data.avatar || "");
           setNotes(data.notes || "");
         } catch (error) {
           console.error("Fetch error:", error);
@@ -70,9 +66,7 @@ export default function EditMemberPage() {
       name: fullName,
       email,
       phoneNumber: phoneNumber || undefined,
-      avatar: avatarUrl || undefined,
       status,
-      role,
       joinDate: joinDate ? new Date(joinDate).toISOString() : undefined,
       notes: notes || undefined,
     };
@@ -151,11 +145,6 @@ export default function EditMemberPage() {
                 {errors.phoneNumber && <p className="text-sm text-red-500">{errors.phoneNumber.join(', ')}</p>}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="avatarUrl">Avatar URL (Optional)</Label>
-                <Input id="avatarUrl" value={avatarUrl} onChange={(e) => setAvatarUrl(e.target.value)} disabled={isLoading} />
-                {errors.avatar && <p className="text-sm text-red-500">{errors.avatar.join(', ')}</p>}
-              </div>
-              <div className="space-y-2">
                 <Label htmlFor="joinDate">Join Date</Label>
                 <Input id="joinDate" type="date" value={joinDate} onChange={(e) => setJoinDate(e.target.value)} required disabled={isLoading} />
                 {errors.joinDate && <p className="text-sm text-red-500">{errors.joinDate.join(', ')}</p>}
@@ -167,26 +156,12 @@ export default function EditMemberPage() {
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(memberStatuses).map(([value, { label }]) => (
+                    {Object.entries(userStatuses).map(([value, { label }]) => (
                       <SelectItem key={value} value={value}>{label}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
                 {errors.status && <p className="text-sm text-red-500">{errors.status.join(', ')}</p>}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="role">Member Role</Label>
-                <Select value={role} onValueChange={setRole} disabled={isLoading}>
-                  <SelectTrigger id="role">
-                    <SelectValue placeholder="Select role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(memberRoles).map(([value, { label }]) => (
-                      <SelectItem key={value} value={value}>{label}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {errors.role && <p className="text-sm text-red-500">{errors.role.join(', ')}</p>}
               </div>
               <div className="md:col-span-2 space-y-2">
                 <Label htmlFor="notes">Notes (Optional)</Label>
@@ -198,7 +173,7 @@ export default function EditMemberPage() {
               <Button type="button" variant="outline" onClick={() => router.back()} disabled={isLoading || isFetching}>
                 Cancel
               </Button>
-              <Button type="submit" className="bg-[#4EA8DE] hover:bg-[#4EA8DE]/90" disabled={isLoading || isFetching}>
+              <Button type="submit" className="bg-[#AD49E1] hover:bg-[#AD49E1]/90" disabled={isLoading || isFetching}>
                 {isLoading ? 'Updating Member...' : 'Update Member'}
               </Button>
             </div>

@@ -121,7 +121,7 @@ export function Header({ setIsMobileDrawerOpen, isMobile }: HeaderProps) {
               <div className="py-2 px-3 hover:bg-accent/50 cursor-pointer">
                 <div className="flex items-start gap-3">
                   <div className="h-8 w-8 rounded-full bg-blue-500/20 flex items-center justify-center mt-1">
-                    <Bell size={14} className="text-[#4EA8DE]" />
+                    <Bell size={14} className="text-[#AD49E1]" />
                   </div>
                   <div>
                     <p className="text-sm font-medium">New member joined</p>

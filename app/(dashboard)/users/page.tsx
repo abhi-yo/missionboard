@@ -28,9 +28,17 @@ export default async function UsersPage() { // Renamed page component
   const users = await getUsers(); // Renamed variable and function call
 
   return (
-    <PageContainer>
-      <h1 className="text-3xl font-bold tracking-tight mb-6">User Directory</h1> {/* Changed title */}
-      <UserList users={users} /> {/* Renamed component and prop */}
+    <PageContainer className="space-y-6">
+      <div className="flex flex-col space-y-1.5">
+        <h1 className="text-3xl font-bold tracking-tight">User Directory</h1>
+        <p className="text-muted-foreground text-sm">
+          Manage your organization&apos;s members and their account settings.
+        </p>
+      </div>
+      
+      <div className="rounded-xl border border-border/30 bg-card/30 backdrop-blur-sm overflow-hidden shadow-sm">
+        <UserList users={users} /> {/* Renamed component and prop */}
+      </div>
     </PageContainer>
   );
 } 

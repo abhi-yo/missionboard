@@ -57,15 +57,17 @@ export async function POST(request: Request) {
 
     const newSubscription = await prisma.subscription.create({
       data: {
-        userId,
+        memberId: userId,
         planId,
+        managedById: session.user.id,
+        organizationId: plan.organizationId,
         status: SubscriptionStatus.ACTIVE,
         startDate,
         currentPeriodStart,
         currentPeriodEnd,
       },
       include: {
-        user: { select: { id: true, name: true, email: true } },
+        member: { select: { id: true, name: true, email: true } },
         plan: { select: { id: true, name: true, price: true, interval: true, currency: true } },
       }
     });
@@ -92,12 +94,12 @@ export async function GET(request: Request) {
         console.log(`[/api/subscriptions GET] Session valid for user ID: ${session.user.id}. Fetching subscriptions for this user.`);
         const subscriptions = await prisma.subscription.findMany({
             where: {
-                userId: session.user.id 
+                managedById: session.user.id
             },
             orderBy: { createdAt: 'desc' },
             include: {
-                user: { select: { id:true, name: true, email: true } },
-                plan: { select: { id:true, name: true, price: true, interval: true, currency: true } },
+                member: { select: { id: true, name: true, email: true } },
+                plan: { select: { id: true, name: true, price: true, interval: true, currency: true } },
             }
         });
         console.log(`[/api/subscriptions GET] Fetched subscriptions count for user ${session.user.id}:`, subscriptions.length);

@@ -134,95 +134,125 @@ export default function PlansPage() {
 
   return (
     <>
-      <PageContainer>
-        <div className="flex items-center justify-between mb-6">
+      <PageContainer className="space-y-6">
+        <div className="flex flex-col space-y-1.5 sm:flex-row sm:space-y-0 sm:items-center sm:justify-between">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Membership Plans</h1>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-sm mt-1">
               Browse available plans or manage your organization&apos;s membership plans.
             </p>
           </div>
-          <Link href="/plans/new">
-            <Button variant="default" className="bg-[#4EA8DE] hover:bg-[#4EA8DE]/90 gap-2">
-              <PlusCircle size={18} />
+          <Link href="/plans/new" className="mt-3 sm:mt-0">
+            <Button 
+              variant="default" 
+              className="bg-[#9D43CC] hover:bg-[#9D43CC]/90 gap-2 w-full sm:w-auto"
+            >
+              <PlusCircle size={16} />
               Add New Plan
             </Button>
           </Link>
         </div>
 
-        <Card className="border-border/40 bg-card/40 backdrop-blur-md">
-          <CardHeader>
-            <CardTitle>Available Plans</CardTitle>
+        <Card className="border border-border/30 bg-card/30 backdrop-blur-sm shadow-sm rounded-xl overflow-hidden">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-xl">Available Plans</CardTitle>
             <CardDescription>Choose a plan to subscribe or manage existing plans.</CardDescription>
           </CardHeader>
           <CardContent>
-            {isLoading && <p>Loading plans...</p>}
-            {error && <p className="text-destructive">Error: {error}</p>}
-            {!isLoading && !error && plans.length === 0 && <p>No plans created yet. Admins can add new plans.</p>}
+            {isLoading && (
+              <div className="flex justify-center items-center py-8">
+                <div className="animate-pulse text-muted-foreground">Loading plans...</div>
+              </div>
+            )}
+            
+            {error && (
+              <div className="bg-destructive/10 border border-destructive/20 text-destructive rounded-lg p-4 my-2">
+                <p>Error: {error}</p>
+              </div>
+            )}
+            
+            {!isLoading && !error && plans.length === 0 && (
+              <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
+                <p className="text-muted-foreground mb-2">No plans created yet.</p>
+                <p className="text-sm text-muted-foreground">Get started by adding your first membership plan.</p>
+              </div>
+            )}
+            
             {!isLoading && !error && plans.length > 0 && (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Price</TableHead>
-                    <TableHead>Interval</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Features</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {plans.map((plan) => (
-                    <TableRow key={plan.id}>
-                      <TableCell className="font-medium">{plan.name}</TableCell>
-                      <TableCell>{formatCurrency(plan.price, plan.currency)}</TableCell>
-                      <TableCell className="capitalize">{plan.interval.toLowerCase()}</TableCell>
-                      <TableCell>
-                        <Badge variant={plan.active ? 'default' : 'outline'}>
-                          {plan.active ? 'Active' : 'Inactive'}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{plan.features.join(', ')}</TableCell>
-                      <TableCell className="text-right flex items-center justify-end space-x-2">
-                        {plan.active && (
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            onClick={() => handleSubscribe(plan.id, plan.name)}
-                            disabled={isSubscribingPlanId === plan.id || !session}
-                            className="gap-1.5"
-                          >
-                            <ShoppingCart size={14}/>
-                            {isSubscribingPlanId === plan.id ? 'Subscribing...' : 'Subscribe'}
-                          </Button>
-                        )}
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-8 w-8">
-                              <MoreHorizontal size={16} />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem asChild>
-                              <Link href={`/plans/${plan.id}/edit`} className="flex items-center gap-2 w-full cursor-pointer">
-                                <Edit size={14} />
-                                <span>Edit Plan</span>
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem 
-                              onClick={() => setPlanToDelete(plan)}
-                              className="flex items-center gap-2 w-full text-destructive hover:!text-destructive focus:!text-destructive hover:!bg-destructive/10 focus:!bg-destructive/10 cursor-pointer"
-                            >
-                              <Trash2 size={14} />
-                              <span>Delete Plan</span>
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
+              <div className="rounded-lg overflow-hidden">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="hover:bg-background/40">
+                      <TableHead>Name</TableHead>
+                      <TableHead>Price</TableHead>
+                      <TableHead>Interval</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Features</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {plans.map((plan) => (
+                      <TableRow key={plan.id} className="hover:bg-background/40">
+                        <TableCell className="font-medium">{plan.name}</TableCell>
+                        <TableCell>{formatCurrency(plan.price, plan.currency)}</TableCell>
+                        <TableCell className="capitalize">{plan.interval.toLowerCase()}</TableCell>
+                        <TableCell>
+                          <Badge 
+                            variant={plan.active ? 'default' : 'outline'} 
+                            className={plan.active ? 'bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500/20 hover:text-emerald-500' : ''}
+                          >
+                            {plan.active ? 'Active' : 'Inactive'}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="max-w-[200px] truncate">
+                            {plan.features.join(', ')}
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex items-center justify-end space-x-2">
+                            {plan.active && (
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => handleSubscribe(plan.id, plan.name)}
+                                disabled={isSubscribingPlanId === plan.id || !session}
+                                className="gap-1.5 text-xs hover:bg-[#9D43CC]/10 hover:text-[#9D43CC] hover:border-[#9D43CC]/20"
+                              >
+                                <ShoppingCart size={14}/>
+                                {isSubscribingPlanId === plan.id ? 'Subscribing...' : 'Subscribe'}
+                              </Button>
+                            )}
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8">
+                                  <MoreHorizontal size={16} />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end" className="min-w-[180px]">
+                                <DropdownMenuItem asChild>
+                                  <Link href={`/plans/${plan.id}/edit`} className="flex items-center gap-2 w-full cursor-pointer">
+                                    <Edit size={14} />
+                                    <span>Edit Plan</span>
+                                  </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem 
+                                  onClick={() => setPlanToDelete(plan)}
+                                  className="flex items-center gap-2 w-full text-destructive hover:!text-destructive focus:!text-destructive hover:!bg-destructive/10 focus:!bg-destructive/10 cursor-pointer"
+                                >
+                                  <Trash2 size={14} />
+                                  <span>Delete Plan</span>
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             )}
           </CardContent>
         </Card>
@@ -230,7 +260,7 @@ export default function PlansPage() {
 
       {planToDelete && (
         <AlertDialog open={!!planToDelete} onOpenChange={(open) => !open && setPlanToDelete(null)}>
-          <AlertDialogContent>
+          <AlertDialogContent className="border border-border/40 bg-card/80 backdrop-blur-sm">
             <AlertDialogHeader>
               <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
               <AlertDialogDescription>

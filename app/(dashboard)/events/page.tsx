@@ -81,7 +81,7 @@ export default function EventsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <h1 className="text-3xl font-bold tracking-tight">Events</h1>
         <Button 
-          className="gap-2 bg-[#4EA8DE] hover:bg-[#4EA8DE]/90"
+          className="gap-2 bg-[#AD49E1] hover:bg-[#AD49E1]/90"
           onClick={() => setIsDialogOpen(true)}
         >
           <Plus size={16} />
@@ -126,7 +126,7 @@ export default function EventsPage() {
       
       <CreateEventDialog
         isOpen={isDialogOpen}
-        onClose={handleDialogClose}
+        onClose={() => handleDialogClose(false)}
       />
     </PageContainer>
   );

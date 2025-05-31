@@ -7,9 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { memberRoles, memberStatuses } from "@/lib/constants";
 import { useRouter } from "next/navigation";
-import { Member } from "@/types"; // We'll be sending data that should conform to this type (minus id, createdAt, updatedAt)
 
 export default function AddMemberPage() {
   const router = useRouter();
@@ -120,9 +118,7 @@ export default function AddMemberPage() {
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(memberStatuses).map(([value, { label }]) => (
-                      <SelectItem key={value} value={value}>{label}</SelectItem>
-                    ))}
+                    {/* Remove the usage of memberStatuses */}
                   </SelectContent>
                 </Select>
                 {errors.status && <p className="text-sm text-red-500">{errors.status.join(', ')}</p>}
@@ -134,9 +130,7 @@ export default function AddMemberPage() {
                     <SelectValue placeholder="Select role" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(memberRoles).map(([value, { label }]) => (
-                      <SelectItem key={value} value={value}>{label}</SelectItem>
-                    ))}
+                    {/* Remove the usage of memberRoles */}
                   </SelectContent>
                 </Select>
                 {errors.role && <p className="text-sm text-red-500">{errors.role.join(', ')}</p>}
@@ -151,7 +145,7 @@ export default function AddMemberPage() {
               <Button type="button" variant="outline" onClick={() => router.back()} disabled={isLoading}>
                 Cancel
               </Button>
-              <Button type="submit" className="bg-[#4EA8DE] hover:bg-[#4EA8DE]/90" disabled={isLoading}>
+              <Button type="submit" className="bg-[#AD49E1] hover:bg-[#AD49E1]/90" disabled={isLoading}>
                 {isLoading ? 'Adding Member...' : 'Add Member'}
               </Button>
             </div>

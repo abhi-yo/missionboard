@@ -33,9 +33,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { User as PrismaUser, MemberRole, MemberStatus } from "@/lib/generated/prisma";
+import { User as PrismaUser, MemberStatus } from "@/lib/generated/prisma";
 import { User } from "@/types"; 
-import { userRoles, userStatuses } from "@/lib/constants";
+import { userStatuses } from "@/lib/constants";
 import { MoreHorizontal, Search, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
@@ -54,8 +54,11 @@ export function UserList({ users: initialUsersFromProps, className }: UserListPr
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   
-  // Check if user is admin
-  const isAdmin = session?.user?.role === MemberRole.ADMIN;
+  // All users in the system are currently admins in the database schema
+  // This will change when we migrate, but for now we handle display differently
+  // Main user (one who signed up with OAuth) is treated as Organization Admin
+  // Users they create are treated as regular Members for display
+  const isAdmin = session?.user?.id ? true : false;
 
   useEffect(() => {
     if (!initialUsersFromProps) {
@@ -132,7 +135,7 @@ export function UserList({ users: initialUsersFromProps, className }: UserListPr
           {isAdmin && (
             <div className="flex gap-2">
               <Link href="/users/new">
-                <Button size="sm" variant="default" className="bg-[#4EA8DE] hover:bg-[#4EA8DE]/90">
+                <Button size="sm" variant="default" className="bg-[#AD49E1] hover:bg-[#AD49E1]/90">
                   Add User
                 </Button>
               </Link>
@@ -175,6 +178,10 @@ export function UserList({ users: initialUsersFromProps, className }: UserListPr
             ) : filteredUsers.length > 0 ? (
             filteredUsers.map((user) => {
               const currentStatus = user.status as MemberStatus;
+              // Check if this is an organization member (was created by current admin)
+              // Until migration, we check the notes field for "Created by: {adminId}"
+              const isOrgMember = user.notes && user.notes.includes(`Created by: ${session?.user?.id}`);
+              
               return (
                 <div 
                   key={user.id}
@@ -192,6 +199,10 @@ export function UserList({ users: initialUsersFromProps, className }: UserListPr
                             <Link href={`/users/${user.id}`} className="font-medium hover:underline">
                               {user.name || 'Unnamed User'}
                             </Link>
+                          {/* Remove user role badge - all listed are members of the current admin's org */}
+                          {/* <Badge variant="outline" className="text-xs font-normal py-0 h-5 bg-slate-100 text-slate-800">
+                            {isOrgMember ? 'Member' : 'Admin'}
+                          </Badge> */}
                           {currentStatus && userStatuses[currentStatus] && (
                             <Badge variant="outline" className={cn(
                               "text-xs font-normal py-0 h-5",

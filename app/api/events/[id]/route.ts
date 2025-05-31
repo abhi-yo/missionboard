@@ -32,7 +32,7 @@ export async function GET(
             image: true,
           },
         },
-        eventImage: true,
+        coverImage: true,
       },
     });
 
@@ -54,8 +54,8 @@ export async function GET(
     const eventDate = new Date(event.date);
     
     // Set image URL - first try the relation, then fallback to coverImage
-    const imageUrl = event.eventImage 
-      ? `/api/images/${event.eventImage.id}`
+    const imageUrl = event.coverImage 
+      ? `/api/images/${event.coverImage.id}`
       : event.coverImage || '';
       
     const formattedEvent = {

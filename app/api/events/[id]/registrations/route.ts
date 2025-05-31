@@ -34,17 +34,6 @@ export async function GET(
       where: {
         eventId,
       },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-            phoneNumber: true,
-          },
-        },
-      },
       orderBy: {
         registrationDate: 'desc',
       },
@@ -57,11 +46,8 @@ export async function GET(
       registrationDate: reg.registrationDate,
       guestsCount: reg.guestsCount,
       notes: reg.notes,
-      name: reg.user.name,
-      email: reg.user.email,
-      phone: reg.user.phoneNumber,
-      image: reg.user.image,
-      userId: reg.user.id,
+      name: reg.registrantName || 'Anonymous',
+      email: reg.registrantEmail,
     }));
 
     return NextResponse.json(formattedRegistrations);

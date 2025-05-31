@@ -14,6 +14,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
+ * Model Organization
+ * 
+ */
+export type Organization = $Result.DefaultSelection<Prisma.$OrganizationPayload>
+/**
  * Model User
  * 
  */
@@ -33,6 +38,11 @@ export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
  * 
  */
 export type VerificationToken = $Result.DefaultSelection<Prisma.$VerificationTokenPayload>
+/**
+ * Model Member
+ * 
+ */
+export type Member = $Result.DefaultSelection<Prisma.$MemberPayload>
 /**
  * Model MembershipPlan
  * 
@@ -76,13 +86,6 @@ export namespace $Enums {
 };
 
 export type MemberStatus = (typeof MemberStatus)[keyof typeof MemberStatus]
-
-
-export const MemberRole: {
-  ADMIN: 'ADMIN'
-};
-
-export type MemberRole = (typeof MemberRole)[keyof typeof MemberRole]
 
 
 export const BillingInterval: {
@@ -151,10 +154,6 @@ export type MemberStatus = $Enums.MemberStatus
 
 export const MemberStatus: typeof $Enums.MemberStatus
 
-export type MemberRole = $Enums.MemberRole
-
-export const MemberRole: typeof $Enums.MemberRole
-
 export type BillingInterval = $Enums.BillingInterval
 
 export const BillingInterval: typeof $Enums.BillingInterval
@@ -186,8 +185,8 @@ export const RegistrationStatus: typeof $Enums.RegistrationStatus
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more Organizations
+ * const organizations = await prisma.organization.findMany()
  * ```
  *
  *
@@ -207,8 +206,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Users
-   * const users = await prisma.user.findMany()
+   * // Fetch zero or more Organizations
+   * const organizations = await prisma.organization.findMany()
    * ```
    *
    *
@@ -305,6 +304,16 @@ export class PrismaClient<
   }>>
 
       /**
+   * `prisma.organization`: Exposes CRUD operations for the **Organization** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Organizations
+    * const organizations = await prisma.organization.findMany()
+    * ```
+    */
+  get organization(): Prisma.OrganizationDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
@@ -343,6 +352,16 @@ export class PrismaClient<
     * ```
     */
   get verificationToken(): Prisma.VerificationTokenDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.member`: Exposes CRUD operations for the **Member** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Members
+    * const members = await prisma.member.findMany()
+    * ```
+    */
+  get member(): Prisma.MemberDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.membershipPlan`: Exposes CRUD operations for the **MembershipPlan** model.
@@ -843,10 +862,12 @@ export namespace Prisma {
 
 
   export const ModelName: {
+    Organization: 'Organization',
     User: 'User',
     Account: 'Account',
     Session: 'Session',
     VerificationToken: 'VerificationToken',
+    Member: 'Member',
     MembershipPlan: 'MembershipPlan',
     Payment: 'Payment',
     Subscription: 'Subscription',
@@ -871,10 +892,84 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "session" | "verificationToken" | "membershipPlan" | "payment" | "subscription" | "event" | "eventRegistration" | "image"
+      modelProps: "organization" | "user" | "account" | "session" | "verificationToken" | "member" | "membershipPlan" | "payment" | "subscription" | "event" | "eventRegistration" | "image"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
+      Organization: {
+        payload: Prisma.$OrganizationPayload<ExtArgs>
+        fields: Prisma.OrganizationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.OrganizationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.OrganizationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
+          }
+          findFirst: {
+            args: Prisma.OrganizationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.OrganizationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
+          }
+          findMany: {
+            args: Prisma.OrganizationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>[]
+          }
+          create: {
+            args: Prisma.OrganizationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
+          }
+          createMany: {
+            args: Prisma.OrganizationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.OrganizationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>[]
+          }
+          delete: {
+            args: Prisma.OrganizationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
+          }
+          update: {
+            args: Prisma.OrganizationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
+          }
+          deleteMany: {
+            args: Prisma.OrganizationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.OrganizationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.OrganizationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>[]
+          }
+          upsert: {
+            args: Prisma.OrganizationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
+          }
+          aggregate: {
+            args: Prisma.OrganizationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateOrganization>
+          }
+          groupBy: {
+            args: Prisma.OrganizationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<OrganizationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.OrganizationCountArgs<ExtArgs>
+            result: $Utils.Optional<OrganizationCountAggregateOutputType> | number
+          }
+        }
+      }
       User: {
         payload: Prisma.$UserPayload<ExtArgs>
         fields: Prisma.UserFieldRefs
@@ -1168,6 +1263,80 @@ export namespace Prisma {
           count: {
             args: Prisma.VerificationTokenCountArgs<ExtArgs>
             result: $Utils.Optional<VerificationTokenCountAggregateOutputType> | number
+          }
+        }
+      }
+      Member: {
+        payload: Prisma.$MemberPayload<ExtArgs>
+        fields: Prisma.MemberFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MemberFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemberPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MemberFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemberPayload>
+          }
+          findFirst: {
+            args: Prisma.MemberFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemberPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MemberFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemberPayload>
+          }
+          findMany: {
+            args: Prisma.MemberFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemberPayload>[]
+          }
+          create: {
+            args: Prisma.MemberCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemberPayload>
+          }
+          createMany: {
+            args: Prisma.MemberCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MemberCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemberPayload>[]
+          }
+          delete: {
+            args: Prisma.MemberDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemberPayload>
+          }
+          update: {
+            args: Prisma.MemberUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemberPayload>
+          }
+          deleteMany: {
+            args: Prisma.MemberDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MemberUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MemberUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemberPayload>[]
+          }
+          upsert: {
+            args: Prisma.MemberUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MemberPayload>
+          }
+          aggregate: {
+            args: Prisma.MemberAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMember>
+          }
+          groupBy: {
+            args: Prisma.MemberGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MemberGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MemberCountArgs<ExtArgs>
+            result: $Utils.Optional<MemberCountAggregateOutputType> | number
           }
         }
       }
@@ -1699,10 +1868,12 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
+    organization?: OrganizationOmit
     user?: UserOmit
     account?: AccountOmit
     session?: SessionOmit
     verificationToken?: VerificationTokenOmit
+    member?: MemberOmit
     membershipPlan?: MembershipPlanOmit
     payment?: PaymentOmit
     subscription?: SubscriptionOmit
@@ -1799,27 +1970,112 @@ export namespace Prisma {
 
 
   /**
+   * Count Type OrganizationCountOutputType
+   */
+
+  export type OrganizationCountOutputType = {
+    members: number
+    events: number
+    membershipPlans: number
+    payments: number
+    subscriptions: number
+    images: number
+    eventRegistrations: number
+  }
+
+  export type OrganizationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    members?: boolean | OrganizationCountOutputTypeCountMembersArgs
+    events?: boolean | OrganizationCountOutputTypeCountEventsArgs
+    membershipPlans?: boolean | OrganizationCountOutputTypeCountMembershipPlansArgs
+    payments?: boolean | OrganizationCountOutputTypeCountPaymentsArgs
+    subscriptions?: boolean | OrganizationCountOutputTypeCountSubscriptionsArgs
+    images?: boolean | OrganizationCountOutputTypeCountImagesArgs
+    eventRegistrations?: boolean | OrganizationCountOutputTypeCountEventRegistrationsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * OrganizationCountOutputType without action
+   */
+  export type OrganizationCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationCountOutputType
+     */
+    select?: OrganizationCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * OrganizationCountOutputType without action
+   */
+  export type OrganizationCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MemberWhereInput
+  }
+
+  /**
+   * OrganizationCountOutputType without action
+   */
+  export type OrganizationCountOutputTypeCountEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventWhereInput
+  }
+
+  /**
+   * OrganizationCountOutputType without action
+   */
+  export type OrganizationCountOutputTypeCountMembershipPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MembershipPlanWhereInput
+  }
+
+  /**
+   * OrganizationCountOutputType without action
+   */
+  export type OrganizationCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentWhereInput
+  }
+
+  /**
+   * OrganizationCountOutputType without action
+   */
+  export type OrganizationCountOutputTypeCountSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubscriptionWhereInput
+  }
+
+  /**
+   * OrganizationCountOutputType without action
+   */
+  export type OrganizationCountOutputTypeCountImagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ImageWhereInput
+  }
+
+  /**
+   * OrganizationCountOutputType without action
+   */
+  export type OrganizationCountOutputTypeCountEventRegistrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventRegistrationWhereInput
+  }
+
+
+  /**
    * Count Type UserCountOutputType
    */
 
   export type UserCountOutputType = {
-    subscriptions: number
-    payments: number
     accounts: number
     sessions: number
-    organizedEvents: number
-    eventRegistrations: number
+    createdEvents: number
     createdMembershipPlans: number
+    initiatedPayments: number
+    managedSubscriptions: number
+    uploadedImages: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    subscriptions?: boolean | UserCountOutputTypeCountSubscriptionsArgs
-    payments?: boolean | UserCountOutputTypeCountPaymentsArgs
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
-    organizedEvents?: boolean | UserCountOutputTypeCountOrganizedEventsArgs
-    eventRegistrations?: boolean | UserCountOutputTypeCountEventRegistrationsArgs
+    createdEvents?: boolean | UserCountOutputTypeCountCreatedEventsArgs
     createdMembershipPlans?: boolean | UserCountOutputTypeCountCreatedMembershipPlansArgs
+    initiatedPayments?: boolean | UserCountOutputTypeCountInitiatedPaymentsArgs
+    managedSubscriptions?: boolean | UserCountOutputTypeCountManagedSubscriptionsArgs
+    uploadedImages?: boolean | UserCountOutputTypeCountUploadedImagesArgs
   }
 
   // Custom InputTypes
@@ -1831,20 +2087,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the UserCountOutputType
      */
     select?: UserCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SubscriptionWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PaymentWhereInput
   }
 
   /**
@@ -1864,15 +2106,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountOrganizedEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountCreatedEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EventWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountEventRegistrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: EventRegistrationWhereInput
   }
 
   /**
@@ -1880,6 +2115,67 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountCreatedMembershipPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MembershipPlanWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountInitiatedPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountManagedSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubscriptionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountUploadedImagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ImageWhereInput
+  }
+
+
+  /**
+   * Count Type MemberCountOutputType
+   */
+
+  export type MemberCountOutputType = {
+    subscriptions: number
+    payments: number
+  }
+
+  export type MemberCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    subscriptions?: boolean | MemberCountOutputTypeCountSubscriptionsArgs
+    payments?: boolean | MemberCountOutputTypeCountPaymentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MemberCountOutputType without action
+   */
+  export type MemberCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MemberCountOutputType
+     */
+    select?: MemberCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MemberCountOutputType without action
+   */
+  export type MemberCountOutputTypeCountSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubscriptionWhereInput
+  }
+
+  /**
+   * MemberCountOutputType without action
+   */
+  export type MemberCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentWhereInput
   }
 
 
@@ -1981,6 +2277,1262 @@ export namespace Prisma {
    */
 
   /**
+   * Model Organization
+   */
+
+  export type AggregateOrganization = {
+    _count: OrganizationCountAggregateOutputType | null
+    _min: OrganizationMinAggregateOutputType | null
+    _max: OrganizationMaxAggregateOutputType | null
+  }
+
+  export type OrganizationMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    adminId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type OrganizationMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    adminId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type OrganizationCountAggregateOutputType = {
+    id: number
+    name: number
+    adminId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type OrganizationMinAggregateInputType = {
+    id?: true
+    name?: true
+    adminId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type OrganizationMaxAggregateInputType = {
+    id?: true
+    name?: true
+    adminId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type OrganizationCountAggregateInputType = {
+    id?: true
+    name?: true
+    adminId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type OrganizationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Organization to aggregate.
+     */
+    where?: OrganizationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Organizations to fetch.
+     */
+    orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: OrganizationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Organizations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Organizations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Organizations
+    **/
+    _count?: true | OrganizationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: OrganizationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: OrganizationMaxAggregateInputType
+  }
+
+  export type GetOrganizationAggregateType<T extends OrganizationAggregateArgs> = {
+        [P in keyof T & keyof AggregateOrganization]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateOrganization[P]>
+      : GetScalarType<T[P], AggregateOrganization[P]>
+  }
+
+
+
+
+  export type OrganizationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrganizationWhereInput
+    orderBy?: OrganizationOrderByWithAggregationInput | OrganizationOrderByWithAggregationInput[]
+    by: OrganizationScalarFieldEnum[] | OrganizationScalarFieldEnum
+    having?: OrganizationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: OrganizationCountAggregateInputType | true
+    _min?: OrganizationMinAggregateInputType
+    _max?: OrganizationMaxAggregateInputType
+  }
+
+  export type OrganizationGroupByOutputType = {
+    id: string
+    name: string | null
+    adminId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: OrganizationCountAggregateOutputType | null
+    _min: OrganizationMinAggregateOutputType | null
+    _max: OrganizationMaxAggregateOutputType | null
+  }
+
+  type GetOrganizationGroupByPayload<T extends OrganizationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<OrganizationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof OrganizationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], OrganizationGroupByOutputType[P]>
+            : GetScalarType<T[P], OrganizationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type OrganizationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    adminId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    admin?: boolean | UserDefaultArgs<ExtArgs>
+    members?: boolean | Organization$membersArgs<ExtArgs>
+    events?: boolean | Organization$eventsArgs<ExtArgs>
+    membershipPlans?: boolean | Organization$membershipPlansArgs<ExtArgs>
+    payments?: boolean | Organization$paymentsArgs<ExtArgs>
+    subscriptions?: boolean | Organization$subscriptionsArgs<ExtArgs>
+    images?: boolean | Organization$imagesArgs<ExtArgs>
+    eventRegistrations?: boolean | Organization$eventRegistrationsArgs<ExtArgs>
+    _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["organization"]>
+
+  export type OrganizationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    adminId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    admin?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["organization"]>
+
+  export type OrganizationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    adminId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    admin?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["organization"]>
+
+  export type OrganizationSelectScalar = {
+    id?: boolean
+    name?: boolean
+    adminId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type OrganizationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "adminId" | "createdAt" | "updatedAt", ExtArgs["result"]["organization"]>
+  export type OrganizationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    admin?: boolean | UserDefaultArgs<ExtArgs>
+    members?: boolean | Organization$membersArgs<ExtArgs>
+    events?: boolean | Organization$eventsArgs<ExtArgs>
+    membershipPlans?: boolean | Organization$membershipPlansArgs<ExtArgs>
+    payments?: boolean | Organization$paymentsArgs<ExtArgs>
+    subscriptions?: boolean | Organization$subscriptionsArgs<ExtArgs>
+    images?: boolean | Organization$imagesArgs<ExtArgs>
+    eventRegistrations?: boolean | Organization$eventRegistrationsArgs<ExtArgs>
+    _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type OrganizationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    admin?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type OrganizationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    admin?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $OrganizationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Organization"
+    objects: {
+      admin: Prisma.$UserPayload<ExtArgs>
+      members: Prisma.$MemberPayload<ExtArgs>[]
+      events: Prisma.$EventPayload<ExtArgs>[]
+      membershipPlans: Prisma.$MembershipPlanPayload<ExtArgs>[]
+      payments: Prisma.$PaymentPayload<ExtArgs>[]
+      subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
+      images: Prisma.$ImagePayload<ExtArgs>[]
+      eventRegistrations: Prisma.$EventRegistrationPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string | null
+      adminId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["organization"]>
+    composites: {}
+  }
+
+  type OrganizationGetPayload<S extends boolean | null | undefined | OrganizationDefaultArgs> = $Result.GetResult<Prisma.$OrganizationPayload, S>
+
+  type OrganizationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<OrganizationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: OrganizationCountAggregateInputType | true
+    }
+
+  export interface OrganizationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Organization'], meta: { name: 'Organization' } }
+    /**
+     * Find zero or one Organization that matches the filter.
+     * @param {OrganizationFindUniqueArgs} args - Arguments to find a Organization
+     * @example
+     * // Get one Organization
+     * const organization = await prisma.organization.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends OrganizationFindUniqueArgs>(args: SelectSubset<T, OrganizationFindUniqueArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Organization that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {OrganizationFindUniqueOrThrowArgs} args - Arguments to find a Organization
+     * @example
+     * // Get one Organization
+     * const organization = await prisma.organization.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends OrganizationFindUniqueOrThrowArgs>(args: SelectSubset<T, OrganizationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Organization that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationFindFirstArgs} args - Arguments to find a Organization
+     * @example
+     * // Get one Organization
+     * const organization = await prisma.organization.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends OrganizationFindFirstArgs>(args?: SelectSubset<T, OrganizationFindFirstArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Organization that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationFindFirstOrThrowArgs} args - Arguments to find a Organization
+     * @example
+     * // Get one Organization
+     * const organization = await prisma.organization.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends OrganizationFindFirstOrThrowArgs>(args?: SelectSubset<T, OrganizationFindFirstOrThrowArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Organizations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Organizations
+     * const organizations = await prisma.organization.findMany()
+     * 
+     * // Get first 10 Organizations
+     * const organizations = await prisma.organization.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const organizationWithIdOnly = await prisma.organization.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends OrganizationFindManyArgs>(args?: SelectSubset<T, OrganizationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Organization.
+     * @param {OrganizationCreateArgs} args - Arguments to create a Organization.
+     * @example
+     * // Create one Organization
+     * const Organization = await prisma.organization.create({
+     *   data: {
+     *     // ... data to create a Organization
+     *   }
+     * })
+     * 
+     */
+    create<T extends OrganizationCreateArgs>(args: SelectSubset<T, OrganizationCreateArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Organizations.
+     * @param {OrganizationCreateManyArgs} args - Arguments to create many Organizations.
+     * @example
+     * // Create many Organizations
+     * const organization = await prisma.organization.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends OrganizationCreateManyArgs>(args?: SelectSubset<T, OrganizationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Organizations and returns the data saved in the database.
+     * @param {OrganizationCreateManyAndReturnArgs} args - Arguments to create many Organizations.
+     * @example
+     * // Create many Organizations
+     * const organization = await prisma.organization.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Organizations and only return the `id`
+     * const organizationWithIdOnly = await prisma.organization.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends OrganizationCreateManyAndReturnArgs>(args?: SelectSubset<T, OrganizationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Organization.
+     * @param {OrganizationDeleteArgs} args - Arguments to delete one Organization.
+     * @example
+     * // Delete one Organization
+     * const Organization = await prisma.organization.delete({
+     *   where: {
+     *     // ... filter to delete one Organization
+     *   }
+     * })
+     * 
+     */
+    delete<T extends OrganizationDeleteArgs>(args: SelectSubset<T, OrganizationDeleteArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Organization.
+     * @param {OrganizationUpdateArgs} args - Arguments to update one Organization.
+     * @example
+     * // Update one Organization
+     * const organization = await prisma.organization.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends OrganizationUpdateArgs>(args: SelectSubset<T, OrganizationUpdateArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Organizations.
+     * @param {OrganizationDeleteManyArgs} args - Arguments to filter Organizations to delete.
+     * @example
+     * // Delete a few Organizations
+     * const { count } = await prisma.organization.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends OrganizationDeleteManyArgs>(args?: SelectSubset<T, OrganizationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Organizations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Organizations
+     * const organization = await prisma.organization.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends OrganizationUpdateManyArgs>(args: SelectSubset<T, OrganizationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Organizations and returns the data updated in the database.
+     * @param {OrganizationUpdateManyAndReturnArgs} args - Arguments to update many Organizations.
+     * @example
+     * // Update many Organizations
+     * const organization = await prisma.organization.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Organizations and only return the `id`
+     * const organizationWithIdOnly = await prisma.organization.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends OrganizationUpdateManyAndReturnArgs>(args: SelectSubset<T, OrganizationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Organization.
+     * @param {OrganizationUpsertArgs} args - Arguments to update or create a Organization.
+     * @example
+     * // Update or create a Organization
+     * const organization = await prisma.organization.upsert({
+     *   create: {
+     *     // ... data to create a Organization
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Organization we want to update
+     *   }
+     * })
+     */
+    upsert<T extends OrganizationUpsertArgs>(args: SelectSubset<T, OrganizationUpsertArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Organizations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationCountArgs} args - Arguments to filter Organizations to count.
+     * @example
+     * // Count the number of Organizations
+     * const count = await prisma.organization.count({
+     *   where: {
+     *     // ... the filter for the Organizations we want to count
+     *   }
+     * })
+    **/
+    count<T extends OrganizationCountArgs>(
+      args?: Subset<T, OrganizationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], OrganizationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Organization.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends OrganizationAggregateArgs>(args: Subset<T, OrganizationAggregateArgs>): Prisma.PrismaPromise<GetOrganizationAggregateType<T>>
+
+    /**
+     * Group by Organization.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends OrganizationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: OrganizationGroupByArgs['orderBy'] }
+        : { orderBy?: OrganizationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, OrganizationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOrganizationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Organization model
+   */
+  readonly fields: OrganizationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Organization.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__OrganizationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    admin<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    members<T extends Organization$membersArgs<ExtArgs> = {}>(args?: Subset<T, Organization$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    events<T extends Organization$eventsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    membershipPlans<T extends Organization$membershipPlansArgs<ExtArgs> = {}>(args?: Subset<T, Organization$membershipPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MembershipPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    payments<T extends Organization$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    subscriptions<T extends Organization$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    images<T extends Organization$imagesArgs<ExtArgs> = {}>(args?: Subset<T, Organization$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    eventRegistrations<T extends Organization$eventRegistrationsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$eventRegistrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventRegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Organization model
+   */
+  interface OrganizationFieldRefs {
+    readonly id: FieldRef<"Organization", 'String'>
+    readonly name: FieldRef<"Organization", 'String'>
+    readonly adminId: FieldRef<"Organization", 'String'>
+    readonly createdAt: FieldRef<"Organization", 'DateTime'>
+    readonly updatedAt: FieldRef<"Organization", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Organization findUnique
+   */
+  export type OrganizationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    /**
+     * Filter, which Organization to fetch.
+     */
+    where: OrganizationWhereUniqueInput
+  }
+
+  /**
+   * Organization findUniqueOrThrow
+   */
+  export type OrganizationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    /**
+     * Filter, which Organization to fetch.
+     */
+    where: OrganizationWhereUniqueInput
+  }
+
+  /**
+   * Organization findFirst
+   */
+  export type OrganizationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    /**
+     * Filter, which Organization to fetch.
+     */
+    where?: OrganizationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Organizations to fetch.
+     */
+    orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Organizations.
+     */
+    cursor?: OrganizationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Organizations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Organizations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Organizations.
+     */
+    distinct?: OrganizationScalarFieldEnum | OrganizationScalarFieldEnum[]
+  }
+
+  /**
+   * Organization findFirstOrThrow
+   */
+  export type OrganizationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    /**
+     * Filter, which Organization to fetch.
+     */
+    where?: OrganizationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Organizations to fetch.
+     */
+    orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Organizations.
+     */
+    cursor?: OrganizationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Organizations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Organizations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Organizations.
+     */
+    distinct?: OrganizationScalarFieldEnum | OrganizationScalarFieldEnum[]
+  }
+
+  /**
+   * Organization findMany
+   */
+  export type OrganizationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    /**
+     * Filter, which Organizations to fetch.
+     */
+    where?: OrganizationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Organizations to fetch.
+     */
+    orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Organizations.
+     */
+    cursor?: OrganizationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Organizations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Organizations.
+     */
+    skip?: number
+    distinct?: OrganizationScalarFieldEnum | OrganizationScalarFieldEnum[]
+  }
+
+  /**
+   * Organization create
+   */
+  export type OrganizationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Organization.
+     */
+    data: XOR<OrganizationCreateInput, OrganizationUncheckedCreateInput>
+  }
+
+  /**
+   * Organization createMany
+   */
+  export type OrganizationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Organizations.
+     */
+    data: OrganizationCreateManyInput | OrganizationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Organization createManyAndReturn
+   */
+  export type OrganizationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * The data used to create many Organizations.
+     */
+    data: OrganizationCreateManyInput | OrganizationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Organization update
+   */
+  export type OrganizationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Organization.
+     */
+    data: XOR<OrganizationUpdateInput, OrganizationUncheckedUpdateInput>
+    /**
+     * Choose, which Organization to update.
+     */
+    where: OrganizationWhereUniqueInput
+  }
+
+  /**
+   * Organization updateMany
+   */
+  export type OrganizationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Organizations.
+     */
+    data: XOR<OrganizationUpdateManyMutationInput, OrganizationUncheckedUpdateManyInput>
+    /**
+     * Filter which Organizations to update
+     */
+    where?: OrganizationWhereInput
+    /**
+     * Limit how many Organizations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Organization updateManyAndReturn
+   */
+  export type OrganizationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * The data used to update Organizations.
+     */
+    data: XOR<OrganizationUpdateManyMutationInput, OrganizationUncheckedUpdateManyInput>
+    /**
+     * Filter which Organizations to update
+     */
+    where?: OrganizationWhereInput
+    /**
+     * Limit how many Organizations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Organization upsert
+   */
+  export type OrganizationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Organization to update in case it exists.
+     */
+    where: OrganizationWhereUniqueInput
+    /**
+     * In case the Organization found by the `where` argument doesn't exist, create a new Organization with this data.
+     */
+    create: XOR<OrganizationCreateInput, OrganizationUncheckedCreateInput>
+    /**
+     * In case the Organization was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<OrganizationUpdateInput, OrganizationUncheckedUpdateInput>
+  }
+
+  /**
+   * Organization delete
+   */
+  export type OrganizationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    /**
+     * Filter which Organization to delete.
+     */
+    where: OrganizationWhereUniqueInput
+  }
+
+  /**
+   * Organization deleteMany
+   */
+  export type OrganizationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Organizations to delete
+     */
+    where?: OrganizationWhereInput
+    /**
+     * Limit how many Organizations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Organization.members
+   */
+  export type Organization$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberInclude<ExtArgs> | null
+    where?: MemberWhereInput
+    orderBy?: MemberOrderByWithRelationInput | MemberOrderByWithRelationInput[]
+    cursor?: MemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MemberScalarFieldEnum | MemberScalarFieldEnum[]
+  }
+
+  /**
+   * Organization.events
+   */
+  export type Organization$eventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Event
+     */
+    select?: EventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Event
+     */
+    omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    where?: EventWhereInput
+    orderBy?: EventOrderByWithRelationInput | EventOrderByWithRelationInput[]
+    cursor?: EventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventScalarFieldEnum | EventScalarFieldEnum[]
+  }
+
+  /**
+   * Organization.membershipPlans
+   */
+  export type Organization$membershipPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MembershipPlan
+     */
+    select?: MembershipPlanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MembershipPlan
+     */
+    omit?: MembershipPlanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MembershipPlanInclude<ExtArgs> | null
+    where?: MembershipPlanWhereInput
+    orderBy?: MembershipPlanOrderByWithRelationInput | MembershipPlanOrderByWithRelationInput[]
+    cursor?: MembershipPlanWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MembershipPlanScalarFieldEnum | MembershipPlanScalarFieldEnum[]
+  }
+
+  /**
+   * Organization.payments
+   */
+  export type Organization$paymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    where?: PaymentWhereInput
+    orderBy?: PaymentOrderByWithRelationInput | PaymentOrderByWithRelationInput[]
+    cursor?: PaymentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentScalarFieldEnum | PaymentScalarFieldEnum[]
+  }
+
+  /**
+   * Organization.subscriptions
+   */
+  export type Organization$subscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionInclude<ExtArgs> | null
+    where?: SubscriptionWhereInput
+    orderBy?: SubscriptionOrderByWithRelationInput | SubscriptionOrderByWithRelationInput[]
+    cursor?: SubscriptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SubscriptionScalarFieldEnum | SubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * Organization.images
+   */
+  export type Organization$imagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Image
+     */
+    select?: ImageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Image
+     */
+    omit?: ImageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImageInclude<ExtArgs> | null
+    where?: ImageWhereInput
+    orderBy?: ImageOrderByWithRelationInput | ImageOrderByWithRelationInput[]
+    cursor?: ImageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ImageScalarFieldEnum | ImageScalarFieldEnum[]
+  }
+
+  /**
+   * Organization.eventRegistrations
+   */
+  export type Organization$eventRegistrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventRegistration
+     */
+    select?: EventRegistrationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventRegistration
+     */
+    omit?: EventRegistrationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventRegistrationInclude<ExtArgs> | null
+    where?: EventRegistrationWhereInput
+    orderBy?: EventRegistrationOrderByWithRelationInput | EventRegistrationOrderByWithRelationInput[]
+    cursor?: EventRegistrationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventRegistrationScalarFieldEnum | EventRegistrationScalarFieldEnum[]
+  }
+
+  /**
+   * Organization without action
+   */
+  export type OrganizationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model User
    */
 
@@ -1996,15 +3548,14 @@ export namespace Prisma {
     email: string | null
     emailVerified: Date | null
     image: string | null
+    profileImageId: string | null
     phoneNumber: string | null
     status: $Enums.MemberStatus | null
-    role: $Enums.MemberRole | null
     joinDate: Date | null
     lastPayment: Date | null
     notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    profileImageId: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -2013,15 +3564,14 @@ export namespace Prisma {
     email: string | null
     emailVerified: Date | null
     image: string | null
+    profileImageId: string | null
     phoneNumber: string | null
     status: $Enums.MemberStatus | null
-    role: $Enums.MemberRole | null
     joinDate: Date | null
     lastPayment: Date | null
     notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    profileImageId: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -2030,15 +3580,14 @@ export namespace Prisma {
     email: number
     emailVerified: number
     image: number
+    profileImageId: number
     phoneNumber: number
     status: number
-    role: number
     joinDate: number
     lastPayment: number
     notes: number
     createdAt: number
     updatedAt: number
-    profileImageId: number
     _all: number
   }
 
@@ -2049,15 +3598,14 @@ export namespace Prisma {
     email?: true
     emailVerified?: true
     image?: true
+    profileImageId?: true
     phoneNumber?: true
     status?: true
-    role?: true
     joinDate?: true
     lastPayment?: true
     notes?: true
     createdAt?: true
     updatedAt?: true
-    profileImageId?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -2066,15 +3614,14 @@ export namespace Prisma {
     email?: true
     emailVerified?: true
     image?: true
+    profileImageId?: true
     phoneNumber?: true
     status?: true
-    role?: true
     joinDate?: true
     lastPayment?: true
     notes?: true
     createdAt?: true
     updatedAt?: true
-    profileImageId?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -2083,15 +3630,14 @@ export namespace Prisma {
     email?: true
     emailVerified?: true
     image?: true
+    profileImageId?: true
     phoneNumber?: true
     status?: true
-    role?: true
     joinDate?: true
     lastPayment?: true
     notes?: true
     createdAt?: true
     updatedAt?: true
-    profileImageId?: true
     _all?: true
   }
 
@@ -2173,15 +3719,14 @@ export namespace Prisma {
     email: string | null
     emailVerified: Date | null
     image: string | null
+    profileImageId: string | null
     phoneNumber: string | null
     status: $Enums.MemberStatus
-    role: $Enums.MemberRole
     joinDate: Date | null
     lastPayment: Date | null
     notes: string | null
     createdAt: Date
     updatedAt: Date
-    profileImageId: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -2207,23 +3752,23 @@ export namespace Prisma {
     email?: boolean
     emailVerified?: boolean
     image?: boolean
+    profileImageId?: boolean
     phoneNumber?: boolean
     status?: boolean
-    role?: boolean
     joinDate?: boolean
     lastPayment?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    profileImageId?: boolean
-    subscriptions?: boolean | User$subscriptionsArgs<ExtArgs>
-    payments?: boolean | User$paymentsArgs<ExtArgs>
+    profileImage?: boolean | User$profileImageArgs<ExtArgs>
+    organization?: boolean | User$organizationArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
-    organizedEvents?: boolean | User$organizedEventsArgs<ExtArgs>
-    eventRegistrations?: boolean | User$eventRegistrationsArgs<ExtArgs>
+    createdEvents?: boolean | User$createdEventsArgs<ExtArgs>
     createdMembershipPlans?: boolean | User$createdMembershipPlansArgs<ExtArgs>
-    profileImage?: boolean | User$profileImageArgs<ExtArgs>
+    initiatedPayments?: boolean | User$initiatedPaymentsArgs<ExtArgs>
+    managedSubscriptions?: boolean | User$managedSubscriptionsArgs<ExtArgs>
+    uploadedImages?: boolean | User$uploadedImagesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2233,15 +3778,14 @@ export namespace Prisma {
     email?: boolean
     emailVerified?: boolean
     image?: boolean
+    profileImageId?: boolean
     phoneNumber?: boolean
     status?: boolean
-    role?: boolean
     joinDate?: boolean
     lastPayment?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    profileImageId?: boolean
     profileImage?: boolean | User$profileImageArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2251,15 +3795,14 @@ export namespace Prisma {
     email?: boolean
     emailVerified?: boolean
     image?: boolean
+    profileImageId?: boolean
     phoneNumber?: boolean
     status?: boolean
-    role?: boolean
     joinDate?: boolean
     lastPayment?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    profileImageId?: boolean
     profileImage?: boolean | User$profileImageArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2269,27 +3812,27 @@ export namespace Prisma {
     email?: boolean
     emailVerified?: boolean
     image?: boolean
+    profileImageId?: boolean
     phoneNumber?: boolean
     status?: boolean
-    role?: boolean
     joinDate?: boolean
     lastPayment?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    profileImageId?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "phoneNumber" | "status" | "role" | "joinDate" | "lastPayment" | "notes" | "createdAt" | "updatedAt" | "profileImageId", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "profileImageId" | "phoneNumber" | "status" | "joinDate" | "lastPayment" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    subscriptions?: boolean | User$subscriptionsArgs<ExtArgs>
-    payments?: boolean | User$paymentsArgs<ExtArgs>
+    profileImage?: boolean | User$profileImageArgs<ExtArgs>
+    organization?: boolean | User$organizationArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
-    organizedEvents?: boolean | User$organizedEventsArgs<ExtArgs>
-    eventRegistrations?: boolean | User$eventRegistrationsArgs<ExtArgs>
+    createdEvents?: boolean | User$createdEventsArgs<ExtArgs>
     createdMembershipPlans?: boolean | User$createdMembershipPlansArgs<ExtArgs>
-    profileImage?: boolean | User$profileImageArgs<ExtArgs>
+    initiatedPayments?: boolean | User$initiatedPaymentsArgs<ExtArgs>
+    managedSubscriptions?: boolean | User$managedSubscriptionsArgs<ExtArgs>
+    uploadedImages?: boolean | User$uploadedImagesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2302,14 +3845,15 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
-      payments: Prisma.$PaymentPayload<ExtArgs>[]
+      profileImage: Prisma.$ImagePayload<ExtArgs> | null
+      organization: Prisma.$OrganizationPayload<ExtArgs> | null
       accounts: Prisma.$AccountPayload<ExtArgs>[]
       sessions: Prisma.$SessionPayload<ExtArgs>[]
-      organizedEvents: Prisma.$EventPayload<ExtArgs>[]
-      eventRegistrations: Prisma.$EventRegistrationPayload<ExtArgs>[]
+      createdEvents: Prisma.$EventPayload<ExtArgs>[]
       createdMembershipPlans: Prisma.$MembershipPlanPayload<ExtArgs>[]
-      profileImage: Prisma.$ImagePayload<ExtArgs> | null
+      initiatedPayments: Prisma.$PaymentPayload<ExtArgs>[]
+      managedSubscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
+      uploadedImages: Prisma.$ImagePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2317,15 +3861,14 @@ export namespace Prisma {
       email: string | null
       emailVerified: Date | null
       image: string | null
+      profileImageId: string | null
       phoneNumber: string | null
       status: $Enums.MemberStatus
-      role: $Enums.MemberRole
       joinDate: Date | null
       lastPayment: Date | null
       notes: string | null
       createdAt: Date
       updatedAt: Date
-      profileImageId: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2720,14 +4263,15 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    subscriptions<T extends User$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    payments<T extends User$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, User$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    profileImage<T extends User$profileImageArgs<ExtArgs> = {}>(args?: Subset<T, User$profileImageArgs<ExtArgs>>): Prisma__ImageClient<$Result.GetResult<Prisma.$ImagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    organization<T extends User$organizationArgs<ExtArgs> = {}>(args?: Subset<T, User$organizationArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    organizedEvents<T extends User$organizedEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$organizedEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    eventRegistrations<T extends User$eventRegistrationsArgs<ExtArgs> = {}>(args?: Subset<T, User$eventRegistrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventRegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdEvents<T extends User$createdEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     createdMembershipPlans<T extends User$createdMembershipPlansArgs<ExtArgs> = {}>(args?: Subset<T, User$createdMembershipPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MembershipPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    profileImage<T extends User$profileImageArgs<ExtArgs> = {}>(args?: Subset<T, User$profileImageArgs<ExtArgs>>): Prisma__ImageClient<$Result.GetResult<Prisma.$ImagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    initiatedPayments<T extends User$initiatedPaymentsArgs<ExtArgs> = {}>(args?: Subset<T, User$initiatedPaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    managedSubscriptions<T extends User$managedSubscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$managedSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    uploadedImages<T extends User$uploadedImagesArgs<ExtArgs> = {}>(args?: Subset<T, User$uploadedImagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2762,15 +4306,14 @@ export namespace Prisma {
     readonly email: FieldRef<"User", 'String'>
     readonly emailVerified: FieldRef<"User", 'DateTime'>
     readonly image: FieldRef<"User", 'String'>
+    readonly profileImageId: FieldRef<"User", 'String'>
     readonly phoneNumber: FieldRef<"User", 'String'>
     readonly status: FieldRef<"User", 'MemberStatus'>
-    readonly role: FieldRef<"User", 'MemberRole'>
     readonly joinDate: FieldRef<"User", 'DateTime'>
     readonly lastPayment: FieldRef<"User", 'DateTime'>
     readonly notes: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
-    readonly profileImageId: FieldRef<"User", 'String'>
   }
     
 
@@ -3167,51 +4710,41 @@ export namespace Prisma {
   }
 
   /**
-   * User.subscriptions
+   * User.profileImage
    */
-  export type User$subscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$profileImageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Subscription
+     * Select specific fields to fetch from the Image
      */
-    select?: SubscriptionSelect<ExtArgs> | null
+    select?: ImageSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Subscription
+     * Omit specific fields from the Image
      */
-    omit?: SubscriptionOmit<ExtArgs> | null
+    omit?: ImageOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: SubscriptionInclude<ExtArgs> | null
-    where?: SubscriptionWhereInput
-    orderBy?: SubscriptionOrderByWithRelationInput | SubscriptionOrderByWithRelationInput[]
-    cursor?: SubscriptionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: SubscriptionScalarFieldEnum | SubscriptionScalarFieldEnum[]
+    include?: ImageInclude<ExtArgs> | null
+    where?: ImageWhereInput
   }
 
   /**
-   * User.payments
+   * User.organization
    */
-  export type User$paymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$organizationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Payment
+     * Select specific fields to fetch from the Organization
      */
-    select?: PaymentSelect<ExtArgs> | null
+    select?: OrganizationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Payment
+     * Omit specific fields from the Organization
      */
-    omit?: PaymentOmit<ExtArgs> | null
+    omit?: OrganizationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PaymentInclude<ExtArgs> | null
-    where?: PaymentWhereInput
-    orderBy?: PaymentOrderByWithRelationInput | PaymentOrderByWithRelationInput[]
-    cursor?: PaymentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: PaymentScalarFieldEnum | PaymentScalarFieldEnum[]
+    include?: OrganizationInclude<ExtArgs> | null
+    where?: OrganizationWhereInput
   }
 
   /**
@@ -3263,9 +4796,9 @@ export namespace Prisma {
   }
 
   /**
-   * User.organizedEvents
+   * User.createdEvents
    */
-  export type User$organizedEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$createdEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Event
      */
@@ -3284,30 +4817,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: EventScalarFieldEnum | EventScalarFieldEnum[]
-  }
-
-  /**
-   * User.eventRegistrations
-   */
-  export type User$eventRegistrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EventRegistration
-     */
-    select?: EventRegistrationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EventRegistration
-     */
-    omit?: EventRegistrationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EventRegistrationInclude<ExtArgs> | null
-    where?: EventRegistrationWhereInput
-    orderBy?: EventRegistrationOrderByWithRelationInput | EventRegistrationOrderByWithRelationInput[]
-    cursor?: EventRegistrationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: EventRegistrationScalarFieldEnum | EventRegistrationScalarFieldEnum[]
   }
 
   /**
@@ -3335,9 +4844,57 @@ export namespace Prisma {
   }
 
   /**
-   * User.profileImage
+   * User.initiatedPayments
    */
-  export type User$profileImageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$initiatedPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    where?: PaymentWhereInput
+    orderBy?: PaymentOrderByWithRelationInput | PaymentOrderByWithRelationInput[]
+    cursor?: PaymentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentScalarFieldEnum | PaymentScalarFieldEnum[]
+  }
+
+  /**
+   * User.managedSubscriptions
+   */
+  export type User$managedSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionInclude<ExtArgs> | null
+    where?: SubscriptionWhereInput
+    orderBy?: SubscriptionOrderByWithRelationInput | SubscriptionOrderByWithRelationInput[]
+    cursor?: SubscriptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SubscriptionScalarFieldEnum | SubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * User.uploadedImages
+   */
+  export type User$uploadedImagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Image
      */
@@ -3351,6 +4908,11 @@ export namespace Prisma {
      */
     include?: ImageInclude<ExtArgs> | null
     where?: ImageWhereInput
+    orderBy?: ImageOrderByWithRelationInput | ImageOrderByWithRelationInput[]
+    cursor?: ImageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ImageScalarFieldEnum | ImageScalarFieldEnum[]
   }
 
   /**
@@ -6570,6 +8132,1187 @@ export namespace Prisma {
 
 
   /**
+   * Model Member
+   */
+
+  export type AggregateMember = {
+    _count: MemberCountAggregateOutputType | null
+    _min: MemberMinAggregateOutputType | null
+    _max: MemberMaxAggregateOutputType | null
+  }
+
+  export type MemberMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    email: string | null
+    phoneNumber: string | null
+    status: $Enums.MemberStatus | null
+    joinDate: Date | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    organizationId: string | null
+  }
+
+  export type MemberMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    email: string | null
+    phoneNumber: string | null
+    status: $Enums.MemberStatus | null
+    joinDate: Date | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    organizationId: string | null
+  }
+
+  export type MemberCountAggregateOutputType = {
+    id: number
+    name: number
+    email: number
+    phoneNumber: number
+    status: number
+    joinDate: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    organizationId: number
+    _all: number
+  }
+
+
+  export type MemberMinAggregateInputType = {
+    id?: true
+    name?: true
+    email?: true
+    phoneNumber?: true
+    status?: true
+    joinDate?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    organizationId?: true
+  }
+
+  export type MemberMaxAggregateInputType = {
+    id?: true
+    name?: true
+    email?: true
+    phoneNumber?: true
+    status?: true
+    joinDate?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    organizationId?: true
+  }
+
+  export type MemberCountAggregateInputType = {
+    id?: true
+    name?: true
+    email?: true
+    phoneNumber?: true
+    status?: true
+    joinDate?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    organizationId?: true
+    _all?: true
+  }
+
+  export type MemberAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Member to aggregate.
+     */
+    where?: MemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Members to fetch.
+     */
+    orderBy?: MemberOrderByWithRelationInput | MemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Members from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Members.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Members
+    **/
+    _count?: true | MemberCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MemberMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MemberMaxAggregateInputType
+  }
+
+  export type GetMemberAggregateType<T extends MemberAggregateArgs> = {
+        [P in keyof T & keyof AggregateMember]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMember[P]>
+      : GetScalarType<T[P], AggregateMember[P]>
+  }
+
+
+
+
+  export type MemberGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MemberWhereInput
+    orderBy?: MemberOrderByWithAggregationInput | MemberOrderByWithAggregationInput[]
+    by: MemberScalarFieldEnum[] | MemberScalarFieldEnum
+    having?: MemberScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MemberCountAggregateInputType | true
+    _min?: MemberMinAggregateInputType
+    _max?: MemberMaxAggregateInputType
+  }
+
+  export type MemberGroupByOutputType = {
+    id: string
+    name: string
+    email: string | null
+    phoneNumber: string | null
+    status: $Enums.MemberStatus
+    joinDate: Date | null
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    organizationId: string
+    _count: MemberCountAggregateOutputType | null
+    _min: MemberMinAggregateOutputType | null
+    _max: MemberMaxAggregateOutputType | null
+  }
+
+  type GetMemberGroupByPayload<T extends MemberGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MemberGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MemberGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MemberGroupByOutputType[P]>
+            : GetScalarType<T[P], MemberGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MemberSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    phoneNumber?: boolean
+    status?: boolean
+    joinDate?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    organizationId?: boolean
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    subscriptions?: boolean | Member$subscriptionsArgs<ExtArgs>
+    payments?: boolean | Member$paymentsArgs<ExtArgs>
+    _count?: boolean | MemberCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["member"]>
+
+  export type MemberSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    phoneNumber?: boolean
+    status?: boolean
+    joinDate?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    organizationId?: boolean
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["member"]>
+
+  export type MemberSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    phoneNumber?: boolean
+    status?: boolean
+    joinDate?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    organizationId?: boolean
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["member"]>
+
+  export type MemberSelectScalar = {
+    id?: boolean
+    name?: boolean
+    email?: boolean
+    phoneNumber?: boolean
+    status?: boolean
+    joinDate?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    organizationId?: boolean
+  }
+
+  export type MemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phoneNumber" | "status" | "joinDate" | "notes" | "createdAt" | "updatedAt" | "organizationId", ExtArgs["result"]["member"]>
+  export type MemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    subscriptions?: boolean | Member$subscriptionsArgs<ExtArgs>
+    payments?: boolean | Member$paymentsArgs<ExtArgs>
+    _count?: boolean | MemberCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type MemberIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  }
+  export type MemberIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+  }
+
+  export type $MemberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Member"
+    objects: {
+      organization: Prisma.$OrganizationPayload<ExtArgs>
+      subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
+      payments: Prisma.$PaymentPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      email: string | null
+      phoneNumber: string | null
+      status: $Enums.MemberStatus
+      joinDate: Date | null
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+      organizationId: string
+    }, ExtArgs["result"]["member"]>
+    composites: {}
+  }
+
+  type MemberGetPayload<S extends boolean | null | undefined | MemberDefaultArgs> = $Result.GetResult<Prisma.$MemberPayload, S>
+
+  type MemberCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MemberFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MemberCountAggregateInputType | true
+    }
+
+  export interface MemberDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Member'], meta: { name: 'Member' } }
+    /**
+     * Find zero or one Member that matches the filter.
+     * @param {MemberFindUniqueArgs} args - Arguments to find a Member
+     * @example
+     * // Get one Member
+     * const member = await prisma.member.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MemberFindUniqueArgs>(args: SelectSubset<T, MemberFindUniqueArgs<ExtArgs>>): Prisma__MemberClient<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Member that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MemberFindUniqueOrThrowArgs} args - Arguments to find a Member
+     * @example
+     * // Get one Member
+     * const member = await prisma.member.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MemberFindUniqueOrThrowArgs>(args: SelectSubset<T, MemberFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MemberClient<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Member that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemberFindFirstArgs} args - Arguments to find a Member
+     * @example
+     * // Get one Member
+     * const member = await prisma.member.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MemberFindFirstArgs>(args?: SelectSubset<T, MemberFindFirstArgs<ExtArgs>>): Prisma__MemberClient<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Member that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemberFindFirstOrThrowArgs} args - Arguments to find a Member
+     * @example
+     * // Get one Member
+     * const member = await prisma.member.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MemberFindFirstOrThrowArgs>(args?: SelectSubset<T, MemberFindFirstOrThrowArgs<ExtArgs>>): Prisma__MemberClient<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Members that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemberFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Members
+     * const members = await prisma.member.findMany()
+     * 
+     * // Get first 10 Members
+     * const members = await prisma.member.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const memberWithIdOnly = await prisma.member.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MemberFindManyArgs>(args?: SelectSubset<T, MemberFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Member.
+     * @param {MemberCreateArgs} args - Arguments to create a Member.
+     * @example
+     * // Create one Member
+     * const Member = await prisma.member.create({
+     *   data: {
+     *     // ... data to create a Member
+     *   }
+     * })
+     * 
+     */
+    create<T extends MemberCreateArgs>(args: SelectSubset<T, MemberCreateArgs<ExtArgs>>): Prisma__MemberClient<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Members.
+     * @param {MemberCreateManyArgs} args - Arguments to create many Members.
+     * @example
+     * // Create many Members
+     * const member = await prisma.member.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MemberCreateManyArgs>(args?: SelectSubset<T, MemberCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Members and returns the data saved in the database.
+     * @param {MemberCreateManyAndReturnArgs} args - Arguments to create many Members.
+     * @example
+     * // Create many Members
+     * const member = await prisma.member.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Members and only return the `id`
+     * const memberWithIdOnly = await prisma.member.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MemberCreateManyAndReturnArgs>(args?: SelectSubset<T, MemberCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Member.
+     * @param {MemberDeleteArgs} args - Arguments to delete one Member.
+     * @example
+     * // Delete one Member
+     * const Member = await prisma.member.delete({
+     *   where: {
+     *     // ... filter to delete one Member
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MemberDeleteArgs>(args: SelectSubset<T, MemberDeleteArgs<ExtArgs>>): Prisma__MemberClient<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Member.
+     * @param {MemberUpdateArgs} args - Arguments to update one Member.
+     * @example
+     * // Update one Member
+     * const member = await prisma.member.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MemberUpdateArgs>(args: SelectSubset<T, MemberUpdateArgs<ExtArgs>>): Prisma__MemberClient<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Members.
+     * @param {MemberDeleteManyArgs} args - Arguments to filter Members to delete.
+     * @example
+     * // Delete a few Members
+     * const { count } = await prisma.member.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MemberDeleteManyArgs>(args?: SelectSubset<T, MemberDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Members.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemberUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Members
+     * const member = await prisma.member.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MemberUpdateManyArgs>(args: SelectSubset<T, MemberUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Members and returns the data updated in the database.
+     * @param {MemberUpdateManyAndReturnArgs} args - Arguments to update many Members.
+     * @example
+     * // Update many Members
+     * const member = await prisma.member.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Members and only return the `id`
+     * const memberWithIdOnly = await prisma.member.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MemberUpdateManyAndReturnArgs>(args: SelectSubset<T, MemberUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Member.
+     * @param {MemberUpsertArgs} args - Arguments to update or create a Member.
+     * @example
+     * // Update or create a Member
+     * const member = await prisma.member.upsert({
+     *   create: {
+     *     // ... data to create a Member
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Member we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MemberUpsertArgs>(args: SelectSubset<T, MemberUpsertArgs<ExtArgs>>): Prisma__MemberClient<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Members.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemberCountArgs} args - Arguments to filter Members to count.
+     * @example
+     * // Count the number of Members
+     * const count = await prisma.member.count({
+     *   where: {
+     *     // ... the filter for the Members we want to count
+     *   }
+     * })
+    **/
+    count<T extends MemberCountArgs>(
+      args?: Subset<T, MemberCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MemberCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Member.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemberAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MemberAggregateArgs>(args: Subset<T, MemberAggregateArgs>): Prisma.PrismaPromise<GetMemberAggregateType<T>>
+
+    /**
+     * Group by Member.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MemberGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MemberGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MemberGroupByArgs['orderBy'] }
+        : { orderBy?: MemberGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MemberGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMemberGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Member model
+   */
+  readonly fields: MemberFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Member.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MemberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    subscriptions<T extends Member$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Member$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    payments<T extends Member$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, Member$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Member model
+   */
+  interface MemberFieldRefs {
+    readonly id: FieldRef<"Member", 'String'>
+    readonly name: FieldRef<"Member", 'String'>
+    readonly email: FieldRef<"Member", 'String'>
+    readonly phoneNumber: FieldRef<"Member", 'String'>
+    readonly status: FieldRef<"Member", 'MemberStatus'>
+    readonly joinDate: FieldRef<"Member", 'DateTime'>
+    readonly notes: FieldRef<"Member", 'String'>
+    readonly createdAt: FieldRef<"Member", 'DateTime'>
+    readonly updatedAt: FieldRef<"Member", 'DateTime'>
+    readonly organizationId: FieldRef<"Member", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Member findUnique
+   */
+  export type MemberFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberInclude<ExtArgs> | null
+    /**
+     * Filter, which Member to fetch.
+     */
+    where: MemberWhereUniqueInput
+  }
+
+  /**
+   * Member findUniqueOrThrow
+   */
+  export type MemberFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberInclude<ExtArgs> | null
+    /**
+     * Filter, which Member to fetch.
+     */
+    where: MemberWhereUniqueInput
+  }
+
+  /**
+   * Member findFirst
+   */
+  export type MemberFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberInclude<ExtArgs> | null
+    /**
+     * Filter, which Member to fetch.
+     */
+    where?: MemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Members to fetch.
+     */
+    orderBy?: MemberOrderByWithRelationInput | MemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Members.
+     */
+    cursor?: MemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Members from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Members.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Members.
+     */
+    distinct?: MemberScalarFieldEnum | MemberScalarFieldEnum[]
+  }
+
+  /**
+   * Member findFirstOrThrow
+   */
+  export type MemberFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberInclude<ExtArgs> | null
+    /**
+     * Filter, which Member to fetch.
+     */
+    where?: MemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Members to fetch.
+     */
+    orderBy?: MemberOrderByWithRelationInput | MemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Members.
+     */
+    cursor?: MemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Members from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Members.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Members.
+     */
+    distinct?: MemberScalarFieldEnum | MemberScalarFieldEnum[]
+  }
+
+  /**
+   * Member findMany
+   */
+  export type MemberFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberInclude<ExtArgs> | null
+    /**
+     * Filter, which Members to fetch.
+     */
+    where?: MemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Members to fetch.
+     */
+    orderBy?: MemberOrderByWithRelationInput | MemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Members.
+     */
+    cursor?: MemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Members from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Members.
+     */
+    skip?: number
+    distinct?: MemberScalarFieldEnum | MemberScalarFieldEnum[]
+  }
+
+  /**
+   * Member create
+   */
+  export type MemberCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Member.
+     */
+    data: XOR<MemberCreateInput, MemberUncheckedCreateInput>
+  }
+
+  /**
+   * Member createMany
+   */
+  export type MemberCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Members.
+     */
+    data: MemberCreateManyInput | MemberCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Member createManyAndReturn
+   */
+  export type MemberCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * The data used to create many Members.
+     */
+    data: MemberCreateManyInput | MemberCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Member update
+   */
+  export type MemberUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Member.
+     */
+    data: XOR<MemberUpdateInput, MemberUncheckedUpdateInput>
+    /**
+     * Choose, which Member to update.
+     */
+    where: MemberWhereUniqueInput
+  }
+
+  /**
+   * Member updateMany
+   */
+  export type MemberUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Members.
+     */
+    data: XOR<MemberUpdateManyMutationInput, MemberUncheckedUpdateManyInput>
+    /**
+     * Filter which Members to update
+     */
+    where?: MemberWhereInput
+    /**
+     * Limit how many Members to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Member updateManyAndReturn
+   */
+  export type MemberUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * The data used to update Members.
+     */
+    data: XOR<MemberUpdateManyMutationInput, MemberUncheckedUpdateManyInput>
+    /**
+     * Filter which Members to update
+     */
+    where?: MemberWhereInput
+    /**
+     * Limit how many Members to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Member upsert
+   */
+  export type MemberUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Member to update in case it exists.
+     */
+    where: MemberWhereUniqueInput
+    /**
+     * In case the Member found by the `where` argument doesn't exist, create a new Member with this data.
+     */
+    create: XOR<MemberCreateInput, MemberUncheckedCreateInput>
+    /**
+     * In case the Member was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MemberUpdateInput, MemberUncheckedUpdateInput>
+  }
+
+  /**
+   * Member delete
+   */
+  export type MemberDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberInclude<ExtArgs> | null
+    /**
+     * Filter which Member to delete.
+     */
+    where: MemberWhereUniqueInput
+  }
+
+  /**
+   * Member deleteMany
+   */
+  export type MemberDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Members to delete
+     */
+    where?: MemberWhereInput
+    /**
+     * Limit how many Members to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Member.subscriptions
+   */
+  export type Member$subscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionInclude<ExtArgs> | null
+    where?: SubscriptionWhereInput
+    orderBy?: SubscriptionOrderByWithRelationInput | SubscriptionOrderByWithRelationInput[]
+    cursor?: SubscriptionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SubscriptionScalarFieldEnum | SubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * Member.payments
+   */
+  export type Member$paymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    where?: PaymentWhereInput
+    orderBy?: PaymentOrderByWithRelationInput | PaymentOrderByWithRelationInput[]
+    cursor?: PaymentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentScalarFieldEnum | PaymentScalarFieldEnum[]
+  }
+
+  /**
+   * Member without action
+   */
+  export type MemberDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model MembershipPlan
    */
 
@@ -6599,6 +9342,7 @@ export namespace Prisma {
     active: boolean | null
     stripePriceId: string | null
     createdById: string | null
+    organizationId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6613,6 +9357,7 @@ export namespace Prisma {
     active: boolean | null
     stripePriceId: string | null
     createdById: string | null
+    organizationId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6628,6 +9373,7 @@ export namespace Prisma {
     stripePriceId: number
     features: number
     createdById: number
+    organizationId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -6652,6 +9398,7 @@ export namespace Prisma {
     active?: true
     stripePriceId?: true
     createdById?: true
+    organizationId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6666,6 +9413,7 @@ export namespace Prisma {
     active?: true
     stripePriceId?: true
     createdById?: true
+    organizationId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6681,6 +9429,7 @@ export namespace Prisma {
     stripePriceId?: true
     features?: true
     createdById?: true
+    organizationId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -6783,6 +9532,7 @@ export namespace Prisma {
     stripePriceId: string | null
     features: string[]
     createdById: string | null
+    organizationId: string | null
     createdAt: Date
     updatedAt: Date
     _count: MembershipPlanCountAggregateOutputType | null
@@ -6817,9 +9567,11 @@ export namespace Prisma {
     stripePriceId?: boolean
     features?: boolean
     createdById?: boolean
+    organizationId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdBy?: boolean | MembershipPlan$createdByArgs<ExtArgs>
+    organization?: boolean | MembershipPlan$organizationArgs<ExtArgs>
     subscriptions?: boolean | MembershipPlan$subscriptionsArgs<ExtArgs>
     _count?: boolean | MembershipPlanCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["membershipPlan"]>
@@ -6835,9 +9587,11 @@ export namespace Prisma {
     stripePriceId?: boolean
     features?: boolean
     createdById?: boolean
+    organizationId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdBy?: boolean | MembershipPlan$createdByArgs<ExtArgs>
+    organization?: boolean | MembershipPlan$organizationArgs<ExtArgs>
   }, ExtArgs["result"]["membershipPlan"]>
 
   export type MembershipPlanSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6851,9 +9605,11 @@ export namespace Prisma {
     stripePriceId?: boolean
     features?: boolean
     createdById?: boolean
+    organizationId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdBy?: boolean | MembershipPlan$createdByArgs<ExtArgs>
+    organization?: boolean | MembershipPlan$organizationArgs<ExtArgs>
   }, ExtArgs["result"]["membershipPlan"]>
 
   export type MembershipPlanSelectScalar = {
@@ -6867,27 +9623,32 @@ export namespace Prisma {
     stripePriceId?: boolean
     features?: boolean
     createdById?: boolean
+    organizationId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type MembershipPlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "price" | "currency" | "interval" | "active" | "stripePriceId" | "features" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["membershipPlan"]>
+  export type MembershipPlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "price" | "currency" | "interval" | "active" | "stripePriceId" | "features" | "createdById" | "organizationId" | "createdAt" | "updatedAt", ExtArgs["result"]["membershipPlan"]>
   export type MembershipPlanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | MembershipPlan$createdByArgs<ExtArgs>
+    organization?: boolean | MembershipPlan$organizationArgs<ExtArgs>
     subscriptions?: boolean | MembershipPlan$subscriptionsArgs<ExtArgs>
     _count?: boolean | MembershipPlanCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MembershipPlanIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | MembershipPlan$createdByArgs<ExtArgs>
+    organization?: boolean | MembershipPlan$organizationArgs<ExtArgs>
   }
   export type MembershipPlanIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | MembershipPlan$createdByArgs<ExtArgs>
+    organization?: boolean | MembershipPlan$organizationArgs<ExtArgs>
   }
 
   export type $MembershipPlanPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "MembershipPlan"
     objects: {
       createdBy: Prisma.$UserPayload<ExtArgs> | null
+      organization: Prisma.$OrganizationPayload<ExtArgs> | null
       subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -6901,6 +9662,7 @@ export namespace Prisma {
       stripePriceId: string | null
       features: string[]
       createdById: string | null
+      organizationId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["membershipPlan"]>
@@ -7298,6 +10060,7 @@ export namespace Prisma {
   export interface Prisma__MembershipPlanClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     createdBy<T extends MembershipPlan$createdByArgs<ExtArgs> = {}>(args?: Subset<T, MembershipPlan$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    organization<T extends MembershipPlan$organizationArgs<ExtArgs> = {}>(args?: Subset<T, MembershipPlan$organizationArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     subscriptions<T extends MembershipPlan$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, MembershipPlan$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -7338,6 +10101,7 @@ export namespace Prisma {
     readonly stripePriceId: FieldRef<"MembershipPlan", 'String'>
     readonly features: FieldRef<"MembershipPlan", 'String[]'>
     readonly createdById: FieldRef<"MembershipPlan", 'String'>
+    readonly organizationId: FieldRef<"MembershipPlan", 'String'>
     readonly createdAt: FieldRef<"MembershipPlan", 'DateTime'>
     readonly updatedAt: FieldRef<"MembershipPlan", 'DateTime'>
   }
@@ -7755,6 +10519,25 @@ export namespace Prisma {
   }
 
   /**
+   * MembershipPlan.organization
+   */
+  export type MembershipPlan$organizationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    where?: OrganizationWhereInput
+  }
+
+  /**
    * MembershipPlan.subscriptions
    */
   export type MembershipPlan$subscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7824,8 +10607,10 @@ export namespace Prisma {
     status: $Enums.PaymentStatus | null
     method: $Enums.PaymentMethod | null
     description: string | null
-    userId: string | null
+    initiatedById: string | null
+    organizationId: string | null
     subscriptionId: string | null
+    memberId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7837,8 +10622,10 @@ export namespace Prisma {
     status: $Enums.PaymentStatus | null
     method: $Enums.PaymentMethod | null
     description: string | null
-    userId: string | null
+    initiatedById: string | null
+    organizationId: string | null
     subscriptionId: string | null
+    memberId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7850,8 +10637,10 @@ export namespace Prisma {
     status: number
     method: number
     description: number
-    userId: number
+    initiatedById: number
+    organizationId: number
     subscriptionId: number
+    memberId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -7873,8 +10662,10 @@ export namespace Prisma {
     status?: true
     method?: true
     description?: true
-    userId?: true
+    initiatedById?: true
+    organizationId?: true
     subscriptionId?: true
+    memberId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7886,8 +10677,10 @@ export namespace Prisma {
     status?: true
     method?: true
     description?: true
-    userId?: true
+    initiatedById?: true
+    organizationId?: true
     subscriptionId?: true
+    memberId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7899,8 +10692,10 @@ export namespace Prisma {
     status?: true
     method?: true
     description?: true
-    userId?: true
+    initiatedById?: true
+    organizationId?: true
     subscriptionId?: true
+    memberId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -7999,8 +10794,10 @@ export namespace Prisma {
     status: $Enums.PaymentStatus
     method: $Enums.PaymentMethod
     description: string | null
-    userId: string
+    initiatedById: string | null
+    organizationId: string | null
     subscriptionId: string | null
+    memberId: string | null
     createdAt: Date
     updatedAt: Date
     _count: PaymentCountAggregateOutputType | null
@@ -8031,12 +10828,16 @@ export namespace Prisma {
     status?: boolean
     method?: boolean
     description?: boolean
-    userId?: boolean
+    initiatedById?: boolean
+    organizationId?: boolean
     subscriptionId?: boolean
+    memberId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    initiatedBy?: boolean | Payment$initiatedByArgs<ExtArgs>
+    organization?: boolean | Payment$organizationArgs<ExtArgs>
     subscription?: boolean | Payment$subscriptionArgs<ExtArgs>
+    member?: boolean | Payment$memberArgs<ExtArgs>
   }, ExtArgs["result"]["payment"]>
 
   export type PaymentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8046,12 +10847,16 @@ export namespace Prisma {
     status?: boolean
     method?: boolean
     description?: boolean
-    userId?: boolean
+    initiatedById?: boolean
+    organizationId?: boolean
     subscriptionId?: boolean
+    memberId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    initiatedBy?: boolean | Payment$initiatedByArgs<ExtArgs>
+    organization?: boolean | Payment$organizationArgs<ExtArgs>
     subscription?: boolean | Payment$subscriptionArgs<ExtArgs>
+    member?: boolean | Payment$memberArgs<ExtArgs>
   }, ExtArgs["result"]["payment"]>
 
   export type PaymentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8061,12 +10866,16 @@ export namespace Prisma {
     status?: boolean
     method?: boolean
     description?: boolean
-    userId?: boolean
+    initiatedById?: boolean
+    organizationId?: boolean
     subscriptionId?: boolean
+    memberId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    initiatedBy?: boolean | Payment$initiatedByArgs<ExtArgs>
+    organization?: boolean | Payment$organizationArgs<ExtArgs>
     subscription?: boolean | Payment$subscriptionArgs<ExtArgs>
+    member?: boolean | Payment$memberArgs<ExtArgs>
   }, ExtArgs["result"]["payment"]>
 
   export type PaymentSelectScalar = {
@@ -8076,31 +10885,41 @@ export namespace Prisma {
     status?: boolean
     method?: boolean
     description?: boolean
-    userId?: boolean
+    initiatedById?: boolean
+    organizationId?: boolean
     subscriptionId?: boolean
+    memberId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "amount" | "currency" | "status" | "method" | "description" | "userId" | "subscriptionId" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
+  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "amount" | "currency" | "status" | "method" | "description" | "initiatedById" | "organizationId" | "subscriptionId" | "memberId" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
   export type PaymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    initiatedBy?: boolean | Payment$initiatedByArgs<ExtArgs>
+    organization?: boolean | Payment$organizationArgs<ExtArgs>
     subscription?: boolean | Payment$subscriptionArgs<ExtArgs>
+    member?: boolean | Payment$memberArgs<ExtArgs>
   }
   export type PaymentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    initiatedBy?: boolean | Payment$initiatedByArgs<ExtArgs>
+    organization?: boolean | Payment$organizationArgs<ExtArgs>
     subscription?: boolean | Payment$subscriptionArgs<ExtArgs>
+    member?: boolean | Payment$memberArgs<ExtArgs>
   }
   export type PaymentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    initiatedBy?: boolean | Payment$initiatedByArgs<ExtArgs>
+    organization?: boolean | Payment$organizationArgs<ExtArgs>
     subscription?: boolean | Payment$subscriptionArgs<ExtArgs>
+    member?: boolean | Payment$memberArgs<ExtArgs>
   }
 
   export type $PaymentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Payment"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
+      initiatedBy: Prisma.$UserPayload<ExtArgs> | null
+      organization: Prisma.$OrganizationPayload<ExtArgs> | null
       subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
+      member: Prisma.$MemberPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8109,8 +10928,10 @@ export namespace Prisma {
       status: $Enums.PaymentStatus
       method: $Enums.PaymentMethod
       description: string | null
-      userId: string
+      initiatedById: string | null
+      organizationId: string | null
       subscriptionId: string | null
+      memberId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["payment"]>
@@ -8507,8 +11328,10 @@ export namespace Prisma {
    */
   export interface Prisma__PaymentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    initiatedBy<T extends Payment$initiatedByArgs<ExtArgs> = {}>(args?: Subset<T, Payment$initiatedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    organization<T extends Payment$organizationArgs<ExtArgs> = {}>(args?: Subset<T, Payment$organizationArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     subscription<T extends Payment$subscriptionArgs<ExtArgs> = {}>(args?: Subset<T, Payment$subscriptionArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    member<T extends Payment$memberArgs<ExtArgs> = {}>(args?: Subset<T, Payment$memberArgs<ExtArgs>>): Prisma__MemberClient<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8544,8 +11367,10 @@ export namespace Prisma {
     readonly status: FieldRef<"Payment", 'PaymentStatus'>
     readonly method: FieldRef<"Payment", 'PaymentMethod'>
     readonly description: FieldRef<"Payment", 'String'>
-    readonly userId: FieldRef<"Payment", 'String'>
+    readonly initiatedById: FieldRef<"Payment", 'String'>
+    readonly organizationId: FieldRef<"Payment", 'String'>
     readonly subscriptionId: FieldRef<"Payment", 'String'>
+    readonly memberId: FieldRef<"Payment", 'String'>
     readonly createdAt: FieldRef<"Payment", 'DateTime'>
     readonly updatedAt: FieldRef<"Payment", 'DateTime'>
   }
@@ -8944,6 +11769,44 @@ export namespace Prisma {
   }
 
   /**
+   * Payment.initiatedBy
+   */
+  export type Payment$initiatedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Payment.organization
+   */
+  export type Payment$organizationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    where?: OrganizationWhereInput
+  }
+
+  /**
    * Payment.subscription
    */
   export type Payment$subscriptionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8960,6 +11823,25 @@ export namespace Prisma {
      */
     include?: SubscriptionInclude<ExtArgs> | null
     where?: SubscriptionWhereInput
+  }
+
+  /**
+   * Payment.member
+   */
+  export type Payment$memberArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberInclude<ExtArgs> | null
+    where?: MemberWhereInput
   }
 
   /**
@@ -8993,8 +11875,10 @@ export namespace Prisma {
 
   export type SubscriptionMinAggregateOutputType = {
     id: string | null
-    userId: string | null
+    managedById: string | null
     planId: string | null
+    organizationId: string | null
+    memberId: string | null
     stripeSubscriptionId: string | null
     status: $Enums.SubscriptionStatus | null
     startDate: Date | null
@@ -9010,8 +11894,10 @@ export namespace Prisma {
 
   export type SubscriptionMaxAggregateOutputType = {
     id: string | null
-    userId: string | null
+    managedById: string | null
     planId: string | null
+    organizationId: string | null
+    memberId: string | null
     stripeSubscriptionId: string | null
     status: $Enums.SubscriptionStatus | null
     startDate: Date | null
@@ -9027,8 +11913,10 @@ export namespace Prisma {
 
   export type SubscriptionCountAggregateOutputType = {
     id: number
-    userId: number
+    managedById: number
     planId: number
+    organizationId: number
+    memberId: number
     stripeSubscriptionId: number
     status: number
     startDate: number
@@ -9046,8 +11934,10 @@ export namespace Prisma {
 
   export type SubscriptionMinAggregateInputType = {
     id?: true
-    userId?: true
+    managedById?: true
     planId?: true
+    organizationId?: true
+    memberId?: true
     stripeSubscriptionId?: true
     status?: true
     startDate?: true
@@ -9063,8 +11953,10 @@ export namespace Prisma {
 
   export type SubscriptionMaxAggregateInputType = {
     id?: true
-    userId?: true
+    managedById?: true
     planId?: true
+    organizationId?: true
+    memberId?: true
     stripeSubscriptionId?: true
     status?: true
     startDate?: true
@@ -9080,8 +11972,10 @@ export namespace Prisma {
 
   export type SubscriptionCountAggregateInputType = {
     id?: true
-    userId?: true
+    managedById?: true
     planId?: true
+    organizationId?: true
+    memberId?: true
     stripeSubscriptionId?: true
     status?: true
     startDate?: true
@@ -9170,8 +12064,10 @@ export namespace Prisma {
 
   export type SubscriptionGroupByOutputType = {
     id: string
-    userId: string
+    managedById: string | null
     planId: string
+    organizationId: string | null
+    memberId: string | null
     stripeSubscriptionId: string | null
     status: $Enums.SubscriptionStatus
     startDate: Date
@@ -9204,8 +12100,10 @@ export namespace Prisma {
 
   export type SubscriptionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
+    managedById?: boolean
     planId?: boolean
+    organizationId?: boolean
+    memberId?: boolean
     stripeSubscriptionId?: boolean
     status?: boolean
     startDate?: boolean
@@ -9217,16 +12115,20 @@ export namespace Prisma {
     trialEndDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    managedBy?: boolean | Subscription$managedByArgs<ExtArgs>
     plan?: boolean | MembershipPlanDefaultArgs<ExtArgs>
+    organization?: boolean | Subscription$organizationArgs<ExtArgs>
+    member?: boolean | Subscription$memberArgs<ExtArgs>
     payments?: boolean | Subscription$paymentsArgs<ExtArgs>
     _count?: boolean | SubscriptionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subscription"]>
 
   export type SubscriptionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
+    managedById?: boolean
     planId?: boolean
+    organizationId?: boolean
+    memberId?: boolean
     stripeSubscriptionId?: boolean
     status?: boolean
     startDate?: boolean
@@ -9238,14 +12140,18 @@ export namespace Prisma {
     trialEndDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    managedBy?: boolean | Subscription$managedByArgs<ExtArgs>
     plan?: boolean | MembershipPlanDefaultArgs<ExtArgs>
+    organization?: boolean | Subscription$organizationArgs<ExtArgs>
+    member?: boolean | Subscription$memberArgs<ExtArgs>
   }, ExtArgs["result"]["subscription"]>
 
   export type SubscriptionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
+    managedById?: boolean
     planId?: boolean
+    organizationId?: boolean
+    memberId?: boolean
     stripeSubscriptionId?: boolean
     status?: boolean
     startDate?: boolean
@@ -9257,14 +12163,18 @@ export namespace Prisma {
     trialEndDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    managedBy?: boolean | Subscription$managedByArgs<ExtArgs>
     plan?: boolean | MembershipPlanDefaultArgs<ExtArgs>
+    organization?: boolean | Subscription$organizationArgs<ExtArgs>
+    member?: boolean | Subscription$memberArgs<ExtArgs>
   }, ExtArgs["result"]["subscription"]>
 
   export type SubscriptionSelectScalar = {
     id?: boolean
-    userId?: boolean
+    managedById?: boolean
     planId?: boolean
+    organizationId?: boolean
+    memberId?: boolean
     stripeSubscriptionId?: boolean
     status?: boolean
     startDate?: boolean
@@ -9278,33 +12188,43 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type SubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "planId" | "stripeSubscriptionId" | "status" | "startDate" | "currentPeriodStart" | "currentPeriodEnd" | "cancelAtPeriodEnd" | "canceledAt" | "trialStartDate" | "trialEndDate" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
+  export type SubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "managedById" | "planId" | "organizationId" | "memberId" | "stripeSubscriptionId" | "status" | "startDate" | "currentPeriodStart" | "currentPeriodEnd" | "cancelAtPeriodEnd" | "canceledAt" | "trialStartDate" | "trialEndDate" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
   export type SubscriptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    managedBy?: boolean | Subscription$managedByArgs<ExtArgs>
     plan?: boolean | MembershipPlanDefaultArgs<ExtArgs>
+    organization?: boolean | Subscription$organizationArgs<ExtArgs>
+    member?: boolean | Subscription$memberArgs<ExtArgs>
     payments?: boolean | Subscription$paymentsArgs<ExtArgs>
     _count?: boolean | SubscriptionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SubscriptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    managedBy?: boolean | Subscription$managedByArgs<ExtArgs>
     plan?: boolean | MembershipPlanDefaultArgs<ExtArgs>
+    organization?: boolean | Subscription$organizationArgs<ExtArgs>
+    member?: boolean | Subscription$memberArgs<ExtArgs>
   }
   export type SubscriptionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    managedBy?: boolean | Subscription$managedByArgs<ExtArgs>
     plan?: boolean | MembershipPlanDefaultArgs<ExtArgs>
+    organization?: boolean | Subscription$organizationArgs<ExtArgs>
+    member?: boolean | Subscription$memberArgs<ExtArgs>
   }
 
   export type $SubscriptionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Subscription"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
+      managedBy: Prisma.$UserPayload<ExtArgs> | null
       plan: Prisma.$MembershipPlanPayload<ExtArgs>
+      organization: Prisma.$OrganizationPayload<ExtArgs> | null
+      member: Prisma.$MemberPayload<ExtArgs> | null
       payments: Prisma.$PaymentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      userId: string
+      managedById: string | null
       planId: string
+      organizationId: string | null
+      memberId: string | null
       stripeSubscriptionId: string | null
       status: $Enums.SubscriptionStatus
       startDate: Date
@@ -9710,8 +12630,10 @@ export namespace Prisma {
    */
   export interface Prisma__SubscriptionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    managedBy<T extends Subscription$managedByArgs<ExtArgs> = {}>(args?: Subset<T, Subscription$managedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     plan<T extends MembershipPlanDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MembershipPlanDefaultArgs<ExtArgs>>): Prisma__MembershipPlanClient<$Result.GetResult<Prisma.$MembershipPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    organization<T extends Subscription$organizationArgs<ExtArgs> = {}>(args?: Subset<T, Subscription$organizationArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    member<T extends Subscription$memberArgs<ExtArgs> = {}>(args?: Subset<T, Subscription$memberArgs<ExtArgs>>): Prisma__MemberClient<$Result.GetResult<Prisma.$MemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     payments<T extends Subscription$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, Subscription$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -9743,8 +12665,10 @@ export namespace Prisma {
    */
   interface SubscriptionFieldRefs {
     readonly id: FieldRef<"Subscription", 'String'>
-    readonly userId: FieldRef<"Subscription", 'String'>
+    readonly managedById: FieldRef<"Subscription", 'String'>
     readonly planId: FieldRef<"Subscription", 'String'>
+    readonly organizationId: FieldRef<"Subscription", 'String'>
+    readonly memberId: FieldRef<"Subscription", 'String'>
     readonly stripeSubscriptionId: FieldRef<"Subscription", 'String'>
     readonly status: FieldRef<"Subscription", 'SubscriptionStatus'>
     readonly startDate: FieldRef<"Subscription", 'DateTime'>
@@ -10152,6 +13076,63 @@ export namespace Prisma {
   }
 
   /**
+   * Subscription.managedBy
+   */
+  export type Subscription$managedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Subscription.organization
+   */
+  export type Subscription$organizationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    where?: OrganizationWhereInput
+  }
+
+  /**
+   * Subscription.member
+   */
+  export type Subscription$memberArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Member
+     */
+    select?: MemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Member
+     */
+    omit?: MemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MemberInclude<ExtArgs> | null
+    where?: MemberWhereInput
+  }
+
+  /**
    * Subscription.payments
    */
   export type Subscription$paymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10223,11 +13204,11 @@ export namespace Prisma {
     location: string | null
     locationDetails: string | null
     organizerId: string | null
+    organizationId: string | null
     capacity: number | null
     registrationDeadline: Date | null
     status: $Enums.EventStatus | null
     isPrivate: boolean | null
-    coverImage: string | null
     createdAt: Date | null
     updatedAt: Date | null
     eventImageId: string | null
@@ -10242,11 +13223,11 @@ export namespace Prisma {
     location: string | null
     locationDetails: string | null
     organizerId: string | null
+    organizationId: string | null
     capacity: number | null
     registrationDeadline: Date | null
     status: $Enums.EventStatus | null
     isPrivate: boolean | null
-    coverImage: string | null
     createdAt: Date | null
     updatedAt: Date | null
     eventImageId: string | null
@@ -10261,11 +13242,11 @@ export namespace Prisma {
     location: number
     locationDetails: number
     organizerId: number
+    organizationId: number
     capacity: number
     registrationDeadline: number
     status: number
     isPrivate: number
-    coverImage: number
     createdAt: number
     updatedAt: number
     eventImageId: number
@@ -10290,11 +13271,11 @@ export namespace Prisma {
     location?: true
     locationDetails?: true
     organizerId?: true
+    organizationId?: true
     capacity?: true
     registrationDeadline?: true
     status?: true
     isPrivate?: true
-    coverImage?: true
     createdAt?: true
     updatedAt?: true
     eventImageId?: true
@@ -10309,11 +13290,11 @@ export namespace Prisma {
     location?: true
     locationDetails?: true
     organizerId?: true
+    organizationId?: true
     capacity?: true
     registrationDeadline?: true
     status?: true
     isPrivate?: true
-    coverImage?: true
     createdAt?: true
     updatedAt?: true
     eventImageId?: true
@@ -10328,11 +13309,11 @@ export namespace Prisma {
     location?: true
     locationDetails?: true
     organizerId?: true
+    organizationId?: true
     capacity?: true
     registrationDeadline?: true
     status?: true
     isPrivate?: true
-    coverImage?: true
     createdAt?: true
     updatedAt?: true
     eventImageId?: true
@@ -10434,11 +13415,11 @@ export namespace Prisma {
     location: string | null
     locationDetails: string | null
     organizerId: string | null
+    organizationId: string | null
     capacity: number | null
     registrationDeadline: Date | null
     status: $Enums.EventStatus
     isPrivate: boolean
-    coverImage: string | null
     createdAt: Date
     updatedAt: Date
     eventImageId: string | null
@@ -10472,17 +13453,18 @@ export namespace Prisma {
     location?: boolean
     locationDetails?: boolean
     organizerId?: boolean
+    organizationId?: boolean
     capacity?: boolean
     registrationDeadline?: boolean
     status?: boolean
     isPrivate?: boolean
-    coverImage?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     eventImageId?: boolean
     organizer?: boolean | Event$organizerArgs<ExtArgs>
+    organization?: boolean | Event$organizationArgs<ExtArgs>
     registrations?: boolean | Event$registrationsArgs<ExtArgs>
-    eventImage?: boolean | Event$eventImageArgs<ExtArgs>
+    coverImage?: boolean | Event$coverImageArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
@@ -10495,16 +13477,16 @@ export namespace Prisma {
     location?: boolean
     locationDetails?: boolean
     organizerId?: boolean
+    organizationId?: boolean
     capacity?: boolean
     registrationDeadline?: boolean
     status?: boolean
     isPrivate?: boolean
-    coverImage?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     eventImageId?: boolean
     organizer?: boolean | Event$organizerArgs<ExtArgs>
-    eventImage?: boolean | Event$eventImageArgs<ExtArgs>
+    organization?: boolean | Event$organizationArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10516,16 +13498,16 @@ export namespace Prisma {
     location?: boolean
     locationDetails?: boolean
     organizerId?: boolean
+    organizationId?: boolean
     capacity?: boolean
     registrationDeadline?: boolean
     status?: boolean
     isPrivate?: boolean
-    coverImage?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     eventImageId?: boolean
     organizer?: boolean | Event$organizerArgs<ExtArgs>
-    eventImage?: boolean | Event$eventImageArgs<ExtArgs>
+    organization?: boolean | Event$organizationArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectScalar = {
@@ -10537,38 +13519,40 @@ export namespace Prisma {
     location?: boolean
     locationDetails?: boolean
     organizerId?: boolean
+    organizationId?: boolean
     capacity?: boolean
     registrationDeadline?: boolean
     status?: boolean
     isPrivate?: boolean
-    coverImage?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     eventImageId?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "date" | "endDate" | "location" | "locationDetails" | "organizerId" | "capacity" | "registrationDeadline" | "status" | "isPrivate" | "coverImage" | "createdAt" | "updatedAt" | "eventImageId", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "date" | "endDate" | "location" | "locationDetails" | "organizerId" | "organizationId" | "capacity" | "registrationDeadline" | "status" | "isPrivate" | "createdAt" | "updatedAt" | "eventImageId", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organizer?: boolean | Event$organizerArgs<ExtArgs>
+    organization?: boolean | Event$organizationArgs<ExtArgs>
     registrations?: boolean | Event$registrationsArgs<ExtArgs>
-    eventImage?: boolean | Event$eventImageArgs<ExtArgs>
+    coverImage?: boolean | Event$coverImageArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organizer?: boolean | Event$organizerArgs<ExtArgs>
-    eventImage?: boolean | Event$eventImageArgs<ExtArgs>
+    organization?: boolean | Event$organizationArgs<ExtArgs>
   }
   export type EventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organizer?: boolean | Event$organizerArgs<ExtArgs>
-    eventImage?: boolean | Event$eventImageArgs<ExtArgs>
+    organization?: boolean | Event$organizationArgs<ExtArgs>
   }
 
   export type $EventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Event"
     objects: {
       organizer: Prisma.$UserPayload<ExtArgs> | null
+      organization: Prisma.$OrganizationPayload<ExtArgs> | null
       registrations: Prisma.$EventRegistrationPayload<ExtArgs>[]
-      eventImage: Prisma.$ImagePayload<ExtArgs> | null
+      coverImage: Prisma.$ImagePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10579,11 +13563,11 @@ export namespace Prisma {
       location: string | null
       locationDetails: string | null
       organizerId: string | null
+      organizationId: string | null
       capacity: number | null
       registrationDeadline: Date | null
       status: $Enums.EventStatus
       isPrivate: boolean
-      coverImage: string | null
       createdAt: Date
       updatedAt: Date
       eventImageId: string | null
@@ -10982,8 +13966,9 @@ export namespace Prisma {
   export interface Prisma__EventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     organizer<T extends Event$organizerArgs<ExtArgs> = {}>(args?: Subset<T, Event$organizerArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    organization<T extends Event$organizationArgs<ExtArgs> = {}>(args?: Subset<T, Event$organizationArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     registrations<T extends Event$registrationsArgs<ExtArgs> = {}>(args?: Subset<T, Event$registrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventRegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    eventImage<T extends Event$eventImageArgs<ExtArgs> = {}>(args?: Subset<T, Event$eventImageArgs<ExtArgs>>): Prisma__ImageClient<$Result.GetResult<Prisma.$ImagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    coverImage<T extends Event$coverImageArgs<ExtArgs> = {}>(args?: Subset<T, Event$coverImageArgs<ExtArgs>>): Prisma__ImageClient<$Result.GetResult<Prisma.$ImagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11021,11 +14006,11 @@ export namespace Prisma {
     readonly location: FieldRef<"Event", 'String'>
     readonly locationDetails: FieldRef<"Event", 'String'>
     readonly organizerId: FieldRef<"Event", 'String'>
+    readonly organizationId: FieldRef<"Event", 'String'>
     readonly capacity: FieldRef<"Event", 'Int'>
     readonly registrationDeadline: FieldRef<"Event", 'DateTime'>
     readonly status: FieldRef<"Event", 'EventStatus'>
     readonly isPrivate: FieldRef<"Event", 'Boolean'>
-    readonly coverImage: FieldRef<"Event", 'String'>
     readonly createdAt: FieldRef<"Event", 'DateTime'>
     readonly updatedAt: FieldRef<"Event", 'DateTime'>
     readonly eventImageId: FieldRef<"Event", 'String'>
@@ -11444,6 +14429,25 @@ export namespace Prisma {
   }
 
   /**
+   * Event.organization
+   */
+  export type Event$organizationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    where?: OrganizationWhereInput
+  }
+
+  /**
    * Event.registrations
    */
   export type Event$registrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11468,9 +14472,9 @@ export namespace Prisma {
   }
 
   /**
-   * Event.eventImage
+   * Event.coverImage
    */
-  export type Event$eventImageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Event$coverImageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Image
      */
@@ -11528,7 +14532,9 @@ export namespace Prisma {
   export type EventRegistrationMinAggregateOutputType = {
     id: string | null
     eventId: string | null
-    userId: string | null
+    registrantName: string | null
+    registrantEmail: string | null
+    organizationId: string | null
     registrationDate: Date | null
     status: $Enums.RegistrationStatus | null
     notes: string | null
@@ -11539,7 +14545,9 @@ export namespace Prisma {
   export type EventRegistrationMaxAggregateOutputType = {
     id: string | null
     eventId: string | null
-    userId: string | null
+    registrantName: string | null
+    registrantEmail: string | null
+    organizationId: string | null
     registrationDate: Date | null
     status: $Enums.RegistrationStatus | null
     notes: string | null
@@ -11550,7 +14558,9 @@ export namespace Prisma {
   export type EventRegistrationCountAggregateOutputType = {
     id: number
     eventId: number
-    userId: number
+    registrantName: number
+    registrantEmail: number
+    organizationId: number
     registrationDate: number
     status: number
     notes: number
@@ -11571,7 +14581,9 @@ export namespace Prisma {
   export type EventRegistrationMinAggregateInputType = {
     id?: true
     eventId?: true
-    userId?: true
+    registrantName?: true
+    registrantEmail?: true
+    organizationId?: true
     registrationDate?: true
     status?: true
     notes?: true
@@ -11582,7 +14594,9 @@ export namespace Prisma {
   export type EventRegistrationMaxAggregateInputType = {
     id?: true
     eventId?: true
-    userId?: true
+    registrantName?: true
+    registrantEmail?: true
+    organizationId?: true
     registrationDate?: true
     status?: true
     notes?: true
@@ -11593,7 +14607,9 @@ export namespace Prisma {
   export type EventRegistrationCountAggregateInputType = {
     id?: true
     eventId?: true
-    userId?: true
+    registrantName?: true
+    registrantEmail?: true
+    organizationId?: true
     registrationDate?: true
     status?: true
     notes?: true
@@ -11691,7 +14707,9 @@ export namespace Prisma {
   export type EventRegistrationGroupByOutputType = {
     id: string
     eventId: string
-    userId: string
+    registrantName: string | null
+    registrantEmail: string
+    organizationId: string
     registrationDate: Date
     status: $Enums.RegistrationStatus
     notes: string | null
@@ -11721,46 +14739,54 @@ export namespace Prisma {
   export type EventRegistrationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     eventId?: boolean
-    userId?: boolean
+    registrantName?: boolean
+    registrantEmail?: boolean
+    organizationId?: boolean
     registrationDate?: boolean
     status?: boolean
     notes?: boolean
     guestsCount?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["eventRegistration"]>
 
   export type EventRegistrationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     eventId?: boolean
-    userId?: boolean
+    registrantName?: boolean
+    registrantEmail?: boolean
+    organizationId?: boolean
     registrationDate?: boolean
     status?: boolean
     notes?: boolean
     guestsCount?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["eventRegistration"]>
 
   export type EventRegistrationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     eventId?: boolean
-    userId?: boolean
+    registrantName?: boolean
+    registrantEmail?: boolean
+    organizationId?: boolean
     registrationDate?: boolean
     status?: boolean
     notes?: boolean
     guestsCount?: boolean
     updatedAt?: boolean
     event?: boolean | EventDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["eventRegistration"]>
 
   export type EventRegistrationSelectScalar = {
     id?: boolean
     eventId?: boolean
-    userId?: boolean
+    registrantName?: boolean
+    registrantEmail?: boolean
+    organizationId?: boolean
     registrationDate?: boolean
     status?: boolean
     notes?: boolean
@@ -11768,30 +14794,32 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type EventRegistrationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "userId" | "registrationDate" | "status" | "notes" | "guestsCount" | "updatedAt", ExtArgs["result"]["eventRegistration"]>
+  export type EventRegistrationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "registrantName" | "registrantEmail" | "organizationId" | "registrationDate" | "status" | "notes" | "guestsCount" | "updatedAt", ExtArgs["result"]["eventRegistration"]>
   export type EventRegistrationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
   }
   export type EventRegistrationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
   }
   export type EventRegistrationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     event?: boolean | EventDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
   }
 
   export type $EventRegistrationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "EventRegistration"
     objects: {
       event: Prisma.$EventPayload<ExtArgs>
-      user: Prisma.$UserPayload<ExtArgs>
+      organization: Prisma.$OrganizationPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       eventId: string
-      userId: string
+      registrantName: string | null
+      registrantEmail: string
+      organizationId: string
       registrationDate: Date
       status: $Enums.RegistrationStatus
       notes: string | null
@@ -12192,7 +15220,7 @@ export namespace Prisma {
   export interface Prisma__EventRegistrationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12224,7 +15252,9 @@ export namespace Prisma {
   interface EventRegistrationFieldRefs {
     readonly id: FieldRef<"EventRegistration", 'String'>
     readonly eventId: FieldRef<"EventRegistration", 'String'>
-    readonly userId: FieldRef<"EventRegistration", 'String'>
+    readonly registrantName: FieldRef<"EventRegistration", 'String'>
+    readonly registrantEmail: FieldRef<"EventRegistration", 'String'>
+    readonly organizationId: FieldRef<"EventRegistration", 'String'>
     readonly registrationDate: FieldRef<"EventRegistration", 'DateTime'>
     readonly status: FieldRef<"EventRegistration", 'RegistrationStatus'>
     readonly notes: FieldRef<"EventRegistration", 'String'>
@@ -12670,39 +15700,51 @@ export namespace Prisma {
 
   export type ImageMinAggregateOutputType = {
     id: string | null
+    url: string | null
+    alt: string | null
     data: Uint8Array | null
-    filename: string | null
     mimeType: string | null
     size: number | null
+    filename: string | null
     width: number | null
     height: number | null
-    alt: string | null
+    uploaderId: string | null
+    organizationId: string | null
+    eventCoverForId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type ImageMaxAggregateOutputType = {
     id: string | null
+    url: string | null
+    alt: string | null
     data: Uint8Array | null
-    filename: string | null
     mimeType: string | null
     size: number | null
+    filename: string | null
     width: number | null
     height: number | null
-    alt: string | null
+    uploaderId: string | null
+    organizationId: string | null
+    eventCoverForId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type ImageCountAggregateOutputType = {
     id: number
+    url: number
+    alt: number
     data: number
-    filename: number
     mimeType: number
     size: number
+    filename: number
     width: number
     height: number
-    alt: number
+    uploaderId: number
+    organizationId: number
+    eventCoverForId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -12723,39 +15765,51 @@ export namespace Prisma {
 
   export type ImageMinAggregateInputType = {
     id?: true
+    url?: true
+    alt?: true
     data?: true
-    filename?: true
     mimeType?: true
     size?: true
+    filename?: true
     width?: true
     height?: true
-    alt?: true
+    uploaderId?: true
+    organizationId?: true
+    eventCoverForId?: true
     createdAt?: true
     updatedAt?: true
   }
 
   export type ImageMaxAggregateInputType = {
     id?: true
+    url?: true
+    alt?: true
     data?: true
-    filename?: true
     mimeType?: true
     size?: true
+    filename?: true
     width?: true
     height?: true
-    alt?: true
+    uploaderId?: true
+    organizationId?: true
+    eventCoverForId?: true
     createdAt?: true
     updatedAt?: true
   }
 
   export type ImageCountAggregateInputType = {
     id?: true
+    url?: true
+    alt?: true
     data?: true
-    filename?: true
     mimeType?: true
     size?: true
+    filename?: true
     width?: true
     height?: true
-    alt?: true
+    uploaderId?: true
+    organizationId?: true
+    eventCoverForId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -12849,13 +15903,17 @@ export namespace Prisma {
 
   export type ImageGroupByOutputType = {
     id: string
+    url: string
+    alt: string | null
     data: Uint8Array
-    filename: string | null
     mimeType: string
     size: number
+    filename: string | null
     width: number | null
     height: number | null
-    alt: string | null
+    uploaderId: string | null
+    organizationId: string | null
+    eventCoverForId: string | null
     createdAt: Date
     updatedAt: Date
     _count: ImageCountAggregateOutputType | null
@@ -12881,81 +15939,121 @@ export namespace Prisma {
 
   export type ImageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    url?: boolean
+    alt?: boolean
     data?: boolean
-    filename?: boolean
     mimeType?: boolean
     size?: boolean
+    filename?: boolean
     width?: boolean
     height?: boolean
-    alt?: boolean
+    uploaderId?: boolean
+    organizationId?: boolean
+    eventCoverForId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | Image$userArgs<ExtArgs>
-    event?: boolean | Image$eventArgs<ExtArgs>
+    uploader?: boolean | Image$uploaderArgs<ExtArgs>
+    userProfileFor?: boolean | Image$userProfileForArgs<ExtArgs>
+    organization?: boolean | Image$organizationArgs<ExtArgs>
+    eventCoverFor?: boolean | Image$eventCoverForArgs<ExtArgs>
   }, ExtArgs["result"]["image"]>
 
   export type ImageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    url?: boolean
+    alt?: boolean
     data?: boolean
-    filename?: boolean
     mimeType?: boolean
     size?: boolean
+    filename?: boolean
     width?: boolean
     height?: boolean
-    alt?: boolean
+    uploaderId?: boolean
+    organizationId?: boolean
+    eventCoverForId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    uploader?: boolean | Image$uploaderArgs<ExtArgs>
+    organization?: boolean | Image$organizationArgs<ExtArgs>
+    eventCoverFor?: boolean | Image$eventCoverForArgs<ExtArgs>
   }, ExtArgs["result"]["image"]>
 
   export type ImageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    url?: boolean
+    alt?: boolean
     data?: boolean
-    filename?: boolean
     mimeType?: boolean
     size?: boolean
+    filename?: boolean
     width?: boolean
     height?: boolean
-    alt?: boolean
+    uploaderId?: boolean
+    organizationId?: boolean
+    eventCoverForId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    uploader?: boolean | Image$uploaderArgs<ExtArgs>
+    organization?: boolean | Image$organizationArgs<ExtArgs>
+    eventCoverFor?: boolean | Image$eventCoverForArgs<ExtArgs>
   }, ExtArgs["result"]["image"]>
 
   export type ImageSelectScalar = {
     id?: boolean
+    url?: boolean
+    alt?: boolean
     data?: boolean
-    filename?: boolean
     mimeType?: boolean
     size?: boolean
+    filename?: boolean
     width?: boolean
     height?: boolean
-    alt?: boolean
+    uploaderId?: boolean
+    organizationId?: boolean
+    eventCoverForId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ImageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "data" | "filename" | "mimeType" | "size" | "width" | "height" | "alt" | "createdAt" | "updatedAt", ExtArgs["result"]["image"]>
+  export type ImageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "url" | "alt" | "data" | "mimeType" | "size" | "filename" | "width" | "height" | "uploaderId" | "organizationId" | "eventCoverForId" | "createdAt" | "updatedAt", ExtArgs["result"]["image"]>
   export type ImageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Image$userArgs<ExtArgs>
-    event?: boolean | Image$eventArgs<ExtArgs>
+    uploader?: boolean | Image$uploaderArgs<ExtArgs>
+    userProfileFor?: boolean | Image$userProfileForArgs<ExtArgs>
+    organization?: boolean | Image$organizationArgs<ExtArgs>
+    eventCoverFor?: boolean | Image$eventCoverForArgs<ExtArgs>
   }
-  export type ImageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type ImageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ImageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    uploader?: boolean | Image$uploaderArgs<ExtArgs>
+    organization?: boolean | Image$organizationArgs<ExtArgs>
+    eventCoverFor?: boolean | Image$eventCoverForArgs<ExtArgs>
+  }
+  export type ImageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    uploader?: boolean | Image$uploaderArgs<ExtArgs>
+    organization?: boolean | Image$organizationArgs<ExtArgs>
+    eventCoverFor?: boolean | Image$eventCoverForArgs<ExtArgs>
+  }
 
   export type $ImagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Image"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs> | null
-      event: Prisma.$EventPayload<ExtArgs> | null
+      uploader: Prisma.$UserPayload<ExtArgs> | null
+      userProfileFor: Prisma.$UserPayload<ExtArgs> | null
+      organization: Prisma.$OrganizationPayload<ExtArgs> | null
+      eventCoverFor: Prisma.$EventPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      url: string
+      alt: string | null
       data: Uint8Array
-      filename: string | null
       mimeType: string
       size: number
+      filename: string | null
       width: number | null
       height: number | null
-      alt: string | null
+      uploaderId: string | null
+      organizationId: string | null
+      eventCoverForId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["image"]>
@@ -13352,8 +16450,10 @@ export namespace Prisma {
    */
   export interface Prisma__ImageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends Image$userArgs<ExtArgs> = {}>(args?: Subset<T, Image$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    event<T extends Image$eventArgs<ExtArgs> = {}>(args?: Subset<T, Image$eventArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    uploader<T extends Image$uploaderArgs<ExtArgs> = {}>(args?: Subset<T, Image$uploaderArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    userProfileFor<T extends Image$userProfileForArgs<ExtArgs> = {}>(args?: Subset<T, Image$userProfileForArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    organization<T extends Image$organizationArgs<ExtArgs> = {}>(args?: Subset<T, Image$organizationArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    eventCoverFor<T extends Image$eventCoverForArgs<ExtArgs> = {}>(args?: Subset<T, Image$eventCoverForArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13384,13 +16484,17 @@ export namespace Prisma {
    */
   interface ImageFieldRefs {
     readonly id: FieldRef<"Image", 'String'>
+    readonly url: FieldRef<"Image", 'String'>
+    readonly alt: FieldRef<"Image", 'String'>
     readonly data: FieldRef<"Image", 'Bytes'>
-    readonly filename: FieldRef<"Image", 'String'>
     readonly mimeType: FieldRef<"Image", 'String'>
     readonly size: FieldRef<"Image", 'Int'>
+    readonly filename: FieldRef<"Image", 'String'>
     readonly width: FieldRef<"Image", 'Int'>
     readonly height: FieldRef<"Image", 'Int'>
-    readonly alt: FieldRef<"Image", 'String'>
+    readonly uploaderId: FieldRef<"Image", 'String'>
+    readonly organizationId: FieldRef<"Image", 'String'>
+    readonly eventCoverForId: FieldRef<"Image", 'String'>
     readonly createdAt: FieldRef<"Image", 'DateTime'>
     readonly updatedAt: FieldRef<"Image", 'DateTime'>
   }
@@ -13642,6 +16746,10 @@ export namespace Prisma {
      */
     data: ImageCreateManyInput | ImageCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImageIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -13712,6 +16820,10 @@ export namespace Prisma {
      * Limit how many Images to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImageIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -13781,9 +16893,9 @@ export namespace Prisma {
   }
 
   /**
-   * Image.user
+   * Image.uploader
    */
-  export type Image$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Image$uploaderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -13800,9 +16912,47 @@ export namespace Prisma {
   }
 
   /**
-   * Image.event
+   * Image.userProfileFor
    */
-  export type Image$eventArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Image$userProfileForArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Image.organization
+   */
+  export type Image$organizationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organization
+     */
+    omit?: OrganizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    where?: OrganizationWhereInput
+  }
+
+  /**
+   * Image.eventCoverFor
+   */
+  export type Image$eventCoverForArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Event
      */
@@ -13851,21 +17001,31 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+  export const OrganizationScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    adminId: 'adminId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+
+
   export const UserScalarFieldEnum: {
     id: 'id',
     name: 'name',
     email: 'email',
     emailVerified: 'emailVerified',
     image: 'image',
+    profileImageId: 'profileImageId',
     phoneNumber: 'phoneNumber',
     status: 'status',
-    role: 'role',
     joinDate: 'joinDate',
     lastPayment: 'lastPayment',
     notes: 'notes',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    profileImageId: 'profileImageId'
+    updatedAt: 'updatedAt'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -13908,6 +17068,22 @@ export namespace Prisma {
   export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
 
 
+  export const MemberScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    email: 'email',
+    phoneNumber: 'phoneNumber',
+    status: 'status',
+    joinDate: 'joinDate',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    organizationId: 'organizationId'
+  };
+
+  export type MemberScalarFieldEnum = (typeof MemberScalarFieldEnum)[keyof typeof MemberScalarFieldEnum]
+
+
   export const MembershipPlanScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -13919,6 +17095,7 @@ export namespace Prisma {
     stripePriceId: 'stripePriceId',
     features: 'features',
     createdById: 'createdById',
+    organizationId: 'organizationId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -13933,8 +17110,10 @@ export namespace Prisma {
     status: 'status',
     method: 'method',
     description: 'description',
-    userId: 'userId',
+    initiatedById: 'initiatedById',
+    organizationId: 'organizationId',
     subscriptionId: 'subscriptionId',
+    memberId: 'memberId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -13944,8 +17123,10 @@ export namespace Prisma {
 
   export const SubscriptionScalarFieldEnum: {
     id: 'id',
-    userId: 'userId',
+    managedById: 'managedById',
     planId: 'planId',
+    organizationId: 'organizationId',
+    memberId: 'memberId',
     stripeSubscriptionId: 'stripeSubscriptionId',
     status: 'status',
     startDate: 'startDate',
@@ -13971,11 +17152,11 @@ export namespace Prisma {
     location: 'location',
     locationDetails: 'locationDetails',
     organizerId: 'organizerId',
+    organizationId: 'organizationId',
     capacity: 'capacity',
     registrationDeadline: 'registrationDeadline',
     status: 'status',
     isPrivate: 'isPrivate',
-    coverImage: 'coverImage',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     eventImageId: 'eventImageId'
@@ -13987,7 +17168,9 @@ export namespace Prisma {
   export const EventRegistrationScalarFieldEnum: {
     id: 'id',
     eventId: 'eventId',
-    userId: 'userId',
+    registrantName: 'registrantName',
+    registrantEmail: 'registrantEmail',
+    organizationId: 'organizationId',
     registrationDate: 'registrationDate',
     status: 'status',
     notes: 'notes',
@@ -14000,13 +17183,17 @@ export namespace Prisma {
 
   export const ImageScalarFieldEnum: {
     id: 'id',
+    url: 'url',
+    alt: 'alt',
     data: 'data',
-    filename: 'filename',
     mimeType: 'mimeType',
     size: 'size',
+    filename: 'filename',
     width: 'width',
     height: 'height',
-    alt: 'alt',
+    uploaderId: 'uploaderId',
+    organizationId: 'organizationId',
+    eventCoverForId: 'eventCoverForId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -14082,20 +17269,6 @@ export namespace Prisma {
    * Reference to a field of type 'MemberStatus[]'
    */
   export type ListEnumMemberStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MemberStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'MemberRole'
-   */
-  export type EnumMemberRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MemberRole'>
-    
-
-
-  /**
-   * Reference to a field of type 'MemberRole[]'
-   */
-  export type ListEnumMemberRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MemberRole[]'>
     
 
 
@@ -14249,6 +17422,82 @@ export namespace Prisma {
    */
 
 
+  export type OrganizationWhereInput = {
+    AND?: OrganizationWhereInput | OrganizationWhereInput[]
+    OR?: OrganizationWhereInput[]
+    NOT?: OrganizationWhereInput | OrganizationWhereInput[]
+    id?: StringFilter<"Organization"> | string
+    name?: StringNullableFilter<"Organization"> | string | null
+    adminId?: StringFilter<"Organization"> | string
+    createdAt?: DateTimeFilter<"Organization"> | Date | string
+    updatedAt?: DateTimeFilter<"Organization"> | Date | string
+    admin?: XOR<UserScalarRelationFilter, UserWhereInput>
+    members?: MemberListRelationFilter
+    events?: EventListRelationFilter
+    membershipPlans?: MembershipPlanListRelationFilter
+    payments?: PaymentListRelationFilter
+    subscriptions?: SubscriptionListRelationFilter
+    images?: ImageListRelationFilter
+    eventRegistrations?: EventRegistrationListRelationFilter
+  }
+
+  export type OrganizationOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrderInput | SortOrder
+    adminId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    admin?: UserOrderByWithRelationInput
+    members?: MemberOrderByRelationAggregateInput
+    events?: EventOrderByRelationAggregateInput
+    membershipPlans?: MembershipPlanOrderByRelationAggregateInput
+    payments?: PaymentOrderByRelationAggregateInput
+    subscriptions?: SubscriptionOrderByRelationAggregateInput
+    images?: ImageOrderByRelationAggregateInput
+    eventRegistrations?: EventRegistrationOrderByRelationAggregateInput
+  }
+
+  export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    adminId?: string
+    AND?: OrganizationWhereInput | OrganizationWhereInput[]
+    OR?: OrganizationWhereInput[]
+    NOT?: OrganizationWhereInput | OrganizationWhereInput[]
+    name?: StringNullableFilter<"Organization"> | string | null
+    createdAt?: DateTimeFilter<"Organization"> | Date | string
+    updatedAt?: DateTimeFilter<"Organization"> | Date | string
+    admin?: XOR<UserScalarRelationFilter, UserWhereInput>
+    members?: MemberListRelationFilter
+    events?: EventListRelationFilter
+    membershipPlans?: MembershipPlanListRelationFilter
+    payments?: PaymentListRelationFilter
+    subscriptions?: SubscriptionListRelationFilter
+    images?: ImageListRelationFilter
+    eventRegistrations?: EventRegistrationListRelationFilter
+  }, "id" | "adminId">
+
+  export type OrganizationOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrderInput | SortOrder
+    adminId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: OrganizationCountOrderByAggregateInput
+    _max?: OrganizationMaxOrderByAggregateInput
+    _min?: OrganizationMinOrderByAggregateInput
+  }
+
+  export type OrganizationScalarWhereWithAggregatesInput = {
+    AND?: OrganizationScalarWhereWithAggregatesInput | OrganizationScalarWhereWithAggregatesInput[]
+    OR?: OrganizationScalarWhereWithAggregatesInput[]
+    NOT?: OrganizationScalarWhereWithAggregatesInput | OrganizationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Organization"> | string
+    name?: StringNullableWithAggregatesFilter<"Organization"> | string | null
+    adminId?: StringWithAggregatesFilter<"Organization"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Organization"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Organization"> | Date | string
+  }
+
   export type UserWhereInput = {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
@@ -14258,23 +17507,23 @@ export namespace Prisma {
     email?: StringNullableFilter<"User"> | string | null
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     image?: StringNullableFilter<"User"> | string | null
+    profileImageId?: StringNullableFilter<"User"> | string | null
     phoneNumber?: StringNullableFilter<"User"> | string | null
     status?: EnumMemberStatusFilter<"User"> | $Enums.MemberStatus
-    role?: EnumMemberRoleFilter<"User"> | $Enums.MemberRole
     joinDate?: DateTimeNullableFilter<"User"> | Date | string | null
     lastPayment?: DateTimeNullableFilter<"User"> | Date | string | null
     notes?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    profileImageId?: StringNullableFilter<"User"> | string | null
-    subscriptions?: SubscriptionListRelationFilter
-    payments?: PaymentListRelationFilter
+    profileImage?: XOR<ImageNullableScalarRelationFilter, ImageWhereInput> | null
+    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
-    organizedEvents?: EventListRelationFilter
-    eventRegistrations?: EventRegistrationListRelationFilter
+    createdEvents?: EventListRelationFilter
     createdMembershipPlans?: MembershipPlanListRelationFilter
-    profileImage?: XOR<ImageNullableScalarRelationFilter, ImageWhereInput> | null
+    initiatedPayments?: PaymentListRelationFilter
+    managedSubscriptions?: SubscriptionListRelationFilter
+    uploadedImages?: ImageListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -14283,23 +17532,23 @@ export namespace Prisma {
     email?: SortOrderInput | SortOrder
     emailVerified?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
+    profileImageId?: SortOrderInput | SortOrder
     phoneNumber?: SortOrderInput | SortOrder
     status?: SortOrder
-    role?: SortOrder
     joinDate?: SortOrderInput | SortOrder
     lastPayment?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    profileImageId?: SortOrderInput | SortOrder
-    subscriptions?: SubscriptionOrderByRelationAggregateInput
-    payments?: PaymentOrderByRelationAggregateInput
+    profileImage?: ImageOrderByWithRelationInput
+    organization?: OrganizationOrderByWithRelationInput
     accounts?: AccountOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
-    organizedEvents?: EventOrderByRelationAggregateInput
-    eventRegistrations?: EventRegistrationOrderByRelationAggregateInput
+    createdEvents?: EventOrderByRelationAggregateInput
     createdMembershipPlans?: MembershipPlanOrderByRelationAggregateInput
-    profileImage?: ImageOrderByWithRelationInput
+    initiatedPayments?: PaymentOrderByRelationAggregateInput
+    managedSubscriptions?: SubscriptionOrderByRelationAggregateInput
+    uploadedImages?: ImageOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -14314,20 +17563,20 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     phoneNumber?: StringNullableFilter<"User"> | string | null
     status?: EnumMemberStatusFilter<"User"> | $Enums.MemberStatus
-    role?: EnumMemberRoleFilter<"User"> | $Enums.MemberRole
     joinDate?: DateTimeNullableFilter<"User"> | Date | string | null
     lastPayment?: DateTimeNullableFilter<"User"> | Date | string | null
     notes?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    subscriptions?: SubscriptionListRelationFilter
-    payments?: PaymentListRelationFilter
+    profileImage?: XOR<ImageNullableScalarRelationFilter, ImageWhereInput> | null
+    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
-    organizedEvents?: EventListRelationFilter
-    eventRegistrations?: EventRegistrationListRelationFilter
+    createdEvents?: EventListRelationFilter
     createdMembershipPlans?: MembershipPlanListRelationFilter
-    profileImage?: XOR<ImageNullableScalarRelationFilter, ImageWhereInput> | null
+    initiatedPayments?: PaymentListRelationFilter
+    managedSubscriptions?: SubscriptionListRelationFilter
+    uploadedImages?: ImageListRelationFilter
   }, "id" | "email" | "profileImageId">
 
   export type UserOrderByWithAggregationInput = {
@@ -14336,15 +17585,14 @@ export namespace Prisma {
     email?: SortOrderInput | SortOrder
     emailVerified?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
+    profileImageId?: SortOrderInput | SortOrder
     phoneNumber?: SortOrderInput | SortOrder
     status?: SortOrder
-    role?: SortOrder
     joinDate?: SortOrderInput | SortOrder
     lastPayment?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    profileImageId?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -14359,15 +17607,14 @@ export namespace Prisma {
     email?: StringNullableWithAggregatesFilter<"User"> | string | null
     emailVerified?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
+    profileImageId?: StringNullableWithAggregatesFilter<"User"> | string | null
     phoneNumber?: StringNullableWithAggregatesFilter<"User"> | string | null
     status?: EnumMemberStatusWithAggregatesFilter<"User"> | $Enums.MemberStatus
-    role?: EnumMemberRoleWithAggregatesFilter<"User"> | $Enums.MemberRole
     joinDate?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     lastPayment?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     notes?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
-    profileImageId?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type AccountWhereInput = {
@@ -14556,6 +17803,92 @@ export namespace Prisma {
     expires?: DateTimeWithAggregatesFilter<"VerificationToken"> | Date | string
   }
 
+  export type MemberWhereInput = {
+    AND?: MemberWhereInput | MemberWhereInput[]
+    OR?: MemberWhereInput[]
+    NOT?: MemberWhereInput | MemberWhereInput[]
+    id?: StringFilter<"Member"> | string
+    name?: StringFilter<"Member"> | string
+    email?: StringNullableFilter<"Member"> | string | null
+    phoneNumber?: StringNullableFilter<"Member"> | string | null
+    status?: EnumMemberStatusFilter<"Member"> | $Enums.MemberStatus
+    joinDate?: DateTimeNullableFilter<"Member"> | Date | string | null
+    notes?: StringNullableFilter<"Member"> | string | null
+    createdAt?: DateTimeFilter<"Member"> | Date | string
+    updatedAt?: DateTimeFilter<"Member"> | Date | string
+    organizationId?: StringFilter<"Member"> | string
+    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+    subscriptions?: SubscriptionListRelationFilter
+    payments?: PaymentListRelationFilter
+  }
+
+  export type MemberOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrderInput | SortOrder
+    phoneNumber?: SortOrderInput | SortOrder
+    status?: SortOrder
+    joinDate?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    organizationId?: SortOrder
+    organization?: OrganizationOrderByWithRelationInput
+    subscriptions?: SubscriptionOrderByRelationAggregateInput
+    payments?: PaymentOrderByRelationAggregateInput
+  }
+
+  export type MemberWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MemberWhereInput | MemberWhereInput[]
+    OR?: MemberWhereInput[]
+    NOT?: MemberWhereInput | MemberWhereInput[]
+    name?: StringFilter<"Member"> | string
+    email?: StringNullableFilter<"Member"> | string | null
+    phoneNumber?: StringNullableFilter<"Member"> | string | null
+    status?: EnumMemberStatusFilter<"Member"> | $Enums.MemberStatus
+    joinDate?: DateTimeNullableFilter<"Member"> | Date | string | null
+    notes?: StringNullableFilter<"Member"> | string | null
+    createdAt?: DateTimeFilter<"Member"> | Date | string
+    updatedAt?: DateTimeFilter<"Member"> | Date | string
+    organizationId?: StringFilter<"Member"> | string
+    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+    subscriptions?: SubscriptionListRelationFilter
+    payments?: PaymentListRelationFilter
+  }, "id">
+
+  export type MemberOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrderInput | SortOrder
+    phoneNumber?: SortOrderInput | SortOrder
+    status?: SortOrder
+    joinDate?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    organizationId?: SortOrder
+    _count?: MemberCountOrderByAggregateInput
+    _max?: MemberMaxOrderByAggregateInput
+    _min?: MemberMinOrderByAggregateInput
+  }
+
+  export type MemberScalarWhereWithAggregatesInput = {
+    AND?: MemberScalarWhereWithAggregatesInput | MemberScalarWhereWithAggregatesInput[]
+    OR?: MemberScalarWhereWithAggregatesInput[]
+    NOT?: MemberScalarWhereWithAggregatesInput | MemberScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Member"> | string
+    name?: StringWithAggregatesFilter<"Member"> | string
+    email?: StringNullableWithAggregatesFilter<"Member"> | string | null
+    phoneNumber?: StringNullableWithAggregatesFilter<"Member"> | string | null
+    status?: EnumMemberStatusWithAggregatesFilter<"Member"> | $Enums.MemberStatus
+    joinDate?: DateTimeNullableWithAggregatesFilter<"Member"> | Date | string | null
+    notes?: StringNullableWithAggregatesFilter<"Member"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Member"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Member"> | Date | string
+    organizationId?: StringWithAggregatesFilter<"Member"> | string
+  }
+
   export type MembershipPlanWhereInput = {
     AND?: MembershipPlanWhereInput | MembershipPlanWhereInput[]
     OR?: MembershipPlanWhereInput[]
@@ -14570,9 +17903,11 @@ export namespace Prisma {
     stripePriceId?: StringNullableFilter<"MembershipPlan"> | string | null
     features?: StringNullableListFilter<"MembershipPlan">
     createdById?: StringNullableFilter<"MembershipPlan"> | string | null
+    organizationId?: StringNullableFilter<"MembershipPlan"> | string | null
     createdAt?: DateTimeFilter<"MembershipPlan"> | Date | string
     updatedAt?: DateTimeFilter<"MembershipPlan"> | Date | string
     createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
     subscriptions?: SubscriptionListRelationFilter
   }
 
@@ -14587,9 +17922,11 @@ export namespace Prisma {
     stripePriceId?: SortOrderInput | SortOrder
     features?: SortOrder
     createdById?: SortOrderInput | SortOrder
+    organizationId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdBy?: UserOrderByWithRelationInput
+    organization?: OrganizationOrderByWithRelationInput
     subscriptions?: SubscriptionOrderByRelationAggregateInput
   }
 
@@ -14607,9 +17944,11 @@ export namespace Prisma {
     active?: BoolFilter<"MembershipPlan"> | boolean
     features?: StringNullableListFilter<"MembershipPlan">
     createdById?: StringNullableFilter<"MembershipPlan"> | string | null
+    organizationId?: StringNullableFilter<"MembershipPlan"> | string | null
     createdAt?: DateTimeFilter<"MembershipPlan"> | Date | string
     updatedAt?: DateTimeFilter<"MembershipPlan"> | Date | string
     createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
     subscriptions?: SubscriptionListRelationFilter
   }, "id" | "stripePriceId">
 
@@ -14624,6 +17963,7 @@ export namespace Prisma {
     stripePriceId?: SortOrderInput | SortOrder
     features?: SortOrder
     createdById?: SortOrderInput | SortOrder
+    organizationId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: MembershipPlanCountOrderByAggregateInput
@@ -14647,6 +17987,7 @@ export namespace Prisma {
     stripePriceId?: StringNullableWithAggregatesFilter<"MembershipPlan"> | string | null
     features?: StringNullableListFilter<"MembershipPlan">
     createdById?: StringNullableWithAggregatesFilter<"MembershipPlan"> | string | null
+    organizationId?: StringNullableWithAggregatesFilter<"MembershipPlan"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"MembershipPlan"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"MembershipPlan"> | Date | string
   }
@@ -14661,12 +18002,16 @@ export namespace Prisma {
     status?: EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
     method?: EnumPaymentMethodFilter<"Payment"> | $Enums.PaymentMethod
     description?: StringNullableFilter<"Payment"> | string | null
-    userId?: StringFilter<"Payment"> | string
+    initiatedById?: StringNullableFilter<"Payment"> | string | null
+    organizationId?: StringNullableFilter<"Payment"> | string | null
     subscriptionId?: StringNullableFilter<"Payment"> | string | null
+    memberId?: StringNullableFilter<"Payment"> | string | null
     createdAt?: DateTimeFilter<"Payment"> | Date | string
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    initiatedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
     subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
+    member?: XOR<MemberNullableScalarRelationFilter, MemberWhereInput> | null
   }
 
   export type PaymentOrderByWithRelationInput = {
@@ -14676,12 +18021,16 @@ export namespace Prisma {
     status?: SortOrder
     method?: SortOrder
     description?: SortOrderInput | SortOrder
-    userId?: SortOrder
+    initiatedById?: SortOrderInput | SortOrder
+    organizationId?: SortOrderInput | SortOrder
     subscriptionId?: SortOrderInput | SortOrder
+    memberId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
+    initiatedBy?: UserOrderByWithRelationInput
+    organization?: OrganizationOrderByWithRelationInput
     subscription?: SubscriptionOrderByWithRelationInput
+    member?: MemberOrderByWithRelationInput
   }
 
   export type PaymentWhereUniqueInput = Prisma.AtLeast<{
@@ -14694,12 +18043,16 @@ export namespace Prisma {
     status?: EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
     method?: EnumPaymentMethodFilter<"Payment"> | $Enums.PaymentMethod
     description?: StringNullableFilter<"Payment"> | string | null
-    userId?: StringFilter<"Payment"> | string
+    initiatedById?: StringNullableFilter<"Payment"> | string | null
+    organizationId?: StringNullableFilter<"Payment"> | string | null
     subscriptionId?: StringNullableFilter<"Payment"> | string | null
+    memberId?: StringNullableFilter<"Payment"> | string | null
     createdAt?: DateTimeFilter<"Payment"> | Date | string
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    initiatedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
     subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
+    member?: XOR<MemberNullableScalarRelationFilter, MemberWhereInput> | null
   }, "id">
 
   export type PaymentOrderByWithAggregationInput = {
@@ -14709,8 +18062,10 @@ export namespace Prisma {
     status?: SortOrder
     method?: SortOrder
     description?: SortOrderInput | SortOrder
-    userId?: SortOrder
+    initiatedById?: SortOrderInput | SortOrder
+    organizationId?: SortOrderInput | SortOrder
     subscriptionId?: SortOrderInput | SortOrder
+    memberId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PaymentCountOrderByAggregateInput
@@ -14730,8 +18085,10 @@ export namespace Prisma {
     status?: EnumPaymentStatusWithAggregatesFilter<"Payment"> | $Enums.PaymentStatus
     method?: EnumPaymentMethodWithAggregatesFilter<"Payment"> | $Enums.PaymentMethod
     description?: StringNullableWithAggregatesFilter<"Payment"> | string | null
-    userId?: StringWithAggregatesFilter<"Payment"> | string
+    initiatedById?: StringNullableWithAggregatesFilter<"Payment"> | string | null
+    organizationId?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     subscriptionId?: StringNullableWithAggregatesFilter<"Payment"> | string | null
+    memberId?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
   }
@@ -14741,8 +18098,10 @@ export namespace Prisma {
     OR?: SubscriptionWhereInput[]
     NOT?: SubscriptionWhereInput | SubscriptionWhereInput[]
     id?: StringFilter<"Subscription"> | string
-    userId?: StringFilter<"Subscription"> | string
+    managedById?: StringNullableFilter<"Subscription"> | string | null
     planId?: StringFilter<"Subscription"> | string
+    organizationId?: StringNullableFilter<"Subscription"> | string | null
+    memberId?: StringNullableFilter<"Subscription"> | string | null
     stripeSubscriptionId?: StringNullableFilter<"Subscription"> | string | null
     status?: EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
     startDate?: DateTimeFilter<"Subscription"> | Date | string
@@ -14754,15 +18113,19 @@ export namespace Prisma {
     trialEndDate?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     createdAt?: DateTimeFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    managedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     plan?: XOR<MembershipPlanScalarRelationFilter, MembershipPlanWhereInput>
+    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
+    member?: XOR<MemberNullableScalarRelationFilter, MemberWhereInput> | null
     payments?: PaymentListRelationFilter
   }
 
   export type SubscriptionOrderByWithRelationInput = {
     id?: SortOrder
-    userId?: SortOrder
+    managedById?: SortOrderInput | SortOrder
     planId?: SortOrder
+    organizationId?: SortOrderInput | SortOrder
+    memberId?: SortOrderInput | SortOrder
     stripeSubscriptionId?: SortOrderInput | SortOrder
     status?: SortOrder
     startDate?: SortOrder
@@ -14774,8 +18137,10 @@ export namespace Prisma {
     trialEndDate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
+    managedBy?: UserOrderByWithRelationInput
     plan?: MembershipPlanOrderByWithRelationInput
+    organization?: OrganizationOrderByWithRelationInput
+    member?: MemberOrderByWithRelationInput
     payments?: PaymentOrderByRelationAggregateInput
   }
 
@@ -14785,8 +18150,10 @@ export namespace Prisma {
     AND?: SubscriptionWhereInput | SubscriptionWhereInput[]
     OR?: SubscriptionWhereInput[]
     NOT?: SubscriptionWhereInput | SubscriptionWhereInput[]
-    userId?: StringFilter<"Subscription"> | string
+    managedById?: StringNullableFilter<"Subscription"> | string | null
     planId?: StringFilter<"Subscription"> | string
+    organizationId?: StringNullableFilter<"Subscription"> | string | null
+    memberId?: StringNullableFilter<"Subscription"> | string | null
     status?: EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
     startDate?: DateTimeFilter<"Subscription"> | Date | string
     currentPeriodStart?: DateTimeFilter<"Subscription"> | Date | string
@@ -14797,15 +18164,19 @@ export namespace Prisma {
     trialEndDate?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     createdAt?: DateTimeFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    managedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     plan?: XOR<MembershipPlanScalarRelationFilter, MembershipPlanWhereInput>
+    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
+    member?: XOR<MemberNullableScalarRelationFilter, MemberWhereInput> | null
     payments?: PaymentListRelationFilter
   }, "id" | "stripeSubscriptionId">
 
   export type SubscriptionOrderByWithAggregationInput = {
     id?: SortOrder
-    userId?: SortOrder
+    managedById?: SortOrderInput | SortOrder
     planId?: SortOrder
+    organizationId?: SortOrderInput | SortOrder
+    memberId?: SortOrderInput | SortOrder
     stripeSubscriptionId?: SortOrderInput | SortOrder
     status?: SortOrder
     startDate?: SortOrder
@@ -14827,8 +18198,10 @@ export namespace Prisma {
     OR?: SubscriptionScalarWhereWithAggregatesInput[]
     NOT?: SubscriptionScalarWhereWithAggregatesInput | SubscriptionScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Subscription"> | string
-    userId?: StringWithAggregatesFilter<"Subscription"> | string
+    managedById?: StringNullableWithAggregatesFilter<"Subscription"> | string | null
     planId?: StringWithAggregatesFilter<"Subscription"> | string
+    organizationId?: StringNullableWithAggregatesFilter<"Subscription"> | string | null
+    memberId?: StringNullableWithAggregatesFilter<"Subscription"> | string | null
     stripeSubscriptionId?: StringNullableWithAggregatesFilter<"Subscription"> | string | null
     status?: EnumSubscriptionStatusWithAggregatesFilter<"Subscription"> | $Enums.SubscriptionStatus
     startDate?: DateTimeWithAggregatesFilter<"Subscription"> | Date | string
@@ -14854,17 +18227,18 @@ export namespace Prisma {
     location?: StringNullableFilter<"Event"> | string | null
     locationDetails?: StringNullableFilter<"Event"> | string | null
     organizerId?: StringNullableFilter<"Event"> | string | null
+    organizationId?: StringNullableFilter<"Event"> | string | null
     capacity?: IntNullableFilter<"Event"> | number | null
     registrationDeadline?: DateTimeNullableFilter<"Event"> | Date | string | null
     status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
     isPrivate?: BoolFilter<"Event"> | boolean
-    coverImage?: StringNullableFilter<"Event"> | string | null
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
     eventImageId?: StringNullableFilter<"Event"> | string | null
     organizer?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
     registrations?: EventRegistrationListRelationFilter
-    eventImage?: XOR<ImageNullableScalarRelationFilter, ImageWhereInput> | null
+    coverImage?: XOR<ImageNullableScalarRelationFilter, ImageWhereInput> | null
   }
 
   export type EventOrderByWithRelationInput = {
@@ -14876,17 +18250,18 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     locationDetails?: SortOrderInput | SortOrder
     organizerId?: SortOrderInput | SortOrder
+    organizationId?: SortOrderInput | SortOrder
     capacity?: SortOrderInput | SortOrder
     registrationDeadline?: SortOrderInput | SortOrder
     status?: SortOrder
     isPrivate?: SortOrder
-    coverImage?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     eventImageId?: SortOrderInput | SortOrder
     organizer?: UserOrderByWithRelationInput
+    organization?: OrganizationOrderByWithRelationInput
     registrations?: EventRegistrationOrderByRelationAggregateInput
-    eventImage?: ImageOrderByWithRelationInput
+    coverImage?: ImageOrderByWithRelationInput
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -14902,16 +18277,17 @@ export namespace Prisma {
     location?: StringNullableFilter<"Event"> | string | null
     locationDetails?: StringNullableFilter<"Event"> | string | null
     organizerId?: StringNullableFilter<"Event"> | string | null
+    organizationId?: StringNullableFilter<"Event"> | string | null
     capacity?: IntNullableFilter<"Event"> | number | null
     registrationDeadline?: DateTimeNullableFilter<"Event"> | Date | string | null
     status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
     isPrivate?: BoolFilter<"Event"> | boolean
-    coverImage?: StringNullableFilter<"Event"> | string | null
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
     organizer?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
     registrations?: EventRegistrationListRelationFilter
-    eventImage?: XOR<ImageNullableScalarRelationFilter, ImageWhereInput> | null
+    coverImage?: XOR<ImageNullableScalarRelationFilter, ImageWhereInput> | null
   }, "id" | "eventImageId">
 
   export type EventOrderByWithAggregationInput = {
@@ -14923,11 +18299,11 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     locationDetails?: SortOrderInput | SortOrder
     organizerId?: SortOrderInput | SortOrder
+    organizationId?: SortOrderInput | SortOrder
     capacity?: SortOrderInput | SortOrder
     registrationDeadline?: SortOrderInput | SortOrder
     status?: SortOrder
     isPrivate?: SortOrder
-    coverImage?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     eventImageId?: SortOrderInput | SortOrder
@@ -14950,11 +18326,11 @@ export namespace Prisma {
     location?: StringNullableWithAggregatesFilter<"Event"> | string | null
     locationDetails?: StringNullableWithAggregatesFilter<"Event"> | string | null
     organizerId?: StringNullableWithAggregatesFilter<"Event"> | string | null
+    organizationId?: StringNullableWithAggregatesFilter<"Event"> | string | null
     capacity?: IntNullableWithAggregatesFilter<"Event"> | number | null
     registrationDeadline?: DateTimeNullableWithAggregatesFilter<"Event"> | Date | string | null
     status?: EnumEventStatusWithAggregatesFilter<"Event"> | $Enums.EventStatus
     isPrivate?: BoolWithAggregatesFilter<"Event"> | boolean
-    coverImage?: StringNullableWithAggregatesFilter<"Event"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     eventImageId?: StringNullableWithAggregatesFilter<"Event"> | string | null
@@ -14966,50 +18342,58 @@ export namespace Prisma {
     NOT?: EventRegistrationWhereInput | EventRegistrationWhereInput[]
     id?: StringFilter<"EventRegistration"> | string
     eventId?: StringFilter<"EventRegistration"> | string
-    userId?: StringFilter<"EventRegistration"> | string
+    registrantName?: StringNullableFilter<"EventRegistration"> | string | null
+    registrantEmail?: StringFilter<"EventRegistration"> | string
+    organizationId?: StringFilter<"EventRegistration"> | string
     registrationDate?: DateTimeFilter<"EventRegistration"> | Date | string
     status?: EnumRegistrationStatusFilter<"EventRegistration"> | $Enums.RegistrationStatus
     notes?: StringNullableFilter<"EventRegistration"> | string | null
     guestsCount?: IntFilter<"EventRegistration"> | number
     updatedAt?: DateTimeFilter<"EventRegistration"> | Date | string
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
   }
 
   export type EventRegistrationOrderByWithRelationInput = {
     id?: SortOrder
     eventId?: SortOrder
-    userId?: SortOrder
+    registrantName?: SortOrderInput | SortOrder
+    registrantEmail?: SortOrder
+    organizationId?: SortOrder
     registrationDate?: SortOrder
     status?: SortOrder
     notes?: SortOrderInput | SortOrder
     guestsCount?: SortOrder
     updatedAt?: SortOrder
     event?: EventOrderByWithRelationInput
-    user?: UserOrderByWithRelationInput
+    organization?: OrganizationOrderByWithRelationInput
   }
 
   export type EventRegistrationWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    eventId_userId?: EventRegistrationEventIdUserIdCompoundUniqueInput
+    eventId_registrantEmail?: EventRegistrationEventIdRegistrantEmailCompoundUniqueInput
     AND?: EventRegistrationWhereInput | EventRegistrationWhereInput[]
     OR?: EventRegistrationWhereInput[]
     NOT?: EventRegistrationWhereInput | EventRegistrationWhereInput[]
     eventId?: StringFilter<"EventRegistration"> | string
-    userId?: StringFilter<"EventRegistration"> | string
+    registrantName?: StringNullableFilter<"EventRegistration"> | string | null
+    registrantEmail?: StringFilter<"EventRegistration"> | string
+    organizationId?: StringFilter<"EventRegistration"> | string
     registrationDate?: DateTimeFilter<"EventRegistration"> | Date | string
     status?: EnumRegistrationStatusFilter<"EventRegistration"> | $Enums.RegistrationStatus
     notes?: StringNullableFilter<"EventRegistration"> | string | null
     guestsCount?: IntFilter<"EventRegistration"> | number
     updatedAt?: DateTimeFilter<"EventRegistration"> | Date | string
     event?: XOR<EventScalarRelationFilter, EventWhereInput>
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "eventId_userId">
+    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+  }, "id" | "eventId_registrantEmail">
 
   export type EventRegistrationOrderByWithAggregationInput = {
     id?: SortOrder
     eventId?: SortOrder
-    userId?: SortOrder
+    registrantName?: SortOrderInput | SortOrder
+    registrantEmail?: SortOrder
+    organizationId?: SortOrder
     registrationDate?: SortOrder
     status?: SortOrder
     notes?: SortOrderInput | SortOrder
@@ -15028,7 +18412,9 @@ export namespace Prisma {
     NOT?: EventRegistrationScalarWhereWithAggregatesInput | EventRegistrationScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"EventRegistration"> | string
     eventId?: StringWithAggregatesFilter<"EventRegistration"> | string
-    userId?: StringWithAggregatesFilter<"EventRegistration"> | string
+    registrantName?: StringNullableWithAggregatesFilter<"EventRegistration"> | string | null
+    registrantEmail?: StringWithAggregatesFilter<"EventRegistration"> | string
+    organizationId?: StringWithAggregatesFilter<"EventRegistration"> | string
     registrationDate?: DateTimeWithAggregatesFilter<"EventRegistration"> | Date | string
     status?: EnumRegistrationStatusWithAggregatesFilter<"EventRegistration"> | $Enums.RegistrationStatus
     notes?: StringNullableWithAggregatesFilter<"EventRegistration"> | string | null
@@ -15041,61 +18427,83 @@ export namespace Prisma {
     OR?: ImageWhereInput[]
     NOT?: ImageWhereInput | ImageWhereInput[]
     id?: StringFilter<"Image"> | string
+    url?: StringFilter<"Image"> | string
+    alt?: StringNullableFilter<"Image"> | string | null
     data?: BytesFilter<"Image"> | Uint8Array
-    filename?: StringNullableFilter<"Image"> | string | null
     mimeType?: StringFilter<"Image"> | string
     size?: IntFilter<"Image"> | number
+    filename?: StringNullableFilter<"Image"> | string | null
     width?: IntNullableFilter<"Image"> | number | null
     height?: IntNullableFilter<"Image"> | number | null
-    alt?: StringNullableFilter<"Image"> | string | null
+    uploaderId?: StringNullableFilter<"Image"> | string | null
+    organizationId?: StringNullableFilter<"Image"> | string | null
+    eventCoverForId?: StringNullableFilter<"Image"> | string | null
     createdAt?: DateTimeFilter<"Image"> | Date | string
     updatedAt?: DateTimeFilter<"Image"> | Date | string
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    event?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
+    uploader?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    userProfileFor?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
+    eventCoverFor?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
   }
 
   export type ImageOrderByWithRelationInput = {
     id?: SortOrder
+    url?: SortOrder
+    alt?: SortOrderInput | SortOrder
     data?: SortOrder
-    filename?: SortOrderInput | SortOrder
     mimeType?: SortOrder
     size?: SortOrder
+    filename?: SortOrderInput | SortOrder
     width?: SortOrderInput | SortOrder
     height?: SortOrderInput | SortOrder
-    alt?: SortOrderInput | SortOrder
+    uploaderId?: SortOrderInput | SortOrder
+    organizationId?: SortOrderInput | SortOrder
+    eventCoverForId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-    event?: EventOrderByWithRelationInput
+    uploader?: UserOrderByWithRelationInput
+    userProfileFor?: UserOrderByWithRelationInput
+    organization?: OrganizationOrderByWithRelationInput
+    eventCoverFor?: EventOrderByWithRelationInput
   }
 
   export type ImageWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    eventCoverForId?: string
     AND?: ImageWhereInput | ImageWhereInput[]
     OR?: ImageWhereInput[]
     NOT?: ImageWhereInput | ImageWhereInput[]
+    url?: StringFilter<"Image"> | string
+    alt?: StringNullableFilter<"Image"> | string | null
     data?: BytesFilter<"Image"> | Uint8Array
-    filename?: StringNullableFilter<"Image"> | string | null
     mimeType?: StringFilter<"Image"> | string
     size?: IntFilter<"Image"> | number
+    filename?: StringNullableFilter<"Image"> | string | null
     width?: IntNullableFilter<"Image"> | number | null
     height?: IntNullableFilter<"Image"> | number | null
-    alt?: StringNullableFilter<"Image"> | string | null
+    uploaderId?: StringNullableFilter<"Image"> | string | null
+    organizationId?: StringNullableFilter<"Image"> | string | null
     createdAt?: DateTimeFilter<"Image"> | Date | string
     updatedAt?: DateTimeFilter<"Image"> | Date | string
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    event?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
-  }, "id">
+    uploader?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    userProfileFor?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
+    eventCoverFor?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
+  }, "id" | "eventCoverForId">
 
   export type ImageOrderByWithAggregationInput = {
     id?: SortOrder
+    url?: SortOrder
+    alt?: SortOrderInput | SortOrder
     data?: SortOrder
-    filename?: SortOrderInput | SortOrder
     mimeType?: SortOrder
     size?: SortOrder
+    filename?: SortOrderInput | SortOrder
     width?: SortOrderInput | SortOrder
     height?: SortOrderInput | SortOrder
-    alt?: SortOrderInput | SortOrder
+    uploaderId?: SortOrderInput | SortOrder
+    organizationId?: SortOrderInput | SortOrder
+    eventCoverForId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ImageCountOrderByAggregateInput
@@ -15110,15 +18518,102 @@ export namespace Prisma {
     OR?: ImageScalarWhereWithAggregatesInput[]
     NOT?: ImageScalarWhereWithAggregatesInput | ImageScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Image"> | string
+    url?: StringWithAggregatesFilter<"Image"> | string
+    alt?: StringNullableWithAggregatesFilter<"Image"> | string | null
     data?: BytesWithAggregatesFilter<"Image"> | Uint8Array
-    filename?: StringNullableWithAggregatesFilter<"Image"> | string | null
     mimeType?: StringWithAggregatesFilter<"Image"> | string
     size?: IntWithAggregatesFilter<"Image"> | number
+    filename?: StringNullableWithAggregatesFilter<"Image"> | string | null
     width?: IntNullableWithAggregatesFilter<"Image"> | number | null
     height?: IntNullableWithAggregatesFilter<"Image"> | number | null
-    alt?: StringNullableWithAggregatesFilter<"Image"> | string | null
+    uploaderId?: StringNullableWithAggregatesFilter<"Image"> | string | null
+    organizationId?: StringNullableWithAggregatesFilter<"Image"> | string | null
+    eventCoverForId?: StringNullableWithAggregatesFilter<"Image"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Image"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Image"> | Date | string
+  }
+
+  export type OrganizationCreateInput = {
+    id?: string
+    name?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    admin: UserCreateNestedOneWithoutOrganizationInput
+    members?: MemberCreateNestedManyWithoutOrganizationInput
+    events?: EventCreateNestedManyWithoutOrganizationInput
+    membershipPlans?: MembershipPlanCreateNestedManyWithoutOrganizationInput
+    payments?: PaymentCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
+    images?: ImageCreateNestedManyWithoutOrganizationInput
+    eventRegistrations?: EventRegistrationCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationUncheckedCreateInput = {
+    id?: string
+    name?: string | null
+    adminId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: MemberUncheckedCreateNestedManyWithoutOrganizationInput
+    events?: EventUncheckedCreateNestedManyWithoutOrganizationInput
+    membershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutOrganizationInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
+    images?: ImageUncheckedCreateNestedManyWithoutOrganizationInput
+    eventRegistrations?: EventRegistrationUncheckedCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    admin?: UserUpdateOneRequiredWithoutOrganizationNestedInput
+    members?: MemberUpdateManyWithoutOrganizationNestedInput
+    events?: EventUpdateManyWithoutOrganizationNestedInput
+    membershipPlans?: MembershipPlanUpdateManyWithoutOrganizationNestedInput
+    payments?: PaymentUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
+    images?: ImageUpdateManyWithoutOrganizationNestedInput
+    eventRegistrations?: EventRegistrationUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    adminId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: MemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    events?: EventUncheckedUpdateManyWithoutOrganizationNestedInput
+    membershipPlans?: MembershipPlanUncheckedUpdateManyWithoutOrganizationNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
+    images?: ImageUncheckedUpdateManyWithoutOrganizationNestedInput
+    eventRegistrations?: EventRegistrationUncheckedUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationCreateManyInput = {
+    id?: string
+    name?: string | null
+    adminId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type OrganizationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganizationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    adminId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserCreateInput = {
@@ -15129,20 +18624,20 @@ export namespace Prisma {
     image?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
-    payments?: PaymentCreateNestedManyWithoutUserInput
+    profileImage?: ImageCreateNestedOneWithoutUserProfileForInput
+    organization?: OrganizationCreateNestedOneWithoutAdminInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
-    organizedEvents?: EventCreateNestedManyWithoutOrganizerInput
-    eventRegistrations?: EventRegistrationCreateNestedManyWithoutUserInput
+    createdEvents?: EventCreateNestedManyWithoutOrganizerInput
     createdMembershipPlans?: MembershipPlanCreateNestedManyWithoutCreatedByInput
-    profileImage?: ImageCreateNestedOneWithoutUserInput
+    initiatedPayments?: PaymentCreateNestedManyWithoutInitiatedByInput
+    managedSubscriptions?: SubscriptionCreateNestedManyWithoutManagedByInput
+    uploadedImages?: ImageCreateNestedManyWithoutUploaderInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -15151,22 +18646,22 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    profileImageId?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    profileImageId?: string | null
-    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
-    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    organization?: OrganizationUncheckedCreateNestedOneWithoutAdminInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    organizedEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
-    eventRegistrations?: EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+    createdEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
     createdMembershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutCreatedByInput
+    initiatedPayments?: PaymentUncheckedCreateNestedManyWithoutInitiatedByInput
+    managedSubscriptions?: SubscriptionUncheckedCreateNestedManyWithoutManagedByInput
+    uploadedImages?: ImageUncheckedCreateNestedManyWithoutUploaderInput
   }
 
   export type UserUpdateInput = {
@@ -15177,20 +18672,20 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
-    payments?: PaymentUpdateManyWithoutUserNestedInput
+    profileImage?: ImageUpdateOneWithoutUserProfileForNestedInput
+    organization?: OrganizationUpdateOneWithoutAdminNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
-    organizedEvents?: EventUpdateManyWithoutOrganizerNestedInput
-    eventRegistrations?: EventRegistrationUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUpdateManyWithoutOrganizerNestedInput
     createdMembershipPlans?: MembershipPlanUpdateManyWithoutCreatedByNestedInput
-    profileImage?: ImageUpdateOneWithoutUserNestedInput
+    initiatedPayments?: PaymentUpdateManyWithoutInitiatedByNestedInput
+    managedSubscriptions?: SubscriptionUpdateManyWithoutManagedByNestedInput
+    uploadedImages?: ImageUpdateManyWithoutUploaderNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -15199,22 +18694,22 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
-    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    organization?: OrganizationUncheckedUpdateOneWithoutAdminNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    organizedEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
-    eventRegistrations?: EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
     createdMembershipPlans?: MembershipPlanUncheckedUpdateManyWithoutCreatedByNestedInput
+    initiatedPayments?: PaymentUncheckedUpdateManyWithoutInitiatedByNestedInput
+    managedSubscriptions?: SubscriptionUncheckedUpdateManyWithoutManagedByNestedInput
+    uploadedImages?: ImageUncheckedUpdateManyWithoutUploaderNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -15223,15 +18718,14 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    profileImageId?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    profileImageId?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -15242,7 +18736,6 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15256,15 +18749,14 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AccountCreateInput = {
@@ -15461,6 +18953,104 @@ export namespace Prisma {
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MemberCreateInput = {
+    id?: string
+    name: string
+    email?: string | null
+    phoneNumber?: string | null
+    status?: $Enums.MemberStatus
+    joinDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organization: OrganizationCreateNestedOneWithoutMembersInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutMemberInput
+    payments?: PaymentCreateNestedManyWithoutMemberInput
+  }
+
+  export type MemberUncheckedCreateInput = {
+    id?: string
+    name: string
+    email?: string | null
+    phoneNumber?: string | null
+    status?: $Enums.MemberStatus
+    joinDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationId: string
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutMemberInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutMemberInput
+  }
+
+  export type MemberUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneRequiredWithoutMembersNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutMemberNestedInput
+    payments?: PaymentUpdateManyWithoutMemberNestedInput
+  }
+
+  export type MemberUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutMemberNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutMemberNestedInput
+  }
+
+  export type MemberCreateManyInput = {
+    id?: string
+    name: string
+    email?: string | null
+    phoneNumber?: string | null
+    status?: $Enums.MemberStatus
+    joinDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationId: string
+  }
+
+  export type MemberUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MemberUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type MembershipPlanCreateInput = {
     id?: string
     name: string
@@ -15474,6 +19064,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutCreatedMembershipPlansInput
+    organization?: OrganizationCreateNestedOneWithoutMembershipPlansInput
     subscriptions?: SubscriptionCreateNestedManyWithoutPlanInput
   }
 
@@ -15488,6 +19079,7 @@ export namespace Prisma {
     stripePriceId?: string | null
     features?: MembershipPlanCreatefeaturesInput | string[]
     createdById?: string | null
+    organizationId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutPlanInput
@@ -15506,6 +19098,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutCreatedMembershipPlansNestedInput
+    organization?: OrganizationUpdateOneWithoutMembershipPlansNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutPlanNestedInput
   }
 
@@ -15520,6 +19113,7 @@ export namespace Prisma {
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     features?: MembershipPlanUpdatefeaturesInput | string[]
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutPlanNestedInput
@@ -15536,6 +19130,7 @@ export namespace Prisma {
     stripePriceId?: string | null
     features?: MembershipPlanCreatefeaturesInput | string[]
     createdById?: string | null
+    organizationId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -15565,6 +19160,7 @@ export namespace Prisma {
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     features?: MembershipPlanUpdatefeaturesInput | string[]
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15578,8 +19174,10 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutPaymentsInput
+    initiatedBy?: UserCreateNestedOneWithoutInitiatedPaymentsInput
+    organization?: OrganizationCreateNestedOneWithoutPaymentsInput
     subscription?: SubscriptionCreateNestedOneWithoutPaymentsInput
+    member?: MemberCreateNestedOneWithoutPaymentsInput
   }
 
   export type PaymentUncheckedCreateInput = {
@@ -15589,8 +19187,10 @@ export namespace Prisma {
     status?: $Enums.PaymentStatus
     method?: $Enums.PaymentMethod
     description?: string | null
-    userId: string
+    initiatedById?: string | null
+    organizationId?: string | null
     subscriptionId?: string | null
+    memberId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -15604,8 +19204,10 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
+    initiatedBy?: UserUpdateOneWithoutInitiatedPaymentsNestedInput
+    organization?: OrganizationUpdateOneWithoutPaymentsNestedInput
     subscription?: SubscriptionUpdateOneWithoutPaymentsNestedInput
+    member?: MemberUpdateOneWithoutPaymentsNestedInput
   }
 
   export type PaymentUncheckedUpdateInput = {
@@ -15615,8 +19217,10 @@ export namespace Prisma {
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: StringFieldUpdateOperationsInput | string
+    initiatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     subscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15628,8 +19232,10 @@ export namespace Prisma {
     status?: $Enums.PaymentStatus
     method?: $Enums.PaymentMethod
     description?: string | null
-    userId: string
+    initiatedById?: string | null
+    organizationId?: string | null
     subscriptionId?: string | null
+    memberId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -15652,8 +19258,10 @@ export namespace Prisma {
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: StringFieldUpdateOperationsInput | string
+    initiatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     subscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15671,15 +19279,19 @@ export namespace Prisma {
     trialEndDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutSubscriptionsInput
+    managedBy?: UserCreateNestedOneWithoutManagedSubscriptionsInput
     plan: MembershipPlanCreateNestedOneWithoutSubscriptionsInput
+    organization?: OrganizationCreateNestedOneWithoutSubscriptionsInput
+    member?: MemberCreateNestedOneWithoutSubscriptionsInput
     payments?: PaymentCreateNestedManyWithoutSubscriptionInput
   }
 
   export type SubscriptionUncheckedCreateInput = {
     id?: string
-    userId: string
+    managedById?: string | null
     planId: string
+    organizationId?: string | null
+    memberId?: string | null
     stripeSubscriptionId?: string | null
     status: $Enums.SubscriptionStatus
     startDate?: Date | string
@@ -15707,15 +19319,19 @@ export namespace Prisma {
     trialEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutSubscriptionsNestedInput
+    managedBy?: UserUpdateOneWithoutManagedSubscriptionsNestedInput
     plan?: MembershipPlanUpdateOneRequiredWithoutSubscriptionsNestedInput
+    organization?: OrganizationUpdateOneWithoutSubscriptionsNestedInput
+    member?: MemberUpdateOneWithoutSubscriptionsNestedInput
     payments?: PaymentUpdateManyWithoutSubscriptionNestedInput
   }
 
   export type SubscriptionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    managedById?: NullableStringFieldUpdateOperationsInput | string | null
     planId?: StringFieldUpdateOperationsInput | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15732,8 +19348,10 @@ export namespace Prisma {
 
   export type SubscriptionCreateManyInput = {
     id?: string
-    userId: string
+    managedById?: string | null
     planId: string
+    organizationId?: string | null
+    memberId?: string | null
     stripeSubscriptionId?: string | null
     status: $Enums.SubscriptionStatus
     startDate?: Date | string
@@ -15764,8 +19382,10 @@ export namespace Prisma {
 
   export type SubscriptionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    managedById?: NullableStringFieldUpdateOperationsInput | string | null
     planId?: StringFieldUpdateOperationsInput | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15791,12 +19411,13 @@ export namespace Prisma {
     registrationDeadline?: Date | string | null
     status?: $Enums.EventStatus
     isPrivate?: boolean
-    coverImage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    organizer?: UserCreateNestedOneWithoutOrganizedEventsInput
+    eventImageId?: string | null
+    organizer?: UserCreateNestedOneWithoutCreatedEventsInput
+    organization?: OrganizationCreateNestedOneWithoutEventsInput
     registrations?: EventRegistrationCreateNestedManyWithoutEventInput
-    eventImage?: ImageCreateNestedOneWithoutEventInput
+    coverImage?: ImageCreateNestedOneWithoutEventCoverForInput
   }
 
   export type EventUncheckedCreateInput = {
@@ -15808,15 +19429,16 @@ export namespace Prisma {
     location?: string | null
     locationDetails?: string | null
     organizerId?: string | null
+    organizationId?: string | null
     capacity?: number | null
     registrationDeadline?: Date | string | null
     status?: $Enums.EventStatus
     isPrivate?: boolean
-    coverImage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     eventImageId?: string | null
     registrations?: EventRegistrationUncheckedCreateNestedManyWithoutEventInput
+    coverImage?: ImageUncheckedCreateNestedOneWithoutEventCoverForInput
   }
 
   export type EventUpdateInput = {
@@ -15831,12 +19453,13 @@ export namespace Prisma {
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
-    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organizer?: UserUpdateOneWithoutOrganizedEventsNestedInput
+    eventImageId?: NullableStringFieldUpdateOperationsInput | string | null
+    organizer?: UserUpdateOneWithoutCreatedEventsNestedInput
+    organization?: OrganizationUpdateOneWithoutEventsNestedInput
     registrations?: EventRegistrationUpdateManyWithoutEventNestedInput
-    eventImage?: ImageUpdateOneWithoutEventNestedInput
+    coverImage?: ImageUpdateOneWithoutEventCoverForNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
@@ -15848,15 +19471,16 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     locationDetails?: NullableStringFieldUpdateOperationsInput | string | null
     organizerId?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
-    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     eventImageId?: NullableStringFieldUpdateOperationsInput | string | null
     registrations?: EventRegistrationUncheckedUpdateManyWithoutEventNestedInput
+    coverImage?: ImageUncheckedUpdateOneWithoutEventCoverForNestedInput
   }
 
   export type EventCreateManyInput = {
@@ -15868,11 +19492,11 @@ export namespace Prisma {
     location?: string | null
     locationDetails?: string | null
     organizerId?: string | null
+    organizationId?: string | null
     capacity?: number | null
     registrationDeadline?: Date | string | null
     status?: $Enums.EventStatus
     isPrivate?: boolean
-    coverImage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     eventImageId?: string | null
@@ -15890,9 +19514,9 @@ export namespace Prisma {
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
-    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventImageId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EventUncheckedUpdateManyInput = {
@@ -15904,11 +19528,11 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     locationDetails?: NullableStringFieldUpdateOperationsInput | string | null
     organizerId?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
-    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     eventImageId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15916,19 +19540,23 @@ export namespace Prisma {
 
   export type EventRegistrationCreateInput = {
     id?: string
+    registrantName?: string | null
+    registrantEmail: string
     registrationDate?: Date | string
     status?: $Enums.RegistrationStatus
     notes?: string | null
     guestsCount?: number
     updatedAt?: Date | string
     event: EventCreateNestedOneWithoutRegistrationsInput
-    user: UserCreateNestedOneWithoutEventRegistrationsInput
+    organization: OrganizationCreateNestedOneWithoutEventRegistrationsInput
   }
 
   export type EventRegistrationUncheckedCreateInput = {
     id?: string
     eventId: string
-    userId: string
+    registrantName?: string | null
+    registrantEmail: string
+    organizationId: string
     registrationDate?: Date | string
     status?: $Enums.RegistrationStatus
     notes?: string | null
@@ -15938,19 +19566,23 @@ export namespace Prisma {
 
   export type EventRegistrationUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    registrantName?: NullableStringFieldUpdateOperationsInput | string | null
+    registrantEmail?: StringFieldUpdateOperationsInput | string
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     guestsCount?: IntFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
-    user?: UserUpdateOneRequiredWithoutEventRegistrationsNestedInput
+    organization?: OrganizationUpdateOneRequiredWithoutEventRegistrationsNestedInput
   }
 
   export type EventRegistrationUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    registrantName?: NullableStringFieldUpdateOperationsInput | string | null
+    registrantEmail?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15961,7 +19593,9 @@ export namespace Prisma {
   export type EventRegistrationCreateManyInput = {
     id?: string
     eventId: string
-    userId: string
+    registrantName?: string | null
+    registrantEmail: string
+    organizationId: string
     registrationDate?: Date | string
     status?: $Enums.RegistrationStatus
     notes?: string | null
@@ -15971,6 +19605,8 @@ export namespace Prisma {
 
   export type EventRegistrationUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    registrantName?: NullableStringFieldUpdateOperationsInput | string | null
+    registrantEmail?: StringFieldUpdateOperationsInput | string
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15981,7 +19617,9 @@ export namespace Prisma {
   export type EventRegistrationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     eventId?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    registrantName?: NullableStringFieldUpdateOperationsInput | string | null
+    registrantEmail?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15991,99 +19629,120 @@ export namespace Prisma {
 
   export type ImageCreateInput = {
     id?: string
+    url: string
+    alt?: string | null
     data: Uint8Array
-    filename?: string | null
     mimeType: string
     size: number
+    filename?: string | null
     width?: number | null
     height?: number | null
-    alt?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user?: UserCreateNestedOneWithoutProfileImageInput
-    event?: EventCreateNestedOneWithoutEventImageInput
+    uploader?: UserCreateNestedOneWithoutUploadedImagesInput
+    userProfileFor?: UserCreateNestedOneWithoutProfileImageInput
+    organization?: OrganizationCreateNestedOneWithoutImagesInput
+    eventCoverFor?: EventCreateNestedOneWithoutCoverImageInput
   }
 
   export type ImageUncheckedCreateInput = {
     id?: string
+    url: string
+    alt?: string | null
     data: Uint8Array
-    filename?: string | null
     mimeType: string
     size: number
+    filename?: string | null
     width?: number | null
     height?: number | null
-    alt?: string | null
+    uploaderId?: string | null
+    organizationId?: string | null
+    eventCoverForId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user?: UserUncheckedCreateNestedOneWithoutProfileImageInput
-    event?: EventUncheckedCreateNestedOneWithoutEventImageInput
+    userProfileFor?: UserUncheckedCreateNestedOneWithoutProfileImageInput
   }
 
   export type ImageUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    alt?: NullableStringFieldUpdateOperationsInput | string | null
     data?: BytesFieldUpdateOperationsInput | Uint8Array
-    filename?: NullableStringFieldUpdateOperationsInput | string | null
     mimeType?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
+    filename?: NullableStringFieldUpdateOperationsInput | string | null
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
-    alt?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutProfileImageNestedInput
-    event?: EventUpdateOneWithoutEventImageNestedInput
+    uploader?: UserUpdateOneWithoutUploadedImagesNestedInput
+    userProfileFor?: UserUpdateOneWithoutProfileImageNestedInput
+    organization?: OrganizationUpdateOneWithoutImagesNestedInput
+    eventCoverFor?: EventUpdateOneWithoutCoverImageNestedInput
   }
 
   export type ImageUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    alt?: NullableStringFieldUpdateOperationsInput | string | null
     data?: BytesFieldUpdateOperationsInput | Uint8Array
-    filename?: NullableStringFieldUpdateOperationsInput | string | null
     mimeType?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
+    filename?: NullableStringFieldUpdateOperationsInput | string | null
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
-    alt?: NullableStringFieldUpdateOperationsInput | string | null
+    uploaderId?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    eventCoverForId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUncheckedUpdateOneWithoutProfileImageNestedInput
-    event?: EventUncheckedUpdateOneWithoutEventImageNestedInput
+    userProfileFor?: UserUncheckedUpdateOneWithoutProfileImageNestedInput
   }
 
   export type ImageCreateManyInput = {
     id?: string
+    url: string
+    alt?: string | null
     data: Uint8Array
-    filename?: string | null
     mimeType: string
     size: number
+    filename?: string | null
     width?: number | null
     height?: number | null
-    alt?: string | null
+    uploaderId?: string | null
+    organizationId?: string | null
+    eventCoverForId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type ImageUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    alt?: NullableStringFieldUpdateOperationsInput | string | null
     data?: BytesFieldUpdateOperationsInput | Uint8Array
-    filename?: NullableStringFieldUpdateOperationsInput | string | null
     mimeType?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
+    filename?: NullableStringFieldUpdateOperationsInput | string | null
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
-    alt?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ImageUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    alt?: NullableStringFieldUpdateOperationsInput | string | null
     data?: BytesFieldUpdateOperationsInput | Uint8Array
-    filename?: NullableStringFieldUpdateOperationsInput | string | null
     mimeType?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
+    filename?: NullableStringFieldUpdateOperationsInput | string | null
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
-    alt?: NullableStringFieldUpdateOperationsInput | string | null
+    uploaderId?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    eventCoverForId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16118,31 +19777,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type EnumMemberStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.MemberStatus | EnumMemberStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.MemberStatus[] | ListEnumMemberStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MemberStatus[] | ListEnumMemberStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumMemberStatusFilter<$PrismaModel> | $Enums.MemberStatus
-  }
-
-  export type EnumMemberRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.MemberRole | EnumMemberRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.MemberRole[] | ListEnumMemberRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MemberRole[] | ListEnumMemberRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumMemberRoleFilter<$PrismaModel> | $Enums.MemberRole
-  }
-
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -16154,28 +19788,15 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type SubscriptionListRelationFilter = {
-    every?: SubscriptionWhereInput
-    some?: SubscriptionWhereInput
-    none?: SubscriptionWhereInput
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
   }
 
-  export type PaymentListRelationFilter = {
-    every?: PaymentWhereInput
-    some?: PaymentWhereInput
-    none?: PaymentWhereInput
-  }
-
-  export type AccountListRelationFilter = {
-    every?: AccountWhereInput
-    some?: AccountWhereInput
-    none?: AccountWhereInput
-  }
-
-  export type SessionListRelationFilter = {
-    every?: SessionWhereInput
-    some?: SessionWhereInput
-    none?: SessionWhereInput
+  export type MemberListRelationFilter = {
+    every?: MemberWhereInput
+    some?: MemberWhereInput
+    none?: MemberWhereInput
   }
 
   export type EventListRelationFilter = {
@@ -16184,21 +19805,34 @@ export namespace Prisma {
     none?: EventWhereInput
   }
 
-  export type EventRegistrationListRelationFilter = {
-    every?: EventRegistrationWhereInput
-    some?: EventRegistrationWhereInput
-    none?: EventRegistrationWhereInput
-  }
-
   export type MembershipPlanListRelationFilter = {
     every?: MembershipPlanWhereInput
     some?: MembershipPlanWhereInput
     none?: MembershipPlanWhereInput
   }
 
-  export type ImageNullableScalarRelationFilter = {
-    is?: ImageWhereInput | null
-    isNot?: ImageWhereInput | null
+  export type PaymentListRelationFilter = {
+    every?: PaymentWhereInput
+    some?: PaymentWhereInput
+    none?: PaymentWhereInput
+  }
+
+  export type SubscriptionListRelationFilter = {
+    every?: SubscriptionWhereInput
+    some?: SubscriptionWhereInput
+    none?: SubscriptionWhereInput
+  }
+
+  export type ImageListRelationFilter = {
+    every?: ImageWhereInput
+    some?: ImageWhereInput
+    none?: ImageWhereInput
+  }
+
+  export type EventRegistrationListRelationFilter = {
+    every?: EventRegistrationWhereInput
+    some?: EventRegistrationWhereInput
+    none?: EventRegistrationWhereInput
   }
 
   export type SortOrderInput = {
@@ -16206,19 +19840,7 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type SubscriptionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type PaymentOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type AccountOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type SessionOrderByRelationAggregateInput = {
+  export type MemberOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -16226,63 +19848,48 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type EventRegistrationOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type MembershipPlanOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type UserCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    emailVerified?: SortOrder
-    image?: SortOrder
-    phoneNumber?: SortOrder
-    status?: SortOrder
-    role?: SortOrder
-    joinDate?: SortOrder
-    lastPayment?: SortOrder
-    notes?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    profileImageId?: SortOrder
+  export type PaymentOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
-  export type UserMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    emailVerified?: SortOrder
-    image?: SortOrder
-    phoneNumber?: SortOrder
-    status?: SortOrder
-    role?: SortOrder
-    joinDate?: SortOrder
-    lastPayment?: SortOrder
-    notes?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    profileImageId?: SortOrder
+  export type SubscriptionOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
-  export type UserMinOrderByAggregateInput = {
+  export type ImageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EventRegistrationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type OrganizationCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    email?: SortOrder
-    emailVerified?: SortOrder
-    image?: SortOrder
-    phoneNumber?: SortOrder
-    status?: SortOrder
-    role?: SortOrder
-    joinDate?: SortOrder
-    lastPayment?: SortOrder
-    notes?: SortOrder
+    adminId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    profileImageId?: SortOrder
+  }
+
+  export type OrganizationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    adminId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type OrganizationMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    adminId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -16321,6 +19928,116 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type EnumMemberStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MemberStatus | EnumMemberStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MemberStatus[] | ListEnumMemberStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MemberStatus[] | ListEnumMemberStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMemberStatusFilter<$PrismaModel> | $Enums.MemberStatus
+  }
+
+  export type ImageNullableScalarRelationFilter = {
+    is?: ImageWhereInput | null
+    isNot?: ImageWhereInput | null
+  }
+
+  export type OrganizationNullableScalarRelationFilter = {
+    is?: OrganizationWhereInput | null
+    isNot?: OrganizationWhereInput | null
+  }
+
+  export type AccountListRelationFilter = {
+    every?: AccountWhereInput
+    some?: AccountWhereInput
+    none?: AccountWhereInput
+  }
+
+  export type SessionListRelationFilter = {
+    every?: SessionWhereInput
+    some?: SessionWhereInput
+    none?: SessionWhereInput
+  }
+
+  export type AccountOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    emailVerified?: SortOrder
+    image?: SortOrder
+    profileImageId?: SortOrder
+    phoneNumber?: SortOrder
+    status?: SortOrder
+    joinDate?: SortOrder
+    lastPayment?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    emailVerified?: SortOrder
+    image?: SortOrder
+    profileImageId?: SortOrder
+    phoneNumber?: SortOrder
+    status?: SortOrder
+    joinDate?: SortOrder
+    lastPayment?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    emailVerified?: SortOrder
+    image?: SortOrder
+    profileImageId?: SortOrder
+    phoneNumber?: SortOrder
+    status?: SortOrder
+    joinDate?: SortOrder
+    lastPayment?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -16345,30 +20062,6 @@ export namespace Prisma {
     _max?: NestedEnumMemberStatusFilter<$PrismaModel>
   }
 
-  export type EnumMemberRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.MemberRole | EnumMemberRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.MemberRole[] | ListEnumMemberRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MemberRole[] | ListEnumMemberRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumMemberRoleWithAggregatesFilter<$PrismaModel> | $Enums.MemberRole
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumMemberRoleFilter<$PrismaModel>
-    _max?: NestedEnumMemberRoleFilter<$PrismaModel>
-  }
-
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -16378,11 +20071,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
   }
 
   export type AccountProviderProviderAccountIdCompoundUniqueInput = {
@@ -16503,6 +20191,50 @@ export namespace Prisma {
     expires?: SortOrder
   }
 
+  export type OrganizationScalarRelationFilter = {
+    is?: OrganizationWhereInput
+    isNot?: OrganizationWhereInput
+  }
+
+  export type MemberCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    phoneNumber?: SortOrder
+    status?: SortOrder
+    joinDate?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    organizationId?: SortOrder
+  }
+
+  export type MemberMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    phoneNumber?: SortOrder
+    status?: SortOrder
+    joinDate?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    organizationId?: SortOrder
+  }
+
+  export type MemberMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    phoneNumber?: SortOrder
+    status?: SortOrder
+    joinDate?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    organizationId?: SortOrder
+  }
+
   export type DecimalFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -16550,6 +20282,7 @@ export namespace Prisma {
     stripePriceId?: SortOrder
     features?: SortOrder
     createdById?: SortOrder
+    organizationId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16568,6 +20301,7 @@ export namespace Prisma {
     active?: SortOrder
     stripePriceId?: SortOrder
     createdById?: SortOrder
+    organizationId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16582,6 +20316,7 @@ export namespace Prisma {
     active?: SortOrder
     stripePriceId?: SortOrder
     createdById?: SortOrder
+    organizationId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16643,6 +20378,11 @@ export namespace Prisma {
     isNot?: SubscriptionWhereInput | null
   }
 
+  export type MemberNullableScalarRelationFilter = {
+    is?: MemberWhereInput | null
+    isNot?: MemberWhereInput | null
+  }
+
   export type PaymentCountOrderByAggregateInput = {
     id?: SortOrder
     amount?: SortOrder
@@ -16650,8 +20390,10 @@ export namespace Prisma {
     status?: SortOrder
     method?: SortOrder
     description?: SortOrder
-    userId?: SortOrder
+    initiatedById?: SortOrder
+    organizationId?: SortOrder
     subscriptionId?: SortOrder
+    memberId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16667,8 +20409,10 @@ export namespace Prisma {
     status?: SortOrder
     method?: SortOrder
     description?: SortOrder
-    userId?: SortOrder
+    initiatedById?: SortOrder
+    organizationId?: SortOrder
     subscriptionId?: SortOrder
+    memberId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16680,8 +20424,10 @@ export namespace Prisma {
     status?: SortOrder
     method?: SortOrder
     description?: SortOrder
-    userId?: SortOrder
+    initiatedById?: SortOrder
+    organizationId?: SortOrder
     subscriptionId?: SortOrder
+    memberId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16724,8 +20470,10 @@ export namespace Prisma {
 
   export type SubscriptionCountOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
+    managedById?: SortOrder
     planId?: SortOrder
+    organizationId?: SortOrder
+    memberId?: SortOrder
     stripeSubscriptionId?: SortOrder
     status?: SortOrder
     startDate?: SortOrder
@@ -16741,8 +20489,10 @@ export namespace Prisma {
 
   export type SubscriptionMaxOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
+    managedById?: SortOrder
     planId?: SortOrder
+    organizationId?: SortOrder
+    memberId?: SortOrder
     stripeSubscriptionId?: SortOrder
     status?: SortOrder
     startDate?: SortOrder
@@ -16758,8 +20508,10 @@ export namespace Prisma {
 
   export type SubscriptionMinOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
+    managedById?: SortOrder
     planId?: SortOrder
+    organizationId?: SortOrder
+    memberId?: SortOrder
     stripeSubscriptionId?: SortOrder
     status?: SortOrder
     startDate?: SortOrder
@@ -16799,11 +20551,11 @@ export namespace Prisma {
     location?: SortOrder
     locationDetails?: SortOrder
     organizerId?: SortOrder
+    organizationId?: SortOrder
     capacity?: SortOrder
     registrationDeadline?: SortOrder
     status?: SortOrder
     isPrivate?: SortOrder
-    coverImage?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     eventImageId?: SortOrder
@@ -16822,11 +20574,11 @@ export namespace Prisma {
     location?: SortOrder
     locationDetails?: SortOrder
     organizerId?: SortOrder
+    organizationId?: SortOrder
     capacity?: SortOrder
     registrationDeadline?: SortOrder
     status?: SortOrder
     isPrivate?: SortOrder
-    coverImage?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     eventImageId?: SortOrder
@@ -16841,11 +20593,11 @@ export namespace Prisma {
     location?: SortOrder
     locationDetails?: SortOrder
     organizerId?: SortOrder
+    organizationId?: SortOrder
     capacity?: SortOrder
     registrationDeadline?: SortOrder
     status?: SortOrder
     isPrivate?: SortOrder
-    coverImage?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     eventImageId?: SortOrder
@@ -16888,15 +20640,17 @@ export namespace Prisma {
     isNot?: EventWhereInput
   }
 
-  export type EventRegistrationEventIdUserIdCompoundUniqueInput = {
+  export type EventRegistrationEventIdRegistrantEmailCompoundUniqueInput = {
     eventId: string
-    userId: string
+    registrantEmail: string
   }
 
   export type EventRegistrationCountOrderByAggregateInput = {
     id?: SortOrder
     eventId?: SortOrder
-    userId?: SortOrder
+    registrantName?: SortOrder
+    registrantEmail?: SortOrder
+    organizationId?: SortOrder
     registrationDate?: SortOrder
     status?: SortOrder
     notes?: SortOrder
@@ -16911,7 +20665,9 @@ export namespace Prisma {
   export type EventRegistrationMaxOrderByAggregateInput = {
     id?: SortOrder
     eventId?: SortOrder
-    userId?: SortOrder
+    registrantName?: SortOrder
+    registrantEmail?: SortOrder
+    organizationId?: SortOrder
     registrationDate?: SortOrder
     status?: SortOrder
     notes?: SortOrder
@@ -16922,7 +20678,9 @@ export namespace Prisma {
   export type EventRegistrationMinOrderByAggregateInput = {
     id?: SortOrder
     eventId?: SortOrder
-    userId?: SortOrder
+    registrantName?: SortOrder
+    registrantEmail?: SortOrder
+    organizationId?: SortOrder
     registrationDate?: SortOrder
     status?: SortOrder
     notes?: SortOrder
@@ -16974,13 +20732,17 @@ export namespace Prisma {
 
   export type ImageCountOrderByAggregateInput = {
     id?: SortOrder
+    url?: SortOrder
+    alt?: SortOrder
     data?: SortOrder
-    filename?: SortOrder
     mimeType?: SortOrder
     size?: SortOrder
+    filename?: SortOrder
     width?: SortOrder
     height?: SortOrder
-    alt?: SortOrder
+    uploaderId?: SortOrder
+    organizationId?: SortOrder
+    eventCoverForId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16993,26 +20755,34 @@ export namespace Prisma {
 
   export type ImageMaxOrderByAggregateInput = {
     id?: SortOrder
+    url?: SortOrder
+    alt?: SortOrder
     data?: SortOrder
-    filename?: SortOrder
     mimeType?: SortOrder
     size?: SortOrder
+    filename?: SortOrder
     width?: SortOrder
     height?: SortOrder
-    alt?: SortOrder
+    uploaderId?: SortOrder
+    organizationId?: SortOrder
+    eventCoverForId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type ImageMinOrderByAggregateInput = {
     id?: SortOrder
+    url?: SortOrder
+    alt?: SortOrder
     data?: SortOrder
-    filename?: SortOrder
     mimeType?: SortOrder
     size?: SortOrder
+    filename?: SortOrder
     width?: SortOrder
     height?: SortOrder
-    alt?: SortOrder
+    uploaderId?: SortOrder
+    organizationId?: SortOrder
+    eventCoverForId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -17033,18 +20803,336 @@ export namespace Prisma {
     _max?: NestedBytesFilter<$PrismaModel>
   }
 
-  export type SubscriptionCreateNestedManyWithoutUserInput = {
-    create?: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput> | SubscriptionCreateWithoutUserInput[] | SubscriptionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput | SubscriptionCreateOrConnectWithoutUserInput[]
-    createMany?: SubscriptionCreateManyUserInputEnvelope
+  export type UserCreateNestedOneWithoutOrganizationInput = {
+    create?: XOR<UserCreateWithoutOrganizationInput, UserUncheckedCreateWithoutOrganizationInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOrganizationInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type MemberCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<MemberCreateWithoutOrganizationInput, MemberUncheckedCreateWithoutOrganizationInput> | MemberCreateWithoutOrganizationInput[] | MemberUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: MemberCreateOrConnectWithoutOrganizationInput | MemberCreateOrConnectWithoutOrganizationInput[]
+    createMany?: MemberCreateManyOrganizationInputEnvelope
+    connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+  }
+
+  export type EventCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<EventCreateWithoutOrganizationInput, EventUncheckedCreateWithoutOrganizationInput> | EventCreateWithoutOrganizationInput[] | EventUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: EventCreateOrConnectWithoutOrganizationInput | EventCreateOrConnectWithoutOrganizationInput[]
+    createMany?: EventCreateManyOrganizationInputEnvelope
+    connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+  }
+
+  export type MembershipPlanCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<MembershipPlanCreateWithoutOrganizationInput, MembershipPlanUncheckedCreateWithoutOrganizationInput> | MembershipPlanCreateWithoutOrganizationInput[] | MembershipPlanUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: MembershipPlanCreateOrConnectWithoutOrganizationInput | MembershipPlanCreateOrConnectWithoutOrganizationInput[]
+    createMany?: MembershipPlanCreateManyOrganizationInputEnvelope
+    connect?: MembershipPlanWhereUniqueInput | MembershipPlanWhereUniqueInput[]
+  }
+
+  export type PaymentCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<PaymentCreateWithoutOrganizationInput, PaymentUncheckedCreateWithoutOrganizationInput> | PaymentCreateWithoutOrganizationInput[] | PaymentUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutOrganizationInput | PaymentCreateOrConnectWithoutOrganizationInput[]
+    createMany?: PaymentCreateManyOrganizationInputEnvelope
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type SubscriptionCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<SubscriptionCreateWithoutOrganizationInput, SubscriptionUncheckedCreateWithoutOrganizationInput> | SubscriptionCreateWithoutOrganizationInput[] | SubscriptionUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutOrganizationInput | SubscriptionCreateOrConnectWithoutOrganizationInput[]
+    createMany?: SubscriptionCreateManyOrganizationInputEnvelope
     connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
   }
 
-  export type PaymentCreateNestedManyWithoutUserInput = {
-    create?: XOR<PaymentCreateWithoutUserInput, PaymentUncheckedCreateWithoutUserInput> | PaymentCreateWithoutUserInput[] | PaymentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: PaymentCreateOrConnectWithoutUserInput | PaymentCreateOrConnectWithoutUserInput[]
-    createMany?: PaymentCreateManyUserInputEnvelope
+  export type ImageCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<ImageCreateWithoutOrganizationInput, ImageUncheckedCreateWithoutOrganizationInput> | ImageCreateWithoutOrganizationInput[] | ImageUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: ImageCreateOrConnectWithoutOrganizationInput | ImageCreateOrConnectWithoutOrganizationInput[]
+    createMany?: ImageCreateManyOrganizationInputEnvelope
+    connect?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+  }
+
+  export type EventRegistrationCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<EventRegistrationCreateWithoutOrganizationInput, EventRegistrationUncheckedCreateWithoutOrganizationInput> | EventRegistrationCreateWithoutOrganizationInput[] | EventRegistrationUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: EventRegistrationCreateOrConnectWithoutOrganizationInput | EventRegistrationCreateOrConnectWithoutOrganizationInput[]
+    createMany?: EventRegistrationCreateManyOrganizationInputEnvelope
+    connect?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
+  }
+
+  export type MemberUncheckedCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<MemberCreateWithoutOrganizationInput, MemberUncheckedCreateWithoutOrganizationInput> | MemberCreateWithoutOrganizationInput[] | MemberUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: MemberCreateOrConnectWithoutOrganizationInput | MemberCreateOrConnectWithoutOrganizationInput[]
+    createMany?: MemberCreateManyOrganizationInputEnvelope
+    connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+  }
+
+  export type EventUncheckedCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<EventCreateWithoutOrganizationInput, EventUncheckedCreateWithoutOrganizationInput> | EventCreateWithoutOrganizationInput[] | EventUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: EventCreateOrConnectWithoutOrganizationInput | EventCreateOrConnectWithoutOrganizationInput[]
+    createMany?: EventCreateManyOrganizationInputEnvelope
+    connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+  }
+
+  export type MembershipPlanUncheckedCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<MembershipPlanCreateWithoutOrganizationInput, MembershipPlanUncheckedCreateWithoutOrganizationInput> | MembershipPlanCreateWithoutOrganizationInput[] | MembershipPlanUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: MembershipPlanCreateOrConnectWithoutOrganizationInput | MembershipPlanCreateOrConnectWithoutOrganizationInput[]
+    createMany?: MembershipPlanCreateManyOrganizationInputEnvelope
+    connect?: MembershipPlanWhereUniqueInput | MembershipPlanWhereUniqueInput[]
+  }
+
+  export type PaymentUncheckedCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<PaymentCreateWithoutOrganizationInput, PaymentUncheckedCreateWithoutOrganizationInput> | PaymentCreateWithoutOrganizationInput[] | PaymentUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutOrganizationInput | PaymentCreateOrConnectWithoutOrganizationInput[]
+    createMany?: PaymentCreateManyOrganizationInputEnvelope
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<SubscriptionCreateWithoutOrganizationInput, SubscriptionUncheckedCreateWithoutOrganizationInput> | SubscriptionCreateWithoutOrganizationInput[] | SubscriptionUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutOrganizationInput | SubscriptionCreateOrConnectWithoutOrganizationInput[]
+    createMany?: SubscriptionCreateManyOrganizationInputEnvelope
+    connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+  }
+
+  export type ImageUncheckedCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<ImageCreateWithoutOrganizationInput, ImageUncheckedCreateWithoutOrganizationInput> | ImageCreateWithoutOrganizationInput[] | ImageUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: ImageCreateOrConnectWithoutOrganizationInput | ImageCreateOrConnectWithoutOrganizationInput[]
+    createMany?: ImageCreateManyOrganizationInputEnvelope
+    connect?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+  }
+
+  export type EventRegistrationUncheckedCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<EventRegistrationCreateWithoutOrganizationInput, EventRegistrationUncheckedCreateWithoutOrganizationInput> | EventRegistrationCreateWithoutOrganizationInput[] | EventRegistrationUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: EventRegistrationCreateOrConnectWithoutOrganizationInput | EventRegistrationCreateOrConnectWithoutOrganizationInput[]
+    createMany?: EventRegistrationCreateManyOrganizationInputEnvelope
+    connect?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
+  }
+
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
+  export type UserUpdateOneRequiredWithoutOrganizationNestedInput = {
+    create?: XOR<UserCreateWithoutOrganizationInput, UserUncheckedCreateWithoutOrganizationInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOrganizationInput
+    upsert?: UserUpsertWithoutOrganizationInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOrganizationInput, UserUpdateWithoutOrganizationInput>, UserUncheckedUpdateWithoutOrganizationInput>
+  }
+
+  export type MemberUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<MemberCreateWithoutOrganizationInput, MemberUncheckedCreateWithoutOrganizationInput> | MemberCreateWithoutOrganizationInput[] | MemberUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: MemberCreateOrConnectWithoutOrganizationInput | MemberCreateOrConnectWithoutOrganizationInput[]
+    upsert?: MemberUpsertWithWhereUniqueWithoutOrganizationInput | MemberUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: MemberCreateManyOrganizationInputEnvelope
+    set?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    disconnect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    delete?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    update?: MemberUpdateWithWhereUniqueWithoutOrganizationInput | MemberUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: MemberUpdateManyWithWhereWithoutOrganizationInput | MemberUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: MemberScalarWhereInput | MemberScalarWhereInput[]
+  }
+
+  export type EventUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<EventCreateWithoutOrganizationInput, EventUncheckedCreateWithoutOrganizationInput> | EventCreateWithoutOrganizationInput[] | EventUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: EventCreateOrConnectWithoutOrganizationInput | EventCreateOrConnectWithoutOrganizationInput[]
+    upsert?: EventUpsertWithWhereUniqueWithoutOrganizationInput | EventUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: EventCreateManyOrganizationInputEnvelope
+    set?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    disconnect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    delete?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    update?: EventUpdateWithWhereUniqueWithoutOrganizationInput | EventUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: EventUpdateManyWithWhereWithoutOrganizationInput | EventUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: EventScalarWhereInput | EventScalarWhereInput[]
+  }
+
+  export type MembershipPlanUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<MembershipPlanCreateWithoutOrganizationInput, MembershipPlanUncheckedCreateWithoutOrganizationInput> | MembershipPlanCreateWithoutOrganizationInput[] | MembershipPlanUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: MembershipPlanCreateOrConnectWithoutOrganizationInput | MembershipPlanCreateOrConnectWithoutOrganizationInput[]
+    upsert?: MembershipPlanUpsertWithWhereUniqueWithoutOrganizationInput | MembershipPlanUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: MembershipPlanCreateManyOrganizationInputEnvelope
+    set?: MembershipPlanWhereUniqueInput | MembershipPlanWhereUniqueInput[]
+    disconnect?: MembershipPlanWhereUniqueInput | MembershipPlanWhereUniqueInput[]
+    delete?: MembershipPlanWhereUniqueInput | MembershipPlanWhereUniqueInput[]
+    connect?: MembershipPlanWhereUniqueInput | MembershipPlanWhereUniqueInput[]
+    update?: MembershipPlanUpdateWithWhereUniqueWithoutOrganizationInput | MembershipPlanUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: MembershipPlanUpdateManyWithWhereWithoutOrganizationInput | MembershipPlanUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: MembershipPlanScalarWhereInput | MembershipPlanScalarWhereInput[]
+  }
+
+  export type PaymentUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<PaymentCreateWithoutOrganizationInput, PaymentUncheckedCreateWithoutOrganizationInput> | PaymentCreateWithoutOrganizationInput[] | PaymentUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutOrganizationInput | PaymentCreateOrConnectWithoutOrganizationInput[]
+    upsert?: PaymentUpsertWithWhereUniqueWithoutOrganizationInput | PaymentUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: PaymentCreateManyOrganizationInputEnvelope
+    set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    update?: PaymentUpdateWithWhereUniqueWithoutOrganizationInput | PaymentUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: PaymentUpdateManyWithWhereWithoutOrganizationInput | PaymentUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
+  export type SubscriptionUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<SubscriptionCreateWithoutOrganizationInput, SubscriptionUncheckedCreateWithoutOrganizationInput> | SubscriptionCreateWithoutOrganizationInput[] | SubscriptionUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutOrganizationInput | SubscriptionCreateOrConnectWithoutOrganizationInput[]
+    upsert?: SubscriptionUpsertWithWhereUniqueWithoutOrganizationInput | SubscriptionUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: SubscriptionCreateManyOrganizationInputEnvelope
+    set?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    disconnect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    delete?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    update?: SubscriptionUpdateWithWhereUniqueWithoutOrganizationInput | SubscriptionUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: SubscriptionUpdateManyWithWhereWithoutOrganizationInput | SubscriptionUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
+  }
+
+  export type ImageUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<ImageCreateWithoutOrganizationInput, ImageUncheckedCreateWithoutOrganizationInput> | ImageCreateWithoutOrganizationInput[] | ImageUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: ImageCreateOrConnectWithoutOrganizationInput | ImageCreateOrConnectWithoutOrganizationInput[]
+    upsert?: ImageUpsertWithWhereUniqueWithoutOrganizationInput | ImageUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: ImageCreateManyOrganizationInputEnvelope
+    set?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+    disconnect?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+    delete?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+    connect?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+    update?: ImageUpdateWithWhereUniqueWithoutOrganizationInput | ImageUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: ImageUpdateManyWithWhereWithoutOrganizationInput | ImageUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: ImageScalarWhereInput | ImageScalarWhereInput[]
+  }
+
+  export type EventRegistrationUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<EventRegistrationCreateWithoutOrganizationInput, EventRegistrationUncheckedCreateWithoutOrganizationInput> | EventRegistrationCreateWithoutOrganizationInput[] | EventRegistrationUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: EventRegistrationCreateOrConnectWithoutOrganizationInput | EventRegistrationCreateOrConnectWithoutOrganizationInput[]
+    upsert?: EventRegistrationUpsertWithWhereUniqueWithoutOrganizationInput | EventRegistrationUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: EventRegistrationCreateManyOrganizationInputEnvelope
+    set?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
+    disconnect?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
+    delete?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
+    connect?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
+    update?: EventRegistrationUpdateWithWhereUniqueWithoutOrganizationInput | EventRegistrationUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: EventRegistrationUpdateManyWithWhereWithoutOrganizationInput | EventRegistrationUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: EventRegistrationScalarWhereInput | EventRegistrationScalarWhereInput[]
+  }
+
+  export type MemberUncheckedUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<MemberCreateWithoutOrganizationInput, MemberUncheckedCreateWithoutOrganizationInput> | MemberCreateWithoutOrganizationInput[] | MemberUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: MemberCreateOrConnectWithoutOrganizationInput | MemberCreateOrConnectWithoutOrganizationInput[]
+    upsert?: MemberUpsertWithWhereUniqueWithoutOrganizationInput | MemberUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: MemberCreateManyOrganizationInputEnvelope
+    set?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    disconnect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    delete?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    connect?: MemberWhereUniqueInput | MemberWhereUniqueInput[]
+    update?: MemberUpdateWithWhereUniqueWithoutOrganizationInput | MemberUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: MemberUpdateManyWithWhereWithoutOrganizationInput | MemberUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: MemberScalarWhereInput | MemberScalarWhereInput[]
+  }
+
+  export type EventUncheckedUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<EventCreateWithoutOrganizationInput, EventUncheckedCreateWithoutOrganizationInput> | EventCreateWithoutOrganizationInput[] | EventUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: EventCreateOrConnectWithoutOrganizationInput | EventCreateOrConnectWithoutOrganizationInput[]
+    upsert?: EventUpsertWithWhereUniqueWithoutOrganizationInput | EventUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: EventCreateManyOrganizationInputEnvelope
+    set?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    disconnect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    delete?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    update?: EventUpdateWithWhereUniqueWithoutOrganizationInput | EventUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: EventUpdateManyWithWhereWithoutOrganizationInput | EventUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: EventScalarWhereInput | EventScalarWhereInput[]
+  }
+
+  export type MembershipPlanUncheckedUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<MembershipPlanCreateWithoutOrganizationInput, MembershipPlanUncheckedCreateWithoutOrganizationInput> | MembershipPlanCreateWithoutOrganizationInput[] | MembershipPlanUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: MembershipPlanCreateOrConnectWithoutOrganizationInput | MembershipPlanCreateOrConnectWithoutOrganizationInput[]
+    upsert?: MembershipPlanUpsertWithWhereUniqueWithoutOrganizationInput | MembershipPlanUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: MembershipPlanCreateManyOrganizationInputEnvelope
+    set?: MembershipPlanWhereUniqueInput | MembershipPlanWhereUniqueInput[]
+    disconnect?: MembershipPlanWhereUniqueInput | MembershipPlanWhereUniqueInput[]
+    delete?: MembershipPlanWhereUniqueInput | MembershipPlanWhereUniqueInput[]
+    connect?: MembershipPlanWhereUniqueInput | MembershipPlanWhereUniqueInput[]
+    update?: MembershipPlanUpdateWithWhereUniqueWithoutOrganizationInput | MembershipPlanUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: MembershipPlanUpdateManyWithWhereWithoutOrganizationInput | MembershipPlanUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: MembershipPlanScalarWhereInput | MembershipPlanScalarWhereInput[]
+  }
+
+  export type PaymentUncheckedUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<PaymentCreateWithoutOrganizationInput, PaymentUncheckedCreateWithoutOrganizationInput> | PaymentCreateWithoutOrganizationInput[] | PaymentUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutOrganizationInput | PaymentCreateOrConnectWithoutOrganizationInput[]
+    upsert?: PaymentUpsertWithWhereUniqueWithoutOrganizationInput | PaymentUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: PaymentCreateManyOrganizationInputEnvelope
+    set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    update?: PaymentUpdateWithWhereUniqueWithoutOrganizationInput | PaymentUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: PaymentUpdateManyWithWhereWithoutOrganizationInput | PaymentUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
+  export type SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<SubscriptionCreateWithoutOrganizationInput, SubscriptionUncheckedCreateWithoutOrganizationInput> | SubscriptionCreateWithoutOrganizationInput[] | SubscriptionUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutOrganizationInput | SubscriptionCreateOrConnectWithoutOrganizationInput[]
+    upsert?: SubscriptionUpsertWithWhereUniqueWithoutOrganizationInput | SubscriptionUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: SubscriptionCreateManyOrganizationInputEnvelope
+    set?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    disconnect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    delete?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    update?: SubscriptionUpdateWithWhereUniqueWithoutOrganizationInput | SubscriptionUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: SubscriptionUpdateManyWithWhereWithoutOrganizationInput | SubscriptionUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
+  }
+
+  export type ImageUncheckedUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<ImageCreateWithoutOrganizationInput, ImageUncheckedCreateWithoutOrganizationInput> | ImageCreateWithoutOrganizationInput[] | ImageUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: ImageCreateOrConnectWithoutOrganizationInput | ImageCreateOrConnectWithoutOrganizationInput[]
+    upsert?: ImageUpsertWithWhereUniqueWithoutOrganizationInput | ImageUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: ImageCreateManyOrganizationInputEnvelope
+    set?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+    disconnect?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+    delete?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+    connect?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+    update?: ImageUpdateWithWhereUniqueWithoutOrganizationInput | ImageUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: ImageUpdateManyWithWhereWithoutOrganizationInput | ImageUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: ImageScalarWhereInput | ImageScalarWhereInput[]
+  }
+
+  export type EventRegistrationUncheckedUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<EventRegistrationCreateWithoutOrganizationInput, EventRegistrationUncheckedCreateWithoutOrganizationInput> | EventRegistrationCreateWithoutOrganizationInput[] | EventRegistrationUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: EventRegistrationCreateOrConnectWithoutOrganizationInput | EventRegistrationCreateOrConnectWithoutOrganizationInput[]
+    upsert?: EventRegistrationUpsertWithWhereUniqueWithoutOrganizationInput | EventRegistrationUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: EventRegistrationCreateManyOrganizationInputEnvelope
+    set?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
+    disconnect?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
+    delete?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
+    connect?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
+    update?: EventRegistrationUpdateWithWhereUniqueWithoutOrganizationInput | EventRegistrationUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: EventRegistrationUpdateManyWithWhereWithoutOrganizationInput | EventRegistrationUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: EventRegistrationScalarWhereInput | EventRegistrationScalarWhereInput[]
+  }
+
+  export type ImageCreateNestedOneWithoutUserProfileForInput = {
+    create?: XOR<ImageCreateWithoutUserProfileForInput, ImageUncheckedCreateWithoutUserProfileForInput>
+    connectOrCreate?: ImageCreateOrConnectWithoutUserProfileForInput
+    connect?: ImageWhereUniqueInput
+  }
+
+  export type OrganizationCreateNestedOneWithoutAdminInput = {
+    create?: XOR<OrganizationCreateWithoutAdminInput, OrganizationUncheckedCreateWithoutAdminInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutAdminInput
+    connect?: OrganizationWhereUniqueInput
   }
 
   export type AccountCreateNestedManyWithoutUserInput = {
@@ -17068,13 +21156,6 @@ export namespace Prisma {
     connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
   }
 
-  export type EventRegistrationCreateNestedManyWithoutUserInput = {
-    create?: XOR<EventRegistrationCreateWithoutUserInput, EventRegistrationUncheckedCreateWithoutUserInput> | EventRegistrationCreateWithoutUserInput[] | EventRegistrationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: EventRegistrationCreateOrConnectWithoutUserInput | EventRegistrationCreateOrConnectWithoutUserInput[]
-    createMany?: EventRegistrationCreateManyUserInputEnvelope
-    connect?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
-  }
-
   export type MembershipPlanCreateNestedManyWithoutCreatedByInput = {
     create?: XOR<MembershipPlanCreateWithoutCreatedByInput, MembershipPlanUncheckedCreateWithoutCreatedByInput> | MembershipPlanCreateWithoutCreatedByInput[] | MembershipPlanUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: MembershipPlanCreateOrConnectWithoutCreatedByInput | MembershipPlanCreateOrConnectWithoutCreatedByInput[]
@@ -17082,24 +21163,31 @@ export namespace Prisma {
     connect?: MembershipPlanWhereUniqueInput | MembershipPlanWhereUniqueInput[]
   }
 
-  export type ImageCreateNestedOneWithoutUserInput = {
-    create?: XOR<ImageCreateWithoutUserInput, ImageUncheckedCreateWithoutUserInput>
-    connectOrCreate?: ImageCreateOrConnectWithoutUserInput
-    connect?: ImageWhereUniqueInput
+  export type PaymentCreateNestedManyWithoutInitiatedByInput = {
+    create?: XOR<PaymentCreateWithoutInitiatedByInput, PaymentUncheckedCreateWithoutInitiatedByInput> | PaymentCreateWithoutInitiatedByInput[] | PaymentUncheckedCreateWithoutInitiatedByInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutInitiatedByInput | PaymentCreateOrConnectWithoutInitiatedByInput[]
+    createMany?: PaymentCreateManyInitiatedByInputEnvelope
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
   }
 
-  export type SubscriptionUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput> | SubscriptionCreateWithoutUserInput[] | SubscriptionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput | SubscriptionCreateOrConnectWithoutUserInput[]
-    createMany?: SubscriptionCreateManyUserInputEnvelope
+  export type SubscriptionCreateNestedManyWithoutManagedByInput = {
+    create?: XOR<SubscriptionCreateWithoutManagedByInput, SubscriptionUncheckedCreateWithoutManagedByInput> | SubscriptionCreateWithoutManagedByInput[] | SubscriptionUncheckedCreateWithoutManagedByInput[]
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutManagedByInput | SubscriptionCreateOrConnectWithoutManagedByInput[]
+    createMany?: SubscriptionCreateManyManagedByInputEnvelope
     connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
   }
 
-  export type PaymentUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<PaymentCreateWithoutUserInput, PaymentUncheckedCreateWithoutUserInput> | PaymentCreateWithoutUserInput[] | PaymentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: PaymentCreateOrConnectWithoutUserInput | PaymentCreateOrConnectWithoutUserInput[]
-    createMany?: PaymentCreateManyUserInputEnvelope
-    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  export type ImageCreateNestedManyWithoutUploaderInput = {
+    create?: XOR<ImageCreateWithoutUploaderInput, ImageUncheckedCreateWithoutUploaderInput> | ImageCreateWithoutUploaderInput[] | ImageUncheckedCreateWithoutUploaderInput[]
+    connectOrCreate?: ImageCreateOrConnectWithoutUploaderInput | ImageCreateOrConnectWithoutUploaderInput[]
+    createMany?: ImageCreateManyUploaderInputEnvelope
+    connect?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+  }
+
+  export type OrganizationUncheckedCreateNestedOneWithoutAdminInput = {
+    create?: XOR<OrganizationCreateWithoutAdminInput, OrganizationUncheckedCreateWithoutAdminInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutAdminInput
+    connect?: OrganizationWhereUniqueInput
   }
 
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
@@ -17123,13 +21211,6 @@ export namespace Prisma {
     connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
   }
 
-  export type EventRegistrationUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<EventRegistrationCreateWithoutUserInput, EventRegistrationUncheckedCreateWithoutUserInput> | EventRegistrationCreateWithoutUserInput[] | EventRegistrationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: EventRegistrationCreateOrConnectWithoutUserInput | EventRegistrationCreateOrConnectWithoutUserInput[]
-    createMany?: EventRegistrationCreateManyUserInputEnvelope
-    connect?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
-  }
-
   export type MembershipPlanUncheckedCreateNestedManyWithoutCreatedByInput = {
     create?: XOR<MembershipPlanCreateWithoutCreatedByInput, MembershipPlanUncheckedCreateWithoutCreatedByInput> | MembershipPlanCreateWithoutCreatedByInput[] | MembershipPlanUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: MembershipPlanCreateOrConnectWithoutCreatedByInput | MembershipPlanCreateOrConnectWithoutCreatedByInput[]
@@ -17137,12 +21218,25 @@ export namespace Prisma {
     connect?: MembershipPlanWhereUniqueInput | MembershipPlanWhereUniqueInput[]
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
+  export type PaymentUncheckedCreateNestedManyWithoutInitiatedByInput = {
+    create?: XOR<PaymentCreateWithoutInitiatedByInput, PaymentUncheckedCreateWithoutInitiatedByInput> | PaymentCreateWithoutInitiatedByInput[] | PaymentUncheckedCreateWithoutInitiatedByInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutInitiatedByInput | PaymentCreateOrConnectWithoutInitiatedByInput[]
+    createMany?: PaymentCreateManyInitiatedByInputEnvelope
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
+  export type SubscriptionUncheckedCreateNestedManyWithoutManagedByInput = {
+    create?: XOR<SubscriptionCreateWithoutManagedByInput, SubscriptionUncheckedCreateWithoutManagedByInput> | SubscriptionCreateWithoutManagedByInput[] | SubscriptionUncheckedCreateWithoutManagedByInput[]
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutManagedByInput | SubscriptionCreateOrConnectWithoutManagedByInput[]
+    createMany?: SubscriptionCreateManyManagedByInputEnvelope
+    connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+  }
+
+  export type ImageUncheckedCreateNestedManyWithoutUploaderInput = {
+    create?: XOR<ImageCreateWithoutUploaderInput, ImageUncheckedCreateWithoutUploaderInput> | ImageCreateWithoutUploaderInput[] | ImageUncheckedCreateWithoutUploaderInput[]
+    connectOrCreate?: ImageCreateOrConnectWithoutUploaderInput | ImageCreateOrConnectWithoutUploaderInput[]
+    createMany?: ImageCreateManyUploaderInputEnvelope
+    connect?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -17153,40 +21247,24 @@ export namespace Prisma {
     set?: $Enums.MemberStatus
   }
 
-  export type EnumMemberRoleFieldUpdateOperationsInput = {
-    set?: $Enums.MemberRole
+  export type ImageUpdateOneWithoutUserProfileForNestedInput = {
+    create?: XOR<ImageCreateWithoutUserProfileForInput, ImageUncheckedCreateWithoutUserProfileForInput>
+    connectOrCreate?: ImageCreateOrConnectWithoutUserProfileForInput
+    upsert?: ImageUpsertWithoutUserProfileForInput
+    disconnect?: ImageWhereInput | boolean
+    delete?: ImageWhereInput | boolean
+    connect?: ImageWhereUniqueInput
+    update?: XOR<XOR<ImageUpdateToOneWithWhereWithoutUserProfileForInput, ImageUpdateWithoutUserProfileForInput>, ImageUncheckedUpdateWithoutUserProfileForInput>
   }
 
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
-  }
-
-  export type SubscriptionUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput> | SubscriptionCreateWithoutUserInput[] | SubscriptionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput | SubscriptionCreateOrConnectWithoutUserInput[]
-    upsert?: SubscriptionUpsertWithWhereUniqueWithoutUserInput | SubscriptionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SubscriptionCreateManyUserInputEnvelope
-    set?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
-    disconnect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
-    delete?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
-    connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
-    update?: SubscriptionUpdateWithWhereUniqueWithoutUserInput | SubscriptionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SubscriptionUpdateManyWithWhereWithoutUserInput | SubscriptionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
-  }
-
-  export type PaymentUpdateManyWithoutUserNestedInput = {
-    create?: XOR<PaymentCreateWithoutUserInput, PaymentUncheckedCreateWithoutUserInput> | PaymentCreateWithoutUserInput[] | PaymentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: PaymentCreateOrConnectWithoutUserInput | PaymentCreateOrConnectWithoutUserInput[]
-    upsert?: PaymentUpsertWithWhereUniqueWithoutUserInput | PaymentUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: PaymentCreateManyUserInputEnvelope
-    set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
-    disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
-    delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
-    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
-    update?: PaymentUpdateWithWhereUniqueWithoutUserInput | PaymentUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: PaymentUpdateManyWithWhereWithoutUserInput | PaymentUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  export type OrganizationUpdateOneWithoutAdminNestedInput = {
+    create?: XOR<OrganizationCreateWithoutAdminInput, OrganizationUncheckedCreateWithoutAdminInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutAdminInput
+    upsert?: OrganizationUpsertWithoutAdminInput
+    disconnect?: OrganizationWhereInput | boolean
+    delete?: OrganizationWhereInput | boolean
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutAdminInput, OrganizationUpdateWithoutAdminInput>, OrganizationUncheckedUpdateWithoutAdminInput>
   }
 
   export type AccountUpdateManyWithoutUserNestedInput = {
@@ -17231,20 +21309,6 @@ export namespace Prisma {
     deleteMany?: EventScalarWhereInput | EventScalarWhereInput[]
   }
 
-  export type EventRegistrationUpdateManyWithoutUserNestedInput = {
-    create?: XOR<EventRegistrationCreateWithoutUserInput, EventRegistrationUncheckedCreateWithoutUserInput> | EventRegistrationCreateWithoutUserInput[] | EventRegistrationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: EventRegistrationCreateOrConnectWithoutUserInput | EventRegistrationCreateOrConnectWithoutUserInput[]
-    upsert?: EventRegistrationUpsertWithWhereUniqueWithoutUserInput | EventRegistrationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: EventRegistrationCreateManyUserInputEnvelope
-    set?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
-    disconnect?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
-    delete?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
-    connect?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
-    update?: EventRegistrationUpdateWithWhereUniqueWithoutUserInput | EventRegistrationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: EventRegistrationUpdateManyWithWhereWithoutUserInput | EventRegistrationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: EventRegistrationScalarWhereInput | EventRegistrationScalarWhereInput[]
-  }
-
   export type MembershipPlanUpdateManyWithoutCreatedByNestedInput = {
     create?: XOR<MembershipPlanCreateWithoutCreatedByInput, MembershipPlanUncheckedCreateWithoutCreatedByInput> | MembershipPlanCreateWithoutCreatedByInput[] | MembershipPlanUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: MembershipPlanCreateOrConnectWithoutCreatedByInput | MembershipPlanCreateOrConnectWithoutCreatedByInput[]
@@ -17259,42 +21323,56 @@ export namespace Prisma {
     deleteMany?: MembershipPlanScalarWhereInput | MembershipPlanScalarWhereInput[]
   }
 
-  export type ImageUpdateOneWithoutUserNestedInput = {
-    create?: XOR<ImageCreateWithoutUserInput, ImageUncheckedCreateWithoutUserInput>
-    connectOrCreate?: ImageCreateOrConnectWithoutUserInput
-    upsert?: ImageUpsertWithoutUserInput
-    disconnect?: ImageWhereInput | boolean
-    delete?: ImageWhereInput | boolean
-    connect?: ImageWhereUniqueInput
-    update?: XOR<XOR<ImageUpdateToOneWithWhereWithoutUserInput, ImageUpdateWithoutUserInput>, ImageUncheckedUpdateWithoutUserInput>
-  }
-
-  export type SubscriptionUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput> | SubscriptionCreateWithoutUserInput[] | SubscriptionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput | SubscriptionCreateOrConnectWithoutUserInput[]
-    upsert?: SubscriptionUpsertWithWhereUniqueWithoutUserInput | SubscriptionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SubscriptionCreateManyUserInputEnvelope
-    set?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
-    disconnect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
-    delete?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
-    connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
-    update?: SubscriptionUpdateWithWhereUniqueWithoutUserInput | SubscriptionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SubscriptionUpdateManyWithWhereWithoutUserInput | SubscriptionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
-  }
-
-  export type PaymentUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<PaymentCreateWithoutUserInput, PaymentUncheckedCreateWithoutUserInput> | PaymentCreateWithoutUserInput[] | PaymentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: PaymentCreateOrConnectWithoutUserInput | PaymentCreateOrConnectWithoutUserInput[]
-    upsert?: PaymentUpsertWithWhereUniqueWithoutUserInput | PaymentUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: PaymentCreateManyUserInputEnvelope
+  export type PaymentUpdateManyWithoutInitiatedByNestedInput = {
+    create?: XOR<PaymentCreateWithoutInitiatedByInput, PaymentUncheckedCreateWithoutInitiatedByInput> | PaymentCreateWithoutInitiatedByInput[] | PaymentUncheckedCreateWithoutInitiatedByInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutInitiatedByInput | PaymentCreateOrConnectWithoutInitiatedByInput[]
+    upsert?: PaymentUpsertWithWhereUniqueWithoutInitiatedByInput | PaymentUpsertWithWhereUniqueWithoutInitiatedByInput[]
+    createMany?: PaymentCreateManyInitiatedByInputEnvelope
     set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
     disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
     delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
-    update?: PaymentUpdateWithWhereUniqueWithoutUserInput | PaymentUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: PaymentUpdateManyWithWhereWithoutUserInput | PaymentUpdateManyWithWhereWithoutUserInput[]
+    update?: PaymentUpdateWithWhereUniqueWithoutInitiatedByInput | PaymentUpdateWithWhereUniqueWithoutInitiatedByInput[]
+    updateMany?: PaymentUpdateManyWithWhereWithoutInitiatedByInput | PaymentUpdateManyWithWhereWithoutInitiatedByInput[]
     deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
+  export type SubscriptionUpdateManyWithoutManagedByNestedInput = {
+    create?: XOR<SubscriptionCreateWithoutManagedByInput, SubscriptionUncheckedCreateWithoutManagedByInput> | SubscriptionCreateWithoutManagedByInput[] | SubscriptionUncheckedCreateWithoutManagedByInput[]
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutManagedByInput | SubscriptionCreateOrConnectWithoutManagedByInput[]
+    upsert?: SubscriptionUpsertWithWhereUniqueWithoutManagedByInput | SubscriptionUpsertWithWhereUniqueWithoutManagedByInput[]
+    createMany?: SubscriptionCreateManyManagedByInputEnvelope
+    set?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    disconnect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    delete?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    update?: SubscriptionUpdateWithWhereUniqueWithoutManagedByInput | SubscriptionUpdateWithWhereUniqueWithoutManagedByInput[]
+    updateMany?: SubscriptionUpdateManyWithWhereWithoutManagedByInput | SubscriptionUpdateManyWithWhereWithoutManagedByInput[]
+    deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
+  }
+
+  export type ImageUpdateManyWithoutUploaderNestedInput = {
+    create?: XOR<ImageCreateWithoutUploaderInput, ImageUncheckedCreateWithoutUploaderInput> | ImageCreateWithoutUploaderInput[] | ImageUncheckedCreateWithoutUploaderInput[]
+    connectOrCreate?: ImageCreateOrConnectWithoutUploaderInput | ImageCreateOrConnectWithoutUploaderInput[]
+    upsert?: ImageUpsertWithWhereUniqueWithoutUploaderInput | ImageUpsertWithWhereUniqueWithoutUploaderInput[]
+    createMany?: ImageCreateManyUploaderInputEnvelope
+    set?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+    disconnect?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+    delete?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+    connect?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+    update?: ImageUpdateWithWhereUniqueWithoutUploaderInput | ImageUpdateWithWhereUniqueWithoutUploaderInput[]
+    updateMany?: ImageUpdateManyWithWhereWithoutUploaderInput | ImageUpdateManyWithWhereWithoutUploaderInput[]
+    deleteMany?: ImageScalarWhereInput | ImageScalarWhereInput[]
+  }
+
+  export type OrganizationUncheckedUpdateOneWithoutAdminNestedInput = {
+    create?: XOR<OrganizationCreateWithoutAdminInput, OrganizationUncheckedCreateWithoutAdminInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutAdminInput
+    upsert?: OrganizationUpsertWithoutAdminInput
+    disconnect?: OrganizationWhereInput | boolean
+    delete?: OrganizationWhereInput | boolean
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutAdminInput, OrganizationUpdateWithoutAdminInput>, OrganizationUncheckedUpdateWithoutAdminInput>
   }
 
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
@@ -17339,20 +21417,6 @@ export namespace Prisma {
     deleteMany?: EventScalarWhereInput | EventScalarWhereInput[]
   }
 
-  export type EventRegistrationUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<EventRegistrationCreateWithoutUserInput, EventRegistrationUncheckedCreateWithoutUserInput> | EventRegistrationCreateWithoutUserInput[] | EventRegistrationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: EventRegistrationCreateOrConnectWithoutUserInput | EventRegistrationCreateOrConnectWithoutUserInput[]
-    upsert?: EventRegistrationUpsertWithWhereUniqueWithoutUserInput | EventRegistrationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: EventRegistrationCreateManyUserInputEnvelope
-    set?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
-    disconnect?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
-    delete?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
-    connect?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
-    update?: EventRegistrationUpdateWithWhereUniqueWithoutUserInput | EventRegistrationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: EventRegistrationUpdateManyWithWhereWithoutUserInput | EventRegistrationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: EventRegistrationScalarWhereInput | EventRegistrationScalarWhereInput[]
-  }
-
   export type MembershipPlanUncheckedUpdateManyWithoutCreatedByNestedInput = {
     create?: XOR<MembershipPlanCreateWithoutCreatedByInput, MembershipPlanUncheckedCreateWithoutCreatedByInput> | MembershipPlanCreateWithoutCreatedByInput[] | MembershipPlanUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: MembershipPlanCreateOrConnectWithoutCreatedByInput | MembershipPlanCreateOrConnectWithoutCreatedByInput[]
@@ -17365,6 +21429,48 @@ export namespace Prisma {
     update?: MembershipPlanUpdateWithWhereUniqueWithoutCreatedByInput | MembershipPlanUpdateWithWhereUniqueWithoutCreatedByInput[]
     updateMany?: MembershipPlanUpdateManyWithWhereWithoutCreatedByInput | MembershipPlanUpdateManyWithWhereWithoutCreatedByInput[]
     deleteMany?: MembershipPlanScalarWhereInput | MembershipPlanScalarWhereInput[]
+  }
+
+  export type PaymentUncheckedUpdateManyWithoutInitiatedByNestedInput = {
+    create?: XOR<PaymentCreateWithoutInitiatedByInput, PaymentUncheckedCreateWithoutInitiatedByInput> | PaymentCreateWithoutInitiatedByInput[] | PaymentUncheckedCreateWithoutInitiatedByInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutInitiatedByInput | PaymentCreateOrConnectWithoutInitiatedByInput[]
+    upsert?: PaymentUpsertWithWhereUniqueWithoutInitiatedByInput | PaymentUpsertWithWhereUniqueWithoutInitiatedByInput[]
+    createMany?: PaymentCreateManyInitiatedByInputEnvelope
+    set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    update?: PaymentUpdateWithWhereUniqueWithoutInitiatedByInput | PaymentUpdateWithWhereUniqueWithoutInitiatedByInput[]
+    updateMany?: PaymentUpdateManyWithWhereWithoutInitiatedByInput | PaymentUpdateManyWithWhereWithoutInitiatedByInput[]
+    deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
+  export type SubscriptionUncheckedUpdateManyWithoutManagedByNestedInput = {
+    create?: XOR<SubscriptionCreateWithoutManagedByInput, SubscriptionUncheckedCreateWithoutManagedByInput> | SubscriptionCreateWithoutManagedByInput[] | SubscriptionUncheckedCreateWithoutManagedByInput[]
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutManagedByInput | SubscriptionCreateOrConnectWithoutManagedByInput[]
+    upsert?: SubscriptionUpsertWithWhereUniqueWithoutManagedByInput | SubscriptionUpsertWithWhereUniqueWithoutManagedByInput[]
+    createMany?: SubscriptionCreateManyManagedByInputEnvelope
+    set?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    disconnect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    delete?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    update?: SubscriptionUpdateWithWhereUniqueWithoutManagedByInput | SubscriptionUpdateWithWhereUniqueWithoutManagedByInput[]
+    updateMany?: SubscriptionUpdateManyWithWhereWithoutManagedByInput | SubscriptionUpdateManyWithWhereWithoutManagedByInput[]
+    deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
+  }
+
+  export type ImageUncheckedUpdateManyWithoutUploaderNestedInput = {
+    create?: XOR<ImageCreateWithoutUploaderInput, ImageUncheckedCreateWithoutUploaderInput> | ImageCreateWithoutUploaderInput[] | ImageUncheckedCreateWithoutUploaderInput[]
+    connectOrCreate?: ImageCreateOrConnectWithoutUploaderInput | ImageCreateOrConnectWithoutUploaderInput[]
+    upsert?: ImageUpsertWithWhereUniqueWithoutUploaderInput | ImageUpsertWithWhereUniqueWithoutUploaderInput[]
+    createMany?: ImageCreateManyUploaderInputEnvelope
+    set?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+    disconnect?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+    delete?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+    connect?: ImageWhereUniqueInput | ImageWhereUniqueInput[]
+    update?: ImageUpdateWithWhereUniqueWithoutUploaderInput | ImageUpdateWithWhereUniqueWithoutUploaderInput[]
+    updateMany?: ImageUpdateManyWithWhereWithoutUploaderInput | ImageUpdateManyWithWhereWithoutUploaderInput[]
+    deleteMany?: ImageScalarWhereInput | ImageScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutAccountsInput = {
@@ -17403,6 +21509,104 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionsInput, UserUpdateWithoutSessionsInput>, UserUncheckedUpdateWithoutSessionsInput>
   }
 
+  export type OrganizationCreateNestedOneWithoutMembersInput = {
+    create?: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutMembersInput
+    connect?: OrganizationWhereUniqueInput
+  }
+
+  export type SubscriptionCreateNestedManyWithoutMemberInput = {
+    create?: XOR<SubscriptionCreateWithoutMemberInput, SubscriptionUncheckedCreateWithoutMemberInput> | SubscriptionCreateWithoutMemberInput[] | SubscriptionUncheckedCreateWithoutMemberInput[]
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutMemberInput | SubscriptionCreateOrConnectWithoutMemberInput[]
+    createMany?: SubscriptionCreateManyMemberInputEnvelope
+    connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+  }
+
+  export type PaymentCreateNestedManyWithoutMemberInput = {
+    create?: XOR<PaymentCreateWithoutMemberInput, PaymentUncheckedCreateWithoutMemberInput> | PaymentCreateWithoutMemberInput[] | PaymentUncheckedCreateWithoutMemberInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutMemberInput | PaymentCreateOrConnectWithoutMemberInput[]
+    createMany?: PaymentCreateManyMemberInputEnvelope
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type SubscriptionUncheckedCreateNestedManyWithoutMemberInput = {
+    create?: XOR<SubscriptionCreateWithoutMemberInput, SubscriptionUncheckedCreateWithoutMemberInput> | SubscriptionCreateWithoutMemberInput[] | SubscriptionUncheckedCreateWithoutMemberInput[]
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutMemberInput | SubscriptionCreateOrConnectWithoutMemberInput[]
+    createMany?: SubscriptionCreateManyMemberInputEnvelope
+    connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+  }
+
+  export type PaymentUncheckedCreateNestedManyWithoutMemberInput = {
+    create?: XOR<PaymentCreateWithoutMemberInput, PaymentUncheckedCreateWithoutMemberInput> | PaymentCreateWithoutMemberInput[] | PaymentUncheckedCreateWithoutMemberInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutMemberInput | PaymentCreateOrConnectWithoutMemberInput[]
+    createMany?: PaymentCreateManyMemberInputEnvelope
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type OrganizationUpdateOneRequiredWithoutMembersNestedInput = {
+    create?: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutMembersInput
+    upsert?: OrganizationUpsertWithoutMembersInput
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutMembersInput, OrganizationUpdateWithoutMembersInput>, OrganizationUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type SubscriptionUpdateManyWithoutMemberNestedInput = {
+    create?: XOR<SubscriptionCreateWithoutMemberInput, SubscriptionUncheckedCreateWithoutMemberInput> | SubscriptionCreateWithoutMemberInput[] | SubscriptionUncheckedCreateWithoutMemberInput[]
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutMemberInput | SubscriptionCreateOrConnectWithoutMemberInput[]
+    upsert?: SubscriptionUpsertWithWhereUniqueWithoutMemberInput | SubscriptionUpsertWithWhereUniqueWithoutMemberInput[]
+    createMany?: SubscriptionCreateManyMemberInputEnvelope
+    set?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    disconnect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    delete?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    update?: SubscriptionUpdateWithWhereUniqueWithoutMemberInput | SubscriptionUpdateWithWhereUniqueWithoutMemberInput[]
+    updateMany?: SubscriptionUpdateManyWithWhereWithoutMemberInput | SubscriptionUpdateManyWithWhereWithoutMemberInput[]
+    deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
+  }
+
+  export type PaymentUpdateManyWithoutMemberNestedInput = {
+    create?: XOR<PaymentCreateWithoutMemberInput, PaymentUncheckedCreateWithoutMemberInput> | PaymentCreateWithoutMemberInput[] | PaymentUncheckedCreateWithoutMemberInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutMemberInput | PaymentCreateOrConnectWithoutMemberInput[]
+    upsert?: PaymentUpsertWithWhereUniqueWithoutMemberInput | PaymentUpsertWithWhereUniqueWithoutMemberInput[]
+    createMany?: PaymentCreateManyMemberInputEnvelope
+    set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    update?: PaymentUpdateWithWhereUniqueWithoutMemberInput | PaymentUpdateWithWhereUniqueWithoutMemberInput[]
+    updateMany?: PaymentUpdateManyWithWhereWithoutMemberInput | PaymentUpdateManyWithWhereWithoutMemberInput[]
+    deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
+  export type SubscriptionUncheckedUpdateManyWithoutMemberNestedInput = {
+    create?: XOR<SubscriptionCreateWithoutMemberInput, SubscriptionUncheckedCreateWithoutMemberInput> | SubscriptionCreateWithoutMemberInput[] | SubscriptionUncheckedCreateWithoutMemberInput[]
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutMemberInput | SubscriptionCreateOrConnectWithoutMemberInput[]
+    upsert?: SubscriptionUpsertWithWhereUniqueWithoutMemberInput | SubscriptionUpsertWithWhereUniqueWithoutMemberInput[]
+    createMany?: SubscriptionCreateManyMemberInputEnvelope
+    set?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    disconnect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    delete?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    connect?: SubscriptionWhereUniqueInput | SubscriptionWhereUniqueInput[]
+    update?: SubscriptionUpdateWithWhereUniqueWithoutMemberInput | SubscriptionUpdateWithWhereUniqueWithoutMemberInput[]
+    updateMany?: SubscriptionUpdateManyWithWhereWithoutMemberInput | SubscriptionUpdateManyWithWhereWithoutMemberInput[]
+    deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
+  }
+
+  export type PaymentUncheckedUpdateManyWithoutMemberNestedInput = {
+    create?: XOR<PaymentCreateWithoutMemberInput, PaymentUncheckedCreateWithoutMemberInput> | PaymentCreateWithoutMemberInput[] | PaymentUncheckedCreateWithoutMemberInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutMemberInput | PaymentCreateOrConnectWithoutMemberInput[]
+    upsert?: PaymentUpsertWithWhereUniqueWithoutMemberInput | PaymentUpsertWithWhereUniqueWithoutMemberInput[]
+    createMany?: PaymentCreateManyMemberInputEnvelope
+    set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    update?: PaymentUpdateWithWhereUniqueWithoutMemberInput | PaymentUpdateWithWhereUniqueWithoutMemberInput[]
+    updateMany?: PaymentUpdateManyWithWhereWithoutMemberInput | PaymentUpdateManyWithWhereWithoutMemberInput[]
+    deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
   export type MembershipPlanCreatefeaturesInput = {
     set: string[]
   }
@@ -17411,6 +21615,12 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutCreatedMembershipPlansInput, UserUncheckedCreateWithoutCreatedMembershipPlansInput>
     connectOrCreate?: UserCreateOrConnectWithoutCreatedMembershipPlansInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type OrganizationCreateNestedOneWithoutMembershipPlansInput = {
+    create?: XOR<OrganizationCreateWithoutMembershipPlansInput, OrganizationUncheckedCreateWithoutMembershipPlansInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutMembershipPlansInput
+    connect?: OrganizationWhereUniqueInput
   }
 
   export type SubscriptionCreateNestedManyWithoutPlanInput = {
@@ -17458,6 +21668,16 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedMembershipPlansInput, UserUpdateWithoutCreatedMembershipPlansInput>, UserUncheckedUpdateWithoutCreatedMembershipPlansInput>
   }
 
+  export type OrganizationUpdateOneWithoutMembershipPlansNestedInput = {
+    create?: XOR<OrganizationCreateWithoutMembershipPlansInput, OrganizationUncheckedCreateWithoutMembershipPlansInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutMembershipPlansInput
+    upsert?: OrganizationUpsertWithoutMembershipPlansInput
+    disconnect?: OrganizationWhereInput | boolean
+    delete?: OrganizationWhereInput | boolean
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutMembershipPlansInput, OrganizationUpdateWithoutMembershipPlansInput>, OrganizationUncheckedUpdateWithoutMembershipPlansInput>
+  }
+
   export type SubscriptionUpdateManyWithoutPlanNestedInput = {
     create?: XOR<SubscriptionCreateWithoutPlanInput, SubscriptionUncheckedCreateWithoutPlanInput> | SubscriptionCreateWithoutPlanInput[] | SubscriptionUncheckedCreateWithoutPlanInput[]
     connectOrCreate?: SubscriptionCreateOrConnectWithoutPlanInput | SubscriptionCreateOrConnectWithoutPlanInput[]
@@ -17486,16 +21706,28 @@ export namespace Prisma {
     deleteMany?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutPaymentsInput = {
-    create?: XOR<UserCreateWithoutPaymentsInput, UserUncheckedCreateWithoutPaymentsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutPaymentsInput
+  export type UserCreateNestedOneWithoutInitiatedPaymentsInput = {
+    create?: XOR<UserCreateWithoutInitiatedPaymentsInput, UserUncheckedCreateWithoutInitiatedPaymentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutInitiatedPaymentsInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type OrganizationCreateNestedOneWithoutPaymentsInput = {
+    create?: XOR<OrganizationCreateWithoutPaymentsInput, OrganizationUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutPaymentsInput
+    connect?: OrganizationWhereUniqueInput
   }
 
   export type SubscriptionCreateNestedOneWithoutPaymentsInput = {
     create?: XOR<SubscriptionCreateWithoutPaymentsInput, SubscriptionUncheckedCreateWithoutPaymentsInput>
     connectOrCreate?: SubscriptionCreateOrConnectWithoutPaymentsInput
     connect?: SubscriptionWhereUniqueInput
+  }
+
+  export type MemberCreateNestedOneWithoutPaymentsInput = {
+    create?: XOR<MemberCreateWithoutPaymentsInput, MemberUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: MemberCreateOrConnectWithoutPaymentsInput
+    connect?: MemberWhereUniqueInput
   }
 
   export type EnumPaymentStatusFieldUpdateOperationsInput = {
@@ -17506,12 +21738,24 @@ export namespace Prisma {
     set?: $Enums.PaymentMethod
   }
 
-  export type UserUpdateOneRequiredWithoutPaymentsNestedInput = {
-    create?: XOR<UserCreateWithoutPaymentsInput, UserUncheckedCreateWithoutPaymentsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutPaymentsInput
-    upsert?: UserUpsertWithoutPaymentsInput
+  export type UserUpdateOneWithoutInitiatedPaymentsNestedInput = {
+    create?: XOR<UserCreateWithoutInitiatedPaymentsInput, UserUncheckedCreateWithoutInitiatedPaymentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutInitiatedPaymentsInput
+    upsert?: UserUpsertWithoutInitiatedPaymentsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPaymentsInput, UserUpdateWithoutPaymentsInput>, UserUncheckedUpdateWithoutPaymentsInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutInitiatedPaymentsInput, UserUpdateWithoutInitiatedPaymentsInput>, UserUncheckedUpdateWithoutInitiatedPaymentsInput>
+  }
+
+  export type OrganizationUpdateOneWithoutPaymentsNestedInput = {
+    create?: XOR<OrganizationCreateWithoutPaymentsInput, OrganizationUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutPaymentsInput
+    upsert?: OrganizationUpsertWithoutPaymentsInput
+    disconnect?: OrganizationWhereInput | boolean
+    delete?: OrganizationWhereInput | boolean
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutPaymentsInput, OrganizationUpdateWithoutPaymentsInput>, OrganizationUncheckedUpdateWithoutPaymentsInput>
   }
 
   export type SubscriptionUpdateOneWithoutPaymentsNestedInput = {
@@ -17524,9 +21768,19 @@ export namespace Prisma {
     update?: XOR<XOR<SubscriptionUpdateToOneWithWhereWithoutPaymentsInput, SubscriptionUpdateWithoutPaymentsInput>, SubscriptionUncheckedUpdateWithoutPaymentsInput>
   }
 
-  export type UserCreateNestedOneWithoutSubscriptionsInput = {
-    create?: XOR<UserCreateWithoutSubscriptionsInput, UserUncheckedCreateWithoutSubscriptionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutSubscriptionsInput
+  export type MemberUpdateOneWithoutPaymentsNestedInput = {
+    create?: XOR<MemberCreateWithoutPaymentsInput, MemberUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: MemberCreateOrConnectWithoutPaymentsInput
+    upsert?: MemberUpsertWithoutPaymentsInput
+    disconnect?: MemberWhereInput | boolean
+    delete?: MemberWhereInput | boolean
+    connect?: MemberWhereUniqueInput
+    update?: XOR<XOR<MemberUpdateToOneWithWhereWithoutPaymentsInput, MemberUpdateWithoutPaymentsInput>, MemberUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type UserCreateNestedOneWithoutManagedSubscriptionsInput = {
+    create?: XOR<UserCreateWithoutManagedSubscriptionsInput, UserUncheckedCreateWithoutManagedSubscriptionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutManagedSubscriptionsInput
     connect?: UserWhereUniqueInput
   }
 
@@ -17534,6 +21788,18 @@ export namespace Prisma {
     create?: XOR<MembershipPlanCreateWithoutSubscriptionsInput, MembershipPlanUncheckedCreateWithoutSubscriptionsInput>
     connectOrCreate?: MembershipPlanCreateOrConnectWithoutSubscriptionsInput
     connect?: MembershipPlanWhereUniqueInput
+  }
+
+  export type OrganizationCreateNestedOneWithoutSubscriptionsInput = {
+    create?: XOR<OrganizationCreateWithoutSubscriptionsInput, OrganizationUncheckedCreateWithoutSubscriptionsInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutSubscriptionsInput
+    connect?: OrganizationWhereUniqueInput
+  }
+
+  export type MemberCreateNestedOneWithoutSubscriptionsInput = {
+    create?: XOR<MemberCreateWithoutSubscriptionsInput, MemberUncheckedCreateWithoutSubscriptionsInput>
+    connectOrCreate?: MemberCreateOrConnectWithoutSubscriptionsInput
+    connect?: MemberWhereUniqueInput
   }
 
   export type PaymentCreateNestedManyWithoutSubscriptionInput = {
@@ -17554,12 +21820,14 @@ export namespace Prisma {
     set?: $Enums.SubscriptionStatus
   }
 
-  export type UserUpdateOneRequiredWithoutSubscriptionsNestedInput = {
-    create?: XOR<UserCreateWithoutSubscriptionsInput, UserUncheckedCreateWithoutSubscriptionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutSubscriptionsInput
-    upsert?: UserUpsertWithoutSubscriptionsInput
+  export type UserUpdateOneWithoutManagedSubscriptionsNestedInput = {
+    create?: XOR<UserCreateWithoutManagedSubscriptionsInput, UserUncheckedCreateWithoutManagedSubscriptionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutManagedSubscriptionsInput
+    upsert?: UserUpsertWithoutManagedSubscriptionsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSubscriptionsInput, UserUpdateWithoutSubscriptionsInput>, UserUncheckedUpdateWithoutSubscriptionsInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutManagedSubscriptionsInput, UserUpdateWithoutManagedSubscriptionsInput>, UserUncheckedUpdateWithoutManagedSubscriptionsInput>
   }
 
   export type MembershipPlanUpdateOneRequiredWithoutSubscriptionsNestedInput = {
@@ -17568,6 +21836,26 @@ export namespace Prisma {
     upsert?: MembershipPlanUpsertWithoutSubscriptionsInput
     connect?: MembershipPlanWhereUniqueInput
     update?: XOR<XOR<MembershipPlanUpdateToOneWithWhereWithoutSubscriptionsInput, MembershipPlanUpdateWithoutSubscriptionsInput>, MembershipPlanUncheckedUpdateWithoutSubscriptionsInput>
+  }
+
+  export type OrganizationUpdateOneWithoutSubscriptionsNestedInput = {
+    create?: XOR<OrganizationCreateWithoutSubscriptionsInput, OrganizationUncheckedCreateWithoutSubscriptionsInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutSubscriptionsInput
+    upsert?: OrganizationUpsertWithoutSubscriptionsInput
+    disconnect?: OrganizationWhereInput | boolean
+    delete?: OrganizationWhereInput | boolean
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutSubscriptionsInput, OrganizationUpdateWithoutSubscriptionsInput>, OrganizationUncheckedUpdateWithoutSubscriptionsInput>
+  }
+
+  export type MemberUpdateOneWithoutSubscriptionsNestedInput = {
+    create?: XOR<MemberCreateWithoutSubscriptionsInput, MemberUncheckedCreateWithoutSubscriptionsInput>
+    connectOrCreate?: MemberCreateOrConnectWithoutSubscriptionsInput
+    upsert?: MemberUpsertWithoutSubscriptionsInput
+    disconnect?: MemberWhereInput | boolean
+    delete?: MemberWhereInput | boolean
+    connect?: MemberWhereUniqueInput
+    update?: XOR<XOR<MemberUpdateToOneWithWhereWithoutSubscriptionsInput, MemberUpdateWithoutSubscriptionsInput>, MemberUncheckedUpdateWithoutSubscriptionsInput>
   }
 
   export type PaymentUpdateManyWithoutSubscriptionNestedInput = {
@@ -17598,10 +21886,16 @@ export namespace Prisma {
     deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutOrganizedEventsInput = {
-    create?: XOR<UserCreateWithoutOrganizedEventsInput, UserUncheckedCreateWithoutOrganizedEventsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutOrganizedEventsInput
+  export type UserCreateNestedOneWithoutCreatedEventsInput = {
+    create?: XOR<UserCreateWithoutCreatedEventsInput, UserUncheckedCreateWithoutCreatedEventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedEventsInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type OrganizationCreateNestedOneWithoutEventsInput = {
+    create?: XOR<OrganizationCreateWithoutEventsInput, OrganizationUncheckedCreateWithoutEventsInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutEventsInput
+    connect?: OrganizationWhereUniqueInput
   }
 
   export type EventRegistrationCreateNestedManyWithoutEventInput = {
@@ -17611,9 +21905,9 @@ export namespace Prisma {
     connect?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
   }
 
-  export type ImageCreateNestedOneWithoutEventInput = {
-    create?: XOR<ImageCreateWithoutEventInput, ImageUncheckedCreateWithoutEventInput>
-    connectOrCreate?: ImageCreateOrConnectWithoutEventInput
+  export type ImageCreateNestedOneWithoutEventCoverForInput = {
+    create?: XOR<ImageCreateWithoutEventCoverForInput, ImageUncheckedCreateWithoutEventCoverForInput>
+    connectOrCreate?: ImageCreateOrConnectWithoutEventCoverForInput
     connect?: ImageWhereUniqueInput
   }
 
@@ -17624,18 +21918,34 @@ export namespace Prisma {
     connect?: EventRegistrationWhereUniqueInput | EventRegistrationWhereUniqueInput[]
   }
 
+  export type ImageUncheckedCreateNestedOneWithoutEventCoverForInput = {
+    create?: XOR<ImageCreateWithoutEventCoverForInput, ImageUncheckedCreateWithoutEventCoverForInput>
+    connectOrCreate?: ImageCreateOrConnectWithoutEventCoverForInput
+    connect?: ImageWhereUniqueInput
+  }
+
   export type EnumEventStatusFieldUpdateOperationsInput = {
     set?: $Enums.EventStatus
   }
 
-  export type UserUpdateOneWithoutOrganizedEventsNestedInput = {
-    create?: XOR<UserCreateWithoutOrganizedEventsInput, UserUncheckedCreateWithoutOrganizedEventsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutOrganizedEventsInput
-    upsert?: UserUpsertWithoutOrganizedEventsInput
+  export type UserUpdateOneWithoutCreatedEventsNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedEventsInput, UserUncheckedCreateWithoutCreatedEventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedEventsInput
+    upsert?: UserUpsertWithoutCreatedEventsInput
     disconnect?: UserWhereInput | boolean
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOrganizedEventsInput, UserUpdateWithoutOrganizedEventsInput>, UserUncheckedUpdateWithoutOrganizedEventsInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedEventsInput, UserUpdateWithoutCreatedEventsInput>, UserUncheckedUpdateWithoutCreatedEventsInput>
+  }
+
+  export type OrganizationUpdateOneWithoutEventsNestedInput = {
+    create?: XOR<OrganizationCreateWithoutEventsInput, OrganizationUncheckedCreateWithoutEventsInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutEventsInput
+    upsert?: OrganizationUpsertWithoutEventsInput
+    disconnect?: OrganizationWhereInput | boolean
+    delete?: OrganizationWhereInput | boolean
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutEventsInput, OrganizationUpdateWithoutEventsInput>, OrganizationUncheckedUpdateWithoutEventsInput>
   }
 
   export type EventRegistrationUpdateManyWithoutEventNestedInput = {
@@ -17652,14 +21962,14 @@ export namespace Prisma {
     deleteMany?: EventRegistrationScalarWhereInput | EventRegistrationScalarWhereInput[]
   }
 
-  export type ImageUpdateOneWithoutEventNestedInput = {
-    create?: XOR<ImageCreateWithoutEventInput, ImageUncheckedCreateWithoutEventInput>
-    connectOrCreate?: ImageCreateOrConnectWithoutEventInput
-    upsert?: ImageUpsertWithoutEventInput
+  export type ImageUpdateOneWithoutEventCoverForNestedInput = {
+    create?: XOR<ImageCreateWithoutEventCoverForInput, ImageUncheckedCreateWithoutEventCoverForInput>
+    connectOrCreate?: ImageCreateOrConnectWithoutEventCoverForInput
+    upsert?: ImageUpsertWithoutEventCoverForInput
     disconnect?: ImageWhereInput | boolean
     delete?: ImageWhereInput | boolean
     connect?: ImageWhereUniqueInput
-    update?: XOR<XOR<ImageUpdateToOneWithWhereWithoutEventInput, ImageUpdateWithoutEventInput>, ImageUncheckedUpdateWithoutEventInput>
+    update?: XOR<XOR<ImageUpdateToOneWithWhereWithoutEventCoverForInput, ImageUpdateWithoutEventCoverForInput>, ImageUncheckedUpdateWithoutEventCoverForInput>
   }
 
   export type EventRegistrationUncheckedUpdateManyWithoutEventNestedInput = {
@@ -17676,16 +21986,26 @@ export namespace Prisma {
     deleteMany?: EventRegistrationScalarWhereInput | EventRegistrationScalarWhereInput[]
   }
 
+  export type ImageUncheckedUpdateOneWithoutEventCoverForNestedInput = {
+    create?: XOR<ImageCreateWithoutEventCoverForInput, ImageUncheckedCreateWithoutEventCoverForInput>
+    connectOrCreate?: ImageCreateOrConnectWithoutEventCoverForInput
+    upsert?: ImageUpsertWithoutEventCoverForInput
+    disconnect?: ImageWhereInput | boolean
+    delete?: ImageWhereInput | boolean
+    connect?: ImageWhereUniqueInput
+    update?: XOR<XOR<ImageUpdateToOneWithWhereWithoutEventCoverForInput, ImageUpdateWithoutEventCoverForInput>, ImageUncheckedUpdateWithoutEventCoverForInput>
+  }
+
   export type EventCreateNestedOneWithoutRegistrationsInput = {
     create?: XOR<EventCreateWithoutRegistrationsInput, EventUncheckedCreateWithoutRegistrationsInput>
     connectOrCreate?: EventCreateOrConnectWithoutRegistrationsInput
     connect?: EventWhereUniqueInput
   }
 
-  export type UserCreateNestedOneWithoutEventRegistrationsInput = {
-    create?: XOR<UserCreateWithoutEventRegistrationsInput, UserUncheckedCreateWithoutEventRegistrationsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutEventRegistrationsInput
-    connect?: UserWhereUniqueInput
+  export type OrganizationCreateNestedOneWithoutEventRegistrationsInput = {
+    create?: XOR<OrganizationCreateWithoutEventRegistrationsInput, OrganizationUncheckedCreateWithoutEventRegistrationsInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutEventRegistrationsInput
+    connect?: OrganizationWhereUniqueInput
   }
 
   export type EnumRegistrationStatusFieldUpdateOperationsInput = {
@@ -17708,12 +22028,18 @@ export namespace Prisma {
     update?: XOR<XOR<EventUpdateToOneWithWhereWithoutRegistrationsInput, EventUpdateWithoutRegistrationsInput>, EventUncheckedUpdateWithoutRegistrationsInput>
   }
 
-  export type UserUpdateOneRequiredWithoutEventRegistrationsNestedInput = {
-    create?: XOR<UserCreateWithoutEventRegistrationsInput, UserUncheckedCreateWithoutEventRegistrationsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutEventRegistrationsInput
-    upsert?: UserUpsertWithoutEventRegistrationsInput
+  export type OrganizationUpdateOneRequiredWithoutEventRegistrationsNestedInput = {
+    create?: XOR<OrganizationCreateWithoutEventRegistrationsInput, OrganizationUncheckedCreateWithoutEventRegistrationsInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutEventRegistrationsInput
+    upsert?: OrganizationUpsertWithoutEventRegistrationsInput
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutEventRegistrationsInput, OrganizationUpdateWithoutEventRegistrationsInput>, OrganizationUncheckedUpdateWithoutEventRegistrationsInput>
+  }
+
+  export type UserCreateNestedOneWithoutUploadedImagesInput = {
+    create?: XOR<UserCreateWithoutUploadedImagesInput, UserUncheckedCreateWithoutUploadedImagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUploadedImagesInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEventRegistrationsInput, UserUpdateWithoutEventRegistrationsInput>, UserUncheckedUpdateWithoutEventRegistrationsInput>
   }
 
   export type UserCreateNestedOneWithoutProfileImageInput = {
@@ -17722,9 +22048,15 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type EventCreateNestedOneWithoutEventImageInput = {
-    create?: XOR<EventCreateWithoutEventImageInput, EventUncheckedCreateWithoutEventImageInput>
-    connectOrCreate?: EventCreateOrConnectWithoutEventImageInput
+  export type OrganizationCreateNestedOneWithoutImagesInput = {
+    create?: XOR<OrganizationCreateWithoutImagesInput, OrganizationUncheckedCreateWithoutImagesInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutImagesInput
+    connect?: OrganizationWhereUniqueInput
+  }
+
+  export type EventCreateNestedOneWithoutCoverImageInput = {
+    create?: XOR<EventCreateWithoutCoverImageInput, EventUncheckedCreateWithoutCoverImageInput>
+    connectOrCreate?: EventCreateOrConnectWithoutCoverImageInput
     connect?: EventWhereUniqueInput
   }
 
@@ -17734,14 +22066,18 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type EventUncheckedCreateNestedOneWithoutEventImageInput = {
-    create?: XOR<EventCreateWithoutEventImageInput, EventUncheckedCreateWithoutEventImageInput>
-    connectOrCreate?: EventCreateOrConnectWithoutEventImageInput
-    connect?: EventWhereUniqueInput
-  }
-
   export type BytesFieldUpdateOperationsInput = {
     set?: Uint8Array
+  }
+
+  export type UserUpdateOneWithoutUploadedImagesNestedInput = {
+    create?: XOR<UserCreateWithoutUploadedImagesInput, UserUncheckedCreateWithoutUploadedImagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUploadedImagesInput
+    upsert?: UserUpsertWithoutUploadedImagesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUploadedImagesInput, UserUpdateWithoutUploadedImagesInput>, UserUncheckedUpdateWithoutUploadedImagesInput>
   }
 
   export type UserUpdateOneWithoutProfileImageNestedInput = {
@@ -17754,14 +22090,24 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProfileImageInput, UserUpdateWithoutProfileImageInput>, UserUncheckedUpdateWithoutProfileImageInput>
   }
 
-  export type EventUpdateOneWithoutEventImageNestedInput = {
-    create?: XOR<EventCreateWithoutEventImageInput, EventUncheckedCreateWithoutEventImageInput>
-    connectOrCreate?: EventCreateOrConnectWithoutEventImageInput
-    upsert?: EventUpsertWithoutEventImageInput
+  export type OrganizationUpdateOneWithoutImagesNestedInput = {
+    create?: XOR<OrganizationCreateWithoutImagesInput, OrganizationUncheckedCreateWithoutImagesInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutImagesInput
+    upsert?: OrganizationUpsertWithoutImagesInput
+    disconnect?: OrganizationWhereInput | boolean
+    delete?: OrganizationWhereInput | boolean
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutImagesInput, OrganizationUpdateWithoutImagesInput>, OrganizationUncheckedUpdateWithoutImagesInput>
+  }
+
+  export type EventUpdateOneWithoutCoverImageNestedInput = {
+    create?: XOR<EventCreateWithoutCoverImageInput, EventUncheckedCreateWithoutCoverImageInput>
+    connectOrCreate?: EventCreateOrConnectWithoutCoverImageInput
+    upsert?: EventUpsertWithoutCoverImageInput
     disconnect?: EventWhereInput | boolean
     delete?: EventWhereInput | boolean
     connect?: EventWhereUniqueInput
-    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutEventImageInput, EventUpdateWithoutEventImageInput>, EventUncheckedUpdateWithoutEventImageInput>
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutCoverImageInput, EventUpdateWithoutCoverImageInput>, EventUncheckedUpdateWithoutCoverImageInput>
   }
 
   export type UserUncheckedUpdateOneWithoutProfileImageNestedInput = {
@@ -17772,16 +22118,6 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProfileImageInput, UserUpdateWithoutProfileImageInput>, UserUncheckedUpdateWithoutProfileImageInput>
-  }
-
-  export type EventUncheckedUpdateOneWithoutEventImageNestedInput = {
-    create?: XOR<EventCreateWithoutEventImageInput, EventUncheckedCreateWithoutEventImageInput>
-    connectOrCreate?: EventCreateOrConnectWithoutEventImageInput
-    upsert?: EventUpsertWithoutEventImageInput
-    disconnect?: EventWhereInput | boolean
-    delete?: EventWhereInput | boolean
-    connect?: EventWhereUniqueInput
-    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutEventImageInput, EventUpdateWithoutEventImageInput>, EventUncheckedUpdateWithoutEventImageInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -17810,31 +22146,6 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type NestedEnumMemberStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.MemberStatus | EnumMemberStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.MemberStatus[] | ListEnumMemberStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MemberStatus[] | ListEnumMemberStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumMemberStatusFilter<$PrismaModel> | $Enums.MemberStatus
-  }
-
-  export type NestedEnumMemberRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.MemberRole | EnumMemberRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.MemberRole[] | ListEnumMemberRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MemberRole[] | ListEnumMemberRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumMemberRoleFilter<$PrismaModel> | $Enums.MemberRole
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -17904,6 +22215,38 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumMemberStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MemberStatus | EnumMemberStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MemberStatus[] | ListEnumMemberStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MemberStatus[] | ListEnumMemberStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMemberStatusFilter<$PrismaModel> | $Enums.MemberStatus
+  }
+
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -17926,30 +22269,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumMemberStatusFilter<$PrismaModel>
     _max?: NestedEnumMemberStatusFilter<$PrismaModel>
-  }
-
-  export type NestedEnumMemberRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.MemberRole | EnumMemberRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.MemberRole[] | ListEnumMemberRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MemberRole[] | ListEnumMemberRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumMemberRoleWithAggregatesFilter<$PrismaModel> | $Enums.MemberRole
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumMemberRoleFilter<$PrismaModel>
-    _max?: NestedEnumMemberRoleFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -18165,7 +22484,226 @@ export namespace Prisma {
     _max?: NestedBytesFilter<$PrismaModel>
   }
 
-  export type SubscriptionCreateWithoutUserInput = {
+  export type UserCreateWithoutOrganizationInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    phoneNumber?: string | null
+    status?: $Enums.MemberStatus
+    joinDate?: Date | string | null
+    lastPayment?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    profileImage?: ImageCreateNestedOneWithoutUserProfileForInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    createdEvents?: EventCreateNestedManyWithoutOrganizerInput
+    createdMembershipPlans?: MembershipPlanCreateNestedManyWithoutCreatedByInput
+    initiatedPayments?: PaymentCreateNestedManyWithoutInitiatedByInput
+    managedSubscriptions?: SubscriptionCreateNestedManyWithoutManagedByInput
+    uploadedImages?: ImageCreateNestedManyWithoutUploaderInput
+  }
+
+  export type UserUncheckedCreateWithoutOrganizationInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    profileImageId?: string | null
+    phoneNumber?: string | null
+    status?: $Enums.MemberStatus
+    joinDate?: Date | string | null
+    lastPayment?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    createdEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
+    createdMembershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutCreatedByInput
+    initiatedPayments?: PaymentUncheckedCreateNestedManyWithoutInitiatedByInput
+    managedSubscriptions?: SubscriptionUncheckedCreateNestedManyWithoutManagedByInput
+    uploadedImages?: ImageUncheckedCreateNestedManyWithoutUploaderInput
+  }
+
+  export type UserCreateOrConnectWithoutOrganizationInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutOrganizationInput, UserUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type MemberCreateWithoutOrganizationInput = {
+    id?: string
+    name: string
+    email?: string | null
+    phoneNumber?: string | null
+    status?: $Enums.MemberStatus
+    joinDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subscriptions?: SubscriptionCreateNestedManyWithoutMemberInput
+    payments?: PaymentCreateNestedManyWithoutMemberInput
+  }
+
+  export type MemberUncheckedCreateWithoutOrganizationInput = {
+    id?: string
+    name: string
+    email?: string | null
+    phoneNumber?: string | null
+    status?: $Enums.MemberStatus
+    joinDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutMemberInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutMemberInput
+  }
+
+  export type MemberCreateOrConnectWithoutOrganizationInput = {
+    where: MemberWhereUniqueInput
+    create: XOR<MemberCreateWithoutOrganizationInput, MemberUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type MemberCreateManyOrganizationInputEnvelope = {
+    data: MemberCreateManyOrganizationInput | MemberCreateManyOrganizationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EventCreateWithoutOrganizationInput = {
+    id?: string
+    name: string
+    description?: string | null
+    date: Date | string
+    endDate?: Date | string | null
+    location?: string | null
+    locationDetails?: string | null
+    capacity?: number | null
+    registrationDeadline?: Date | string | null
+    status?: $Enums.EventStatus
+    isPrivate?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    eventImageId?: string | null
+    organizer?: UserCreateNestedOneWithoutCreatedEventsInput
+    registrations?: EventRegistrationCreateNestedManyWithoutEventInput
+    coverImage?: ImageCreateNestedOneWithoutEventCoverForInput
+  }
+
+  export type EventUncheckedCreateWithoutOrganizationInput = {
+    id?: string
+    name: string
+    description?: string | null
+    date: Date | string
+    endDate?: Date | string | null
+    location?: string | null
+    locationDetails?: string | null
+    organizerId?: string | null
+    capacity?: number | null
+    registrationDeadline?: Date | string | null
+    status?: $Enums.EventStatus
+    isPrivate?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    eventImageId?: string | null
+    registrations?: EventRegistrationUncheckedCreateNestedManyWithoutEventInput
+    coverImage?: ImageUncheckedCreateNestedOneWithoutEventCoverForInput
+  }
+
+  export type EventCreateOrConnectWithoutOrganizationInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutOrganizationInput, EventUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type EventCreateManyOrganizationInputEnvelope = {
+    data: EventCreateManyOrganizationInput | EventCreateManyOrganizationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MembershipPlanCreateWithoutOrganizationInput = {
+    id?: string
+    name: string
+    description?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    currency?: string
+    interval: $Enums.BillingInterval
+    active?: boolean
+    stripePriceId?: string | null
+    features?: MembershipPlanCreatefeaturesInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutCreatedMembershipPlansInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutPlanInput
+  }
+
+  export type MembershipPlanUncheckedCreateWithoutOrganizationInput = {
+    id?: string
+    name: string
+    description?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    currency?: string
+    interval: $Enums.BillingInterval
+    active?: boolean
+    stripePriceId?: string | null
+    features?: MembershipPlanCreatefeaturesInput | string[]
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutPlanInput
+  }
+
+  export type MembershipPlanCreateOrConnectWithoutOrganizationInput = {
+    where: MembershipPlanWhereUniqueInput
+    create: XOR<MembershipPlanCreateWithoutOrganizationInput, MembershipPlanUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type MembershipPlanCreateManyOrganizationInputEnvelope = {
+    data: MembershipPlanCreateManyOrganizationInput | MembershipPlanCreateManyOrganizationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PaymentCreateWithoutOrganizationInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status?: $Enums.PaymentStatus
+    method?: $Enums.PaymentMethod
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    initiatedBy?: UserCreateNestedOneWithoutInitiatedPaymentsInput
+    subscription?: SubscriptionCreateNestedOneWithoutPaymentsInput
+    member?: MemberCreateNestedOneWithoutPaymentsInput
+  }
+
+  export type PaymentUncheckedCreateWithoutOrganizationInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status?: $Enums.PaymentStatus
+    method?: $Enums.PaymentMethod
+    description?: string | null
+    initiatedById?: string | null
+    subscriptionId?: string | null
+    memberId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PaymentCreateOrConnectWithoutOrganizationInput = {
+    where: PaymentWhereUniqueInput
+    create: XOR<PaymentCreateWithoutOrganizationInput, PaymentUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type PaymentCreateManyOrganizationInputEnvelope = {
+    data: PaymentCreateManyOrganizationInput | PaymentCreateManyOrganizationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SubscriptionCreateWithoutOrganizationInput = {
     id?: string
     stripeSubscriptionId?: string | null
     status: $Enums.SubscriptionStatus
@@ -18178,13 +22716,17 @@ export namespace Prisma {
     trialEndDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    managedBy?: UserCreateNestedOneWithoutManagedSubscriptionsInput
     plan: MembershipPlanCreateNestedOneWithoutSubscriptionsInput
+    member?: MemberCreateNestedOneWithoutSubscriptionsInput
     payments?: PaymentCreateNestedManyWithoutSubscriptionInput
   }
 
-  export type SubscriptionUncheckedCreateWithoutUserInput = {
+  export type SubscriptionUncheckedCreateWithoutOrganizationInput = {
     id?: string
+    managedById?: string | null
     planId: string
+    memberId?: string | null
     stripeSubscriptionId?: string | null
     status: $Enums.SubscriptionStatus
     startDate?: Date | string
@@ -18199,48 +22741,466 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutSubscriptionInput
   }
 
-  export type SubscriptionCreateOrConnectWithoutUserInput = {
+  export type SubscriptionCreateOrConnectWithoutOrganizationInput = {
     where: SubscriptionWhereUniqueInput
-    create: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput>
+    create: XOR<SubscriptionCreateWithoutOrganizationInput, SubscriptionUncheckedCreateWithoutOrganizationInput>
   }
 
-  export type SubscriptionCreateManyUserInputEnvelope = {
-    data: SubscriptionCreateManyUserInput | SubscriptionCreateManyUserInput[]
+  export type SubscriptionCreateManyOrganizationInputEnvelope = {
+    data: SubscriptionCreateManyOrganizationInput | SubscriptionCreateManyOrganizationInput[]
     skipDuplicates?: boolean
   }
 
-  export type PaymentCreateWithoutUserInput = {
+  export type ImageCreateWithoutOrganizationInput = {
     id?: string
-    amount: Decimal | DecimalJsLike | number | string
-    currency?: string
-    status?: $Enums.PaymentStatus
-    method?: $Enums.PaymentMethod
-    description?: string | null
+    url: string
+    alt?: string | null
+    data: Uint8Array
+    mimeType: string
+    size: number
+    filename?: string | null
+    width?: number | null
+    height?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    subscription?: SubscriptionCreateNestedOneWithoutPaymentsInput
+    uploader?: UserCreateNestedOneWithoutUploadedImagesInput
+    userProfileFor?: UserCreateNestedOneWithoutProfileImageInput
+    eventCoverFor?: EventCreateNestedOneWithoutCoverImageInput
   }
 
-  export type PaymentUncheckedCreateWithoutUserInput = {
+  export type ImageUncheckedCreateWithoutOrganizationInput = {
     id?: string
-    amount: Decimal | DecimalJsLike | number | string
-    currency?: string
-    status?: $Enums.PaymentStatus
-    method?: $Enums.PaymentMethod
-    description?: string | null
-    subscriptionId?: string | null
+    url: string
+    alt?: string | null
+    data: Uint8Array
+    mimeType: string
+    size: number
+    filename?: string | null
+    width?: number | null
+    height?: number | null
+    uploaderId?: string | null
+    eventCoverForId?: string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
+    userProfileFor?: UserUncheckedCreateNestedOneWithoutProfileImageInput
+  }
+
+  export type ImageCreateOrConnectWithoutOrganizationInput = {
+    where: ImageWhereUniqueInput
+    create: XOR<ImageCreateWithoutOrganizationInput, ImageUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type ImageCreateManyOrganizationInputEnvelope = {
+    data: ImageCreateManyOrganizationInput | ImageCreateManyOrganizationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EventRegistrationCreateWithoutOrganizationInput = {
+    id?: string
+    registrantName?: string | null
+    registrantEmail: string
+    registrationDate?: Date | string
+    status?: $Enums.RegistrationStatus
+    notes?: string | null
+    guestsCount?: number
+    updatedAt?: Date | string
+    event: EventCreateNestedOneWithoutRegistrationsInput
+  }
+
+  export type EventRegistrationUncheckedCreateWithoutOrganizationInput = {
+    id?: string
+    eventId: string
+    registrantName?: string | null
+    registrantEmail: string
+    registrationDate?: Date | string
+    status?: $Enums.RegistrationStatus
+    notes?: string | null
+    guestsCount?: number
     updatedAt?: Date | string
   }
 
-  export type PaymentCreateOrConnectWithoutUserInput = {
+  export type EventRegistrationCreateOrConnectWithoutOrganizationInput = {
+    where: EventRegistrationWhereUniqueInput
+    create: XOR<EventRegistrationCreateWithoutOrganizationInput, EventRegistrationUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type EventRegistrationCreateManyOrganizationInputEnvelope = {
+    data: EventRegistrationCreateManyOrganizationInput | EventRegistrationCreateManyOrganizationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutOrganizationInput = {
+    update: XOR<UserUpdateWithoutOrganizationInput, UserUncheckedUpdateWithoutOrganizationInput>
+    create: XOR<UserCreateWithoutOrganizationInput, UserUncheckedCreateWithoutOrganizationInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutOrganizationInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutOrganizationInput, UserUncheckedUpdateWithoutOrganizationInput>
+  }
+
+  export type UserUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImage?: ImageUpdateOneWithoutUserProfileForNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUpdateManyWithoutOrganizerNestedInput
+    createdMembershipPlans?: MembershipPlanUpdateManyWithoutCreatedByNestedInput
+    initiatedPayments?: PaymentUpdateManyWithoutInitiatedByNestedInput
+    managedSubscriptions?: SubscriptionUpdateManyWithoutManagedByNestedInput
+    uploadedImages?: ImageUpdateManyWithoutUploaderNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
+    createdMembershipPlans?: MembershipPlanUncheckedUpdateManyWithoutCreatedByNestedInput
+    initiatedPayments?: PaymentUncheckedUpdateManyWithoutInitiatedByNestedInput
+    managedSubscriptions?: SubscriptionUncheckedUpdateManyWithoutManagedByNestedInput
+    uploadedImages?: ImageUncheckedUpdateManyWithoutUploaderNestedInput
+  }
+
+  export type MemberUpsertWithWhereUniqueWithoutOrganizationInput = {
+    where: MemberWhereUniqueInput
+    update: XOR<MemberUpdateWithoutOrganizationInput, MemberUncheckedUpdateWithoutOrganizationInput>
+    create: XOR<MemberCreateWithoutOrganizationInput, MemberUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type MemberUpdateWithWhereUniqueWithoutOrganizationInput = {
+    where: MemberWhereUniqueInput
+    data: XOR<MemberUpdateWithoutOrganizationInput, MemberUncheckedUpdateWithoutOrganizationInput>
+  }
+
+  export type MemberUpdateManyWithWhereWithoutOrganizationInput = {
+    where: MemberScalarWhereInput
+    data: XOR<MemberUpdateManyMutationInput, MemberUncheckedUpdateManyWithoutOrganizationInput>
+  }
+
+  export type MemberScalarWhereInput = {
+    AND?: MemberScalarWhereInput | MemberScalarWhereInput[]
+    OR?: MemberScalarWhereInput[]
+    NOT?: MemberScalarWhereInput | MemberScalarWhereInput[]
+    id?: StringFilter<"Member"> | string
+    name?: StringFilter<"Member"> | string
+    email?: StringNullableFilter<"Member"> | string | null
+    phoneNumber?: StringNullableFilter<"Member"> | string | null
+    status?: EnumMemberStatusFilter<"Member"> | $Enums.MemberStatus
+    joinDate?: DateTimeNullableFilter<"Member"> | Date | string | null
+    notes?: StringNullableFilter<"Member"> | string | null
+    createdAt?: DateTimeFilter<"Member"> | Date | string
+    updatedAt?: DateTimeFilter<"Member"> | Date | string
+    organizationId?: StringFilter<"Member"> | string
+  }
+
+  export type EventUpsertWithWhereUniqueWithoutOrganizationInput = {
+    where: EventWhereUniqueInput
+    update: XOR<EventUpdateWithoutOrganizationInput, EventUncheckedUpdateWithoutOrganizationInput>
+    create: XOR<EventCreateWithoutOrganizationInput, EventUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type EventUpdateWithWhereUniqueWithoutOrganizationInput = {
+    where: EventWhereUniqueInput
+    data: XOR<EventUpdateWithoutOrganizationInput, EventUncheckedUpdateWithoutOrganizationInput>
+  }
+
+  export type EventUpdateManyWithWhereWithoutOrganizationInput = {
+    where: EventScalarWhereInput
+    data: XOR<EventUpdateManyMutationInput, EventUncheckedUpdateManyWithoutOrganizationInput>
+  }
+
+  export type EventScalarWhereInput = {
+    AND?: EventScalarWhereInput | EventScalarWhereInput[]
+    OR?: EventScalarWhereInput[]
+    NOT?: EventScalarWhereInput | EventScalarWhereInput[]
+    id?: StringFilter<"Event"> | string
+    name?: StringFilter<"Event"> | string
+    description?: StringNullableFilter<"Event"> | string | null
+    date?: DateTimeFilter<"Event"> | Date | string
+    endDate?: DateTimeNullableFilter<"Event"> | Date | string | null
+    location?: StringNullableFilter<"Event"> | string | null
+    locationDetails?: StringNullableFilter<"Event"> | string | null
+    organizerId?: StringNullableFilter<"Event"> | string | null
+    organizationId?: StringNullableFilter<"Event"> | string | null
+    capacity?: IntNullableFilter<"Event"> | number | null
+    registrationDeadline?: DateTimeNullableFilter<"Event"> | Date | string | null
+    status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
+    isPrivate?: BoolFilter<"Event"> | boolean
+    createdAt?: DateTimeFilter<"Event"> | Date | string
+    updatedAt?: DateTimeFilter<"Event"> | Date | string
+    eventImageId?: StringNullableFilter<"Event"> | string | null
+  }
+
+  export type MembershipPlanUpsertWithWhereUniqueWithoutOrganizationInput = {
+    where: MembershipPlanWhereUniqueInput
+    update: XOR<MembershipPlanUpdateWithoutOrganizationInput, MembershipPlanUncheckedUpdateWithoutOrganizationInput>
+    create: XOR<MembershipPlanCreateWithoutOrganizationInput, MembershipPlanUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type MembershipPlanUpdateWithWhereUniqueWithoutOrganizationInput = {
+    where: MembershipPlanWhereUniqueInput
+    data: XOR<MembershipPlanUpdateWithoutOrganizationInput, MembershipPlanUncheckedUpdateWithoutOrganizationInput>
+  }
+
+  export type MembershipPlanUpdateManyWithWhereWithoutOrganizationInput = {
+    where: MembershipPlanScalarWhereInput
+    data: XOR<MembershipPlanUpdateManyMutationInput, MembershipPlanUncheckedUpdateManyWithoutOrganizationInput>
+  }
+
+  export type MembershipPlanScalarWhereInput = {
+    AND?: MembershipPlanScalarWhereInput | MembershipPlanScalarWhereInput[]
+    OR?: MembershipPlanScalarWhereInput[]
+    NOT?: MembershipPlanScalarWhereInput | MembershipPlanScalarWhereInput[]
+    id?: StringFilter<"MembershipPlan"> | string
+    name?: StringFilter<"MembershipPlan"> | string
+    description?: StringNullableFilter<"MembershipPlan"> | string | null
+    price?: DecimalFilter<"MembershipPlan"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"MembershipPlan"> | string
+    interval?: EnumBillingIntervalFilter<"MembershipPlan"> | $Enums.BillingInterval
+    active?: BoolFilter<"MembershipPlan"> | boolean
+    stripePriceId?: StringNullableFilter<"MembershipPlan"> | string | null
+    features?: StringNullableListFilter<"MembershipPlan">
+    createdById?: StringNullableFilter<"MembershipPlan"> | string | null
+    organizationId?: StringNullableFilter<"MembershipPlan"> | string | null
+    createdAt?: DateTimeFilter<"MembershipPlan"> | Date | string
+    updatedAt?: DateTimeFilter<"MembershipPlan"> | Date | string
+  }
+
+  export type PaymentUpsertWithWhereUniqueWithoutOrganizationInput = {
     where: PaymentWhereUniqueInput
-    create: XOR<PaymentCreateWithoutUserInput, PaymentUncheckedCreateWithoutUserInput>
+    update: XOR<PaymentUpdateWithoutOrganizationInput, PaymentUncheckedUpdateWithoutOrganizationInput>
+    create: XOR<PaymentCreateWithoutOrganizationInput, PaymentUncheckedCreateWithoutOrganizationInput>
   }
 
-  export type PaymentCreateManyUserInputEnvelope = {
-    data: PaymentCreateManyUserInput | PaymentCreateManyUserInput[]
-    skipDuplicates?: boolean
+  export type PaymentUpdateWithWhereUniqueWithoutOrganizationInput = {
+    where: PaymentWhereUniqueInput
+    data: XOR<PaymentUpdateWithoutOrganizationInput, PaymentUncheckedUpdateWithoutOrganizationInput>
+  }
+
+  export type PaymentUpdateManyWithWhereWithoutOrganizationInput = {
+    where: PaymentScalarWhereInput
+    data: XOR<PaymentUpdateManyMutationInput, PaymentUncheckedUpdateManyWithoutOrganizationInput>
+  }
+
+  export type PaymentScalarWhereInput = {
+    AND?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+    OR?: PaymentScalarWhereInput[]
+    NOT?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+    id?: StringFilter<"Payment"> | string
+    amount?: DecimalFilter<"Payment"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"Payment"> | string
+    status?: EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
+    method?: EnumPaymentMethodFilter<"Payment"> | $Enums.PaymentMethod
+    description?: StringNullableFilter<"Payment"> | string | null
+    initiatedById?: StringNullableFilter<"Payment"> | string | null
+    organizationId?: StringNullableFilter<"Payment"> | string | null
+    subscriptionId?: StringNullableFilter<"Payment"> | string | null
+    memberId?: StringNullableFilter<"Payment"> | string | null
+    createdAt?: DateTimeFilter<"Payment"> | Date | string
+    updatedAt?: DateTimeFilter<"Payment"> | Date | string
+  }
+
+  export type SubscriptionUpsertWithWhereUniqueWithoutOrganizationInput = {
+    where: SubscriptionWhereUniqueInput
+    update: XOR<SubscriptionUpdateWithoutOrganizationInput, SubscriptionUncheckedUpdateWithoutOrganizationInput>
+    create: XOR<SubscriptionCreateWithoutOrganizationInput, SubscriptionUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type SubscriptionUpdateWithWhereUniqueWithoutOrganizationInput = {
+    where: SubscriptionWhereUniqueInput
+    data: XOR<SubscriptionUpdateWithoutOrganizationInput, SubscriptionUncheckedUpdateWithoutOrganizationInput>
+  }
+
+  export type SubscriptionUpdateManyWithWhereWithoutOrganizationInput = {
+    where: SubscriptionScalarWhereInput
+    data: XOR<SubscriptionUpdateManyMutationInput, SubscriptionUncheckedUpdateManyWithoutOrganizationInput>
+  }
+
+  export type SubscriptionScalarWhereInput = {
+    AND?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
+    OR?: SubscriptionScalarWhereInput[]
+    NOT?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
+    id?: StringFilter<"Subscription"> | string
+    managedById?: StringNullableFilter<"Subscription"> | string | null
+    planId?: StringFilter<"Subscription"> | string
+    organizationId?: StringNullableFilter<"Subscription"> | string | null
+    memberId?: StringNullableFilter<"Subscription"> | string | null
+    stripeSubscriptionId?: StringNullableFilter<"Subscription"> | string | null
+    status?: EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
+    startDate?: DateTimeFilter<"Subscription"> | Date | string
+    currentPeriodStart?: DateTimeFilter<"Subscription"> | Date | string
+    currentPeriodEnd?: DateTimeFilter<"Subscription"> | Date | string
+    cancelAtPeriodEnd?: BoolFilter<"Subscription"> | boolean
+    canceledAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    trialStartDate?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    trialEndDate?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    createdAt?: DateTimeFilter<"Subscription"> | Date | string
+    updatedAt?: DateTimeFilter<"Subscription"> | Date | string
+  }
+
+  export type ImageUpsertWithWhereUniqueWithoutOrganizationInput = {
+    where: ImageWhereUniqueInput
+    update: XOR<ImageUpdateWithoutOrganizationInput, ImageUncheckedUpdateWithoutOrganizationInput>
+    create: XOR<ImageCreateWithoutOrganizationInput, ImageUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type ImageUpdateWithWhereUniqueWithoutOrganizationInput = {
+    where: ImageWhereUniqueInput
+    data: XOR<ImageUpdateWithoutOrganizationInput, ImageUncheckedUpdateWithoutOrganizationInput>
+  }
+
+  export type ImageUpdateManyWithWhereWithoutOrganizationInput = {
+    where: ImageScalarWhereInput
+    data: XOR<ImageUpdateManyMutationInput, ImageUncheckedUpdateManyWithoutOrganizationInput>
+  }
+
+  export type ImageScalarWhereInput = {
+    AND?: ImageScalarWhereInput | ImageScalarWhereInput[]
+    OR?: ImageScalarWhereInput[]
+    NOT?: ImageScalarWhereInput | ImageScalarWhereInput[]
+    id?: StringFilter<"Image"> | string
+    url?: StringFilter<"Image"> | string
+    alt?: StringNullableFilter<"Image"> | string | null
+    data?: BytesFilter<"Image"> | Uint8Array
+    mimeType?: StringFilter<"Image"> | string
+    size?: IntFilter<"Image"> | number
+    filename?: StringNullableFilter<"Image"> | string | null
+    width?: IntNullableFilter<"Image"> | number | null
+    height?: IntNullableFilter<"Image"> | number | null
+    uploaderId?: StringNullableFilter<"Image"> | string | null
+    organizationId?: StringNullableFilter<"Image"> | string | null
+    eventCoverForId?: StringNullableFilter<"Image"> | string | null
+    createdAt?: DateTimeFilter<"Image"> | Date | string
+    updatedAt?: DateTimeFilter<"Image"> | Date | string
+  }
+
+  export type EventRegistrationUpsertWithWhereUniqueWithoutOrganizationInput = {
+    where: EventRegistrationWhereUniqueInput
+    update: XOR<EventRegistrationUpdateWithoutOrganizationInput, EventRegistrationUncheckedUpdateWithoutOrganizationInput>
+    create: XOR<EventRegistrationCreateWithoutOrganizationInput, EventRegistrationUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type EventRegistrationUpdateWithWhereUniqueWithoutOrganizationInput = {
+    where: EventRegistrationWhereUniqueInput
+    data: XOR<EventRegistrationUpdateWithoutOrganizationInput, EventRegistrationUncheckedUpdateWithoutOrganizationInput>
+  }
+
+  export type EventRegistrationUpdateManyWithWhereWithoutOrganizationInput = {
+    where: EventRegistrationScalarWhereInput
+    data: XOR<EventRegistrationUpdateManyMutationInput, EventRegistrationUncheckedUpdateManyWithoutOrganizationInput>
+  }
+
+  export type EventRegistrationScalarWhereInput = {
+    AND?: EventRegistrationScalarWhereInput | EventRegistrationScalarWhereInput[]
+    OR?: EventRegistrationScalarWhereInput[]
+    NOT?: EventRegistrationScalarWhereInput | EventRegistrationScalarWhereInput[]
+    id?: StringFilter<"EventRegistration"> | string
+    eventId?: StringFilter<"EventRegistration"> | string
+    registrantName?: StringNullableFilter<"EventRegistration"> | string | null
+    registrantEmail?: StringFilter<"EventRegistration"> | string
+    organizationId?: StringFilter<"EventRegistration"> | string
+    registrationDate?: DateTimeFilter<"EventRegistration"> | Date | string
+    status?: EnumRegistrationStatusFilter<"EventRegistration"> | $Enums.RegistrationStatus
+    notes?: StringNullableFilter<"EventRegistration"> | string | null
+    guestsCount?: IntFilter<"EventRegistration"> | number
+    updatedAt?: DateTimeFilter<"EventRegistration"> | Date | string
+  }
+
+  export type ImageCreateWithoutUserProfileForInput = {
+    id?: string
+    url: string
+    alt?: string | null
+    data: Uint8Array
+    mimeType: string
+    size: number
+    filename?: string | null
+    width?: number | null
+    height?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    uploader?: UserCreateNestedOneWithoutUploadedImagesInput
+    organization?: OrganizationCreateNestedOneWithoutImagesInput
+    eventCoverFor?: EventCreateNestedOneWithoutCoverImageInput
+  }
+
+  export type ImageUncheckedCreateWithoutUserProfileForInput = {
+    id?: string
+    url: string
+    alt?: string | null
+    data: Uint8Array
+    mimeType: string
+    size: number
+    filename?: string | null
+    width?: number | null
+    height?: number | null
+    uploaderId?: string | null
+    organizationId?: string | null
+    eventCoverForId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ImageCreateOrConnectWithoutUserProfileForInput = {
+    where: ImageWhereUniqueInput
+    create: XOR<ImageCreateWithoutUserProfileForInput, ImageUncheckedCreateWithoutUserProfileForInput>
+  }
+
+  export type OrganizationCreateWithoutAdminInput = {
+    id?: string
+    name?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: MemberCreateNestedManyWithoutOrganizationInput
+    events?: EventCreateNestedManyWithoutOrganizationInput
+    membershipPlans?: MembershipPlanCreateNestedManyWithoutOrganizationInput
+    payments?: PaymentCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
+    images?: ImageCreateNestedManyWithoutOrganizationInput
+    eventRegistrations?: EventRegistrationCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationUncheckedCreateWithoutAdminInput = {
+    id?: string
+    name?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: MemberUncheckedCreateNestedManyWithoutOrganizationInput
+    events?: EventUncheckedCreateNestedManyWithoutOrganizationInput
+    membershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutOrganizationInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
+    images?: ImageUncheckedCreateNestedManyWithoutOrganizationInput
+    eventRegistrations?: EventRegistrationUncheckedCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationCreateOrConnectWithoutAdminInput = {
+    where: OrganizationWhereUniqueInput
+    create: XOR<OrganizationCreateWithoutAdminInput, OrganizationUncheckedCreateWithoutAdminInput>
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -18315,11 +23275,12 @@ export namespace Prisma {
     registrationDeadline?: Date | string | null
     status?: $Enums.EventStatus
     isPrivate?: boolean
-    coverImage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    eventImageId?: string | null
+    organization?: OrganizationCreateNestedOneWithoutEventsInput
     registrations?: EventRegistrationCreateNestedManyWithoutEventInput
-    eventImage?: ImageCreateNestedOneWithoutEventInput
+    coverImage?: ImageCreateNestedOneWithoutEventCoverForInput
   }
 
   export type EventUncheckedCreateWithoutOrganizerInput = {
@@ -18330,15 +23291,16 @@ export namespace Prisma {
     endDate?: Date | string | null
     location?: string | null
     locationDetails?: string | null
+    organizationId?: string | null
     capacity?: number | null
     registrationDeadline?: Date | string | null
     status?: $Enums.EventStatus
     isPrivate?: boolean
-    coverImage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     eventImageId?: string | null
     registrations?: EventRegistrationUncheckedCreateNestedManyWithoutEventInput
+    coverImage?: ImageUncheckedCreateNestedOneWithoutEventCoverForInput
   }
 
   export type EventCreateOrConnectWithoutOrganizerInput = {
@@ -18348,36 +23310,6 @@ export namespace Prisma {
 
   export type EventCreateManyOrganizerInputEnvelope = {
     data: EventCreateManyOrganizerInput | EventCreateManyOrganizerInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type EventRegistrationCreateWithoutUserInput = {
-    id?: string
-    registrationDate?: Date | string
-    status?: $Enums.RegistrationStatus
-    notes?: string | null
-    guestsCount?: number
-    updatedAt?: Date | string
-    event: EventCreateNestedOneWithoutRegistrationsInput
-  }
-
-  export type EventRegistrationUncheckedCreateWithoutUserInput = {
-    id?: string
-    eventId: string
-    registrationDate?: Date | string
-    status?: $Enums.RegistrationStatus
-    notes?: string | null
-    guestsCount?: number
-    updatedAt?: Date | string
-  }
-
-  export type EventRegistrationCreateOrConnectWithoutUserInput = {
-    where: EventRegistrationWhereUniqueInput
-    create: XOR<EventRegistrationCreateWithoutUserInput, EventRegistrationUncheckedCreateWithoutUserInput>
-  }
-
-  export type EventRegistrationCreateManyUserInputEnvelope = {
-    data: EventRegistrationCreateManyUserInput | EventRegistrationCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -18393,6 +23325,7 @@ export namespace Prisma {
     features?: MembershipPlanCreatefeaturesInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
+    organization?: OrganizationCreateNestedOneWithoutMembershipPlansInput
     subscriptions?: SubscriptionCreateNestedManyWithoutPlanInput
   }
 
@@ -18406,6 +23339,7 @@ export namespace Prisma {
     active?: boolean
     stripePriceId?: string | null
     features?: MembershipPlanCreatefeaturesInput | string[]
+    organizationId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutPlanInput
@@ -18421,105 +23355,218 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type ImageCreateWithoutUserInput = {
+  export type PaymentCreateWithoutInitiatedByInput = {
     id?: string
-    data: Uint8Array
-    filename?: string | null
-    mimeType: string
-    size: number
-    width?: number | null
-    height?: number | null
-    alt?: string | null
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status?: $Enums.PaymentStatus
+    method?: $Enums.PaymentMethod
+    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    event?: EventCreateNestedOneWithoutEventImageInput
+    organization?: OrganizationCreateNestedOneWithoutPaymentsInput
+    subscription?: SubscriptionCreateNestedOneWithoutPaymentsInput
+    member?: MemberCreateNestedOneWithoutPaymentsInput
   }
 
-  export type ImageUncheckedCreateWithoutUserInput = {
+  export type PaymentUncheckedCreateWithoutInitiatedByInput = {
     id?: string
-    data: Uint8Array
-    filename?: string | null
-    mimeType: string
-    size: number
-    width?: number | null
-    height?: number | null
-    alt?: string | null
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status?: $Enums.PaymentStatus
+    method?: $Enums.PaymentMethod
+    description?: string | null
+    organizationId?: string | null
+    subscriptionId?: string | null
+    memberId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    event?: EventUncheckedCreateNestedOneWithoutEventImageInput
   }
 
-  export type ImageCreateOrConnectWithoutUserInput = {
+  export type PaymentCreateOrConnectWithoutInitiatedByInput = {
+    where: PaymentWhereUniqueInput
+    create: XOR<PaymentCreateWithoutInitiatedByInput, PaymentUncheckedCreateWithoutInitiatedByInput>
+  }
+
+  export type PaymentCreateManyInitiatedByInputEnvelope = {
+    data: PaymentCreateManyInitiatedByInput | PaymentCreateManyInitiatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SubscriptionCreateWithoutManagedByInput = {
+    id?: string
+    stripeSubscriptionId?: string | null
+    status: $Enums.SubscriptionStatus
+    startDate?: Date | string
+    currentPeriodStart: Date | string
+    currentPeriodEnd: Date | string
+    cancelAtPeriodEnd?: boolean
+    canceledAt?: Date | string | null
+    trialStartDate?: Date | string | null
+    trialEndDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    plan: MembershipPlanCreateNestedOneWithoutSubscriptionsInput
+    organization?: OrganizationCreateNestedOneWithoutSubscriptionsInput
+    member?: MemberCreateNestedOneWithoutSubscriptionsInput
+    payments?: PaymentCreateNestedManyWithoutSubscriptionInput
+  }
+
+  export type SubscriptionUncheckedCreateWithoutManagedByInput = {
+    id?: string
+    planId: string
+    organizationId?: string | null
+    memberId?: string | null
+    stripeSubscriptionId?: string | null
+    status: $Enums.SubscriptionStatus
+    startDate?: Date | string
+    currentPeriodStart: Date | string
+    currentPeriodEnd: Date | string
+    cancelAtPeriodEnd?: boolean
+    canceledAt?: Date | string | null
+    trialStartDate?: Date | string | null
+    trialEndDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    payments?: PaymentUncheckedCreateNestedManyWithoutSubscriptionInput
+  }
+
+  export type SubscriptionCreateOrConnectWithoutManagedByInput = {
+    where: SubscriptionWhereUniqueInput
+    create: XOR<SubscriptionCreateWithoutManagedByInput, SubscriptionUncheckedCreateWithoutManagedByInput>
+  }
+
+  export type SubscriptionCreateManyManagedByInputEnvelope = {
+    data: SubscriptionCreateManyManagedByInput | SubscriptionCreateManyManagedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ImageCreateWithoutUploaderInput = {
+    id?: string
+    url: string
+    alt?: string | null
+    data: Uint8Array
+    mimeType: string
+    size: number
+    filename?: string | null
+    width?: number | null
+    height?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userProfileFor?: UserCreateNestedOneWithoutProfileImageInput
+    organization?: OrganizationCreateNestedOneWithoutImagesInput
+    eventCoverFor?: EventCreateNestedOneWithoutCoverImageInput
+  }
+
+  export type ImageUncheckedCreateWithoutUploaderInput = {
+    id?: string
+    url: string
+    alt?: string | null
+    data: Uint8Array
+    mimeType: string
+    size: number
+    filename?: string | null
+    width?: number | null
+    height?: number | null
+    organizationId?: string | null
+    eventCoverForId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userProfileFor?: UserUncheckedCreateNestedOneWithoutProfileImageInput
+  }
+
+  export type ImageCreateOrConnectWithoutUploaderInput = {
     where: ImageWhereUniqueInput
-    create: XOR<ImageCreateWithoutUserInput, ImageUncheckedCreateWithoutUserInput>
+    create: XOR<ImageCreateWithoutUploaderInput, ImageUncheckedCreateWithoutUploaderInput>
   }
 
-  export type SubscriptionUpsertWithWhereUniqueWithoutUserInput = {
-    where: SubscriptionWhereUniqueInput
-    update: XOR<SubscriptionUpdateWithoutUserInput, SubscriptionUncheckedUpdateWithoutUserInput>
-    create: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput>
+  export type ImageCreateManyUploaderInputEnvelope = {
+    data: ImageCreateManyUploaderInput | ImageCreateManyUploaderInput[]
+    skipDuplicates?: boolean
   }
 
-  export type SubscriptionUpdateWithWhereUniqueWithoutUserInput = {
-    where: SubscriptionWhereUniqueInput
-    data: XOR<SubscriptionUpdateWithoutUserInput, SubscriptionUncheckedUpdateWithoutUserInput>
+  export type ImageUpsertWithoutUserProfileForInput = {
+    update: XOR<ImageUpdateWithoutUserProfileForInput, ImageUncheckedUpdateWithoutUserProfileForInput>
+    create: XOR<ImageCreateWithoutUserProfileForInput, ImageUncheckedCreateWithoutUserProfileForInput>
+    where?: ImageWhereInput
   }
 
-  export type SubscriptionUpdateManyWithWhereWithoutUserInput = {
-    where: SubscriptionScalarWhereInput
-    data: XOR<SubscriptionUpdateManyMutationInput, SubscriptionUncheckedUpdateManyWithoutUserInput>
+  export type ImageUpdateToOneWithWhereWithoutUserProfileForInput = {
+    where?: ImageWhereInput
+    data: XOR<ImageUpdateWithoutUserProfileForInput, ImageUncheckedUpdateWithoutUserProfileForInput>
   }
 
-  export type SubscriptionScalarWhereInput = {
-    AND?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
-    OR?: SubscriptionScalarWhereInput[]
-    NOT?: SubscriptionScalarWhereInput | SubscriptionScalarWhereInput[]
-    id?: StringFilter<"Subscription"> | string
-    userId?: StringFilter<"Subscription"> | string
-    planId?: StringFilter<"Subscription"> | string
-    stripeSubscriptionId?: StringNullableFilter<"Subscription"> | string | null
-    status?: EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
-    startDate?: DateTimeFilter<"Subscription"> | Date | string
-    currentPeriodStart?: DateTimeFilter<"Subscription"> | Date | string
-    currentPeriodEnd?: DateTimeFilter<"Subscription"> | Date | string
-    cancelAtPeriodEnd?: BoolFilter<"Subscription"> | boolean
-    canceledAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
-    trialStartDate?: DateTimeNullableFilter<"Subscription"> | Date | string | null
-    trialEndDate?: DateTimeNullableFilter<"Subscription"> | Date | string | null
-    createdAt?: DateTimeFilter<"Subscription"> | Date | string
-    updatedAt?: DateTimeFilter<"Subscription"> | Date | string
+  export type ImageUpdateWithoutUserProfileForInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    alt?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: BytesFieldUpdateOperationsInput | Uint8Array
+    mimeType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    filename?: NullableStringFieldUpdateOperationsInput | string | null
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    uploader?: UserUpdateOneWithoutUploadedImagesNestedInput
+    organization?: OrganizationUpdateOneWithoutImagesNestedInput
+    eventCoverFor?: EventUpdateOneWithoutCoverImageNestedInput
   }
 
-  export type PaymentUpsertWithWhereUniqueWithoutUserInput = {
-    where: PaymentWhereUniqueInput
-    update: XOR<PaymentUpdateWithoutUserInput, PaymentUncheckedUpdateWithoutUserInput>
-    create: XOR<PaymentCreateWithoutUserInput, PaymentUncheckedCreateWithoutUserInput>
+  export type ImageUncheckedUpdateWithoutUserProfileForInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    alt?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: BytesFieldUpdateOperationsInput | Uint8Array
+    mimeType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    filename?: NullableStringFieldUpdateOperationsInput | string | null
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    uploaderId?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    eventCoverForId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PaymentUpdateWithWhereUniqueWithoutUserInput = {
-    where: PaymentWhereUniqueInput
-    data: XOR<PaymentUpdateWithoutUserInput, PaymentUncheckedUpdateWithoutUserInput>
+  export type OrganizationUpsertWithoutAdminInput = {
+    update: XOR<OrganizationUpdateWithoutAdminInput, OrganizationUncheckedUpdateWithoutAdminInput>
+    create: XOR<OrganizationCreateWithoutAdminInput, OrganizationUncheckedCreateWithoutAdminInput>
+    where?: OrganizationWhereInput
   }
 
-  export type PaymentUpdateManyWithWhereWithoutUserInput = {
-    where: PaymentScalarWhereInput
-    data: XOR<PaymentUpdateManyMutationInput, PaymentUncheckedUpdateManyWithoutUserInput>
+  export type OrganizationUpdateToOneWithWhereWithoutAdminInput = {
+    where?: OrganizationWhereInput
+    data: XOR<OrganizationUpdateWithoutAdminInput, OrganizationUncheckedUpdateWithoutAdminInput>
   }
 
-  export type PaymentScalarWhereInput = {
-    AND?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
-    OR?: PaymentScalarWhereInput[]
-    NOT?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
-    id?: StringFilter<"Payment"> | string
-    amount?: DecimalFilter<"Payment"> | Decimal | DecimalJsLike | number | string
-    currency?: StringFilter<"Payment"> | string
-    status?: EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
-    method?: EnumPaymentMethodFilter<"Payment"> | $Enums.PaymentMethod
-    description?: StringNullableFilter<"Payment"> | string | null
-    userId?: StringFilter<"Payment"> | string
-    subscriptionId?: StringNullableFilter<"Payment"> | string | null
-    createdAt?: DateTimeFilter<"Payment"> | Date | string
-    updatedAt?: DateTimeFilter<"Payment"> | Date | string
+  export type OrganizationUpdateWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: MemberUpdateManyWithoutOrganizationNestedInput
+    events?: EventUpdateManyWithoutOrganizationNestedInput
+    membershipPlans?: MembershipPlanUpdateManyWithoutOrganizationNestedInput
+    payments?: PaymentUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
+    images?: ImageUpdateManyWithoutOrganizationNestedInput
+    eventRegistrations?: EventRegistrationUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: MemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    events?: EventUncheckedUpdateManyWithoutOrganizationNestedInput
+    membershipPlans?: MembershipPlanUncheckedUpdateManyWithoutOrganizationNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
+    images?: ImageUncheckedUpdateManyWithoutOrganizationNestedInput
+    eventRegistrations?: EventRegistrationUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -18598,58 +23645,6 @@ export namespace Prisma {
     data: XOR<EventUpdateManyMutationInput, EventUncheckedUpdateManyWithoutOrganizerInput>
   }
 
-  export type EventScalarWhereInput = {
-    AND?: EventScalarWhereInput | EventScalarWhereInput[]
-    OR?: EventScalarWhereInput[]
-    NOT?: EventScalarWhereInput | EventScalarWhereInput[]
-    id?: StringFilter<"Event"> | string
-    name?: StringFilter<"Event"> | string
-    description?: StringNullableFilter<"Event"> | string | null
-    date?: DateTimeFilter<"Event"> | Date | string
-    endDate?: DateTimeNullableFilter<"Event"> | Date | string | null
-    location?: StringNullableFilter<"Event"> | string | null
-    locationDetails?: StringNullableFilter<"Event"> | string | null
-    organizerId?: StringNullableFilter<"Event"> | string | null
-    capacity?: IntNullableFilter<"Event"> | number | null
-    registrationDeadline?: DateTimeNullableFilter<"Event"> | Date | string | null
-    status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
-    isPrivate?: BoolFilter<"Event"> | boolean
-    coverImage?: StringNullableFilter<"Event"> | string | null
-    createdAt?: DateTimeFilter<"Event"> | Date | string
-    updatedAt?: DateTimeFilter<"Event"> | Date | string
-    eventImageId?: StringNullableFilter<"Event"> | string | null
-  }
-
-  export type EventRegistrationUpsertWithWhereUniqueWithoutUserInput = {
-    where: EventRegistrationWhereUniqueInput
-    update: XOR<EventRegistrationUpdateWithoutUserInput, EventRegistrationUncheckedUpdateWithoutUserInput>
-    create: XOR<EventRegistrationCreateWithoutUserInput, EventRegistrationUncheckedCreateWithoutUserInput>
-  }
-
-  export type EventRegistrationUpdateWithWhereUniqueWithoutUserInput = {
-    where: EventRegistrationWhereUniqueInput
-    data: XOR<EventRegistrationUpdateWithoutUserInput, EventRegistrationUncheckedUpdateWithoutUserInput>
-  }
-
-  export type EventRegistrationUpdateManyWithWhereWithoutUserInput = {
-    where: EventRegistrationScalarWhereInput
-    data: XOR<EventRegistrationUpdateManyMutationInput, EventRegistrationUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type EventRegistrationScalarWhereInput = {
-    AND?: EventRegistrationScalarWhereInput | EventRegistrationScalarWhereInput[]
-    OR?: EventRegistrationScalarWhereInput[]
-    NOT?: EventRegistrationScalarWhereInput | EventRegistrationScalarWhereInput[]
-    id?: StringFilter<"EventRegistration"> | string
-    eventId?: StringFilter<"EventRegistration"> | string
-    userId?: StringFilter<"EventRegistration"> | string
-    registrationDate?: DateTimeFilter<"EventRegistration"> | Date | string
-    status?: EnumRegistrationStatusFilter<"EventRegistration"> | $Enums.RegistrationStatus
-    notes?: StringNullableFilter<"EventRegistration"> | string | null
-    guestsCount?: IntFilter<"EventRegistration"> | number
-    updatedAt?: DateTimeFilter<"EventRegistration"> | Date | string
-  }
-
   export type MembershipPlanUpsertWithWhereUniqueWithoutCreatedByInput = {
     where: MembershipPlanWhereUniqueInput
     update: XOR<MembershipPlanUpdateWithoutCreatedByInput, MembershipPlanUncheckedUpdateWithoutCreatedByInput>
@@ -18666,61 +23661,52 @@ export namespace Prisma {
     data: XOR<MembershipPlanUpdateManyMutationInput, MembershipPlanUncheckedUpdateManyWithoutCreatedByInput>
   }
 
-  export type MembershipPlanScalarWhereInput = {
-    AND?: MembershipPlanScalarWhereInput | MembershipPlanScalarWhereInput[]
-    OR?: MembershipPlanScalarWhereInput[]
-    NOT?: MembershipPlanScalarWhereInput | MembershipPlanScalarWhereInput[]
-    id?: StringFilter<"MembershipPlan"> | string
-    name?: StringFilter<"MembershipPlan"> | string
-    description?: StringNullableFilter<"MembershipPlan"> | string | null
-    price?: DecimalFilter<"MembershipPlan"> | Decimal | DecimalJsLike | number | string
-    currency?: StringFilter<"MembershipPlan"> | string
-    interval?: EnumBillingIntervalFilter<"MembershipPlan"> | $Enums.BillingInterval
-    active?: BoolFilter<"MembershipPlan"> | boolean
-    stripePriceId?: StringNullableFilter<"MembershipPlan"> | string | null
-    features?: StringNullableListFilter<"MembershipPlan">
-    createdById?: StringNullableFilter<"MembershipPlan"> | string | null
-    createdAt?: DateTimeFilter<"MembershipPlan"> | Date | string
-    updatedAt?: DateTimeFilter<"MembershipPlan"> | Date | string
+  export type PaymentUpsertWithWhereUniqueWithoutInitiatedByInput = {
+    where: PaymentWhereUniqueInput
+    update: XOR<PaymentUpdateWithoutInitiatedByInput, PaymentUncheckedUpdateWithoutInitiatedByInput>
+    create: XOR<PaymentCreateWithoutInitiatedByInput, PaymentUncheckedCreateWithoutInitiatedByInput>
   }
 
-  export type ImageUpsertWithoutUserInput = {
-    update: XOR<ImageUpdateWithoutUserInput, ImageUncheckedUpdateWithoutUserInput>
-    create: XOR<ImageCreateWithoutUserInput, ImageUncheckedCreateWithoutUserInput>
-    where?: ImageWhereInput
+  export type PaymentUpdateWithWhereUniqueWithoutInitiatedByInput = {
+    where: PaymentWhereUniqueInput
+    data: XOR<PaymentUpdateWithoutInitiatedByInput, PaymentUncheckedUpdateWithoutInitiatedByInput>
   }
 
-  export type ImageUpdateToOneWithWhereWithoutUserInput = {
-    where?: ImageWhereInput
-    data: XOR<ImageUpdateWithoutUserInput, ImageUncheckedUpdateWithoutUserInput>
+  export type PaymentUpdateManyWithWhereWithoutInitiatedByInput = {
+    where: PaymentScalarWhereInput
+    data: XOR<PaymentUpdateManyMutationInput, PaymentUncheckedUpdateManyWithoutInitiatedByInput>
   }
 
-  export type ImageUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    data?: BytesFieldUpdateOperationsInput | Uint8Array
-    filename?: NullableStringFieldUpdateOperationsInput | string | null
-    mimeType?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    width?: NullableIntFieldUpdateOperationsInput | number | null
-    height?: NullableIntFieldUpdateOperationsInput | number | null
-    alt?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    event?: EventUpdateOneWithoutEventImageNestedInput
+  export type SubscriptionUpsertWithWhereUniqueWithoutManagedByInput = {
+    where: SubscriptionWhereUniqueInput
+    update: XOR<SubscriptionUpdateWithoutManagedByInput, SubscriptionUncheckedUpdateWithoutManagedByInput>
+    create: XOR<SubscriptionCreateWithoutManagedByInput, SubscriptionUncheckedCreateWithoutManagedByInput>
   }
 
-  export type ImageUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    data?: BytesFieldUpdateOperationsInput | Uint8Array
-    filename?: NullableStringFieldUpdateOperationsInput | string | null
-    mimeType?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    width?: NullableIntFieldUpdateOperationsInput | number | null
-    height?: NullableIntFieldUpdateOperationsInput | number | null
-    alt?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    event?: EventUncheckedUpdateOneWithoutEventImageNestedInput
+  export type SubscriptionUpdateWithWhereUniqueWithoutManagedByInput = {
+    where: SubscriptionWhereUniqueInput
+    data: XOR<SubscriptionUpdateWithoutManagedByInput, SubscriptionUncheckedUpdateWithoutManagedByInput>
+  }
+
+  export type SubscriptionUpdateManyWithWhereWithoutManagedByInput = {
+    where: SubscriptionScalarWhereInput
+    data: XOR<SubscriptionUpdateManyMutationInput, SubscriptionUncheckedUpdateManyWithoutManagedByInput>
+  }
+
+  export type ImageUpsertWithWhereUniqueWithoutUploaderInput = {
+    where: ImageWhereUniqueInput
+    update: XOR<ImageUpdateWithoutUploaderInput, ImageUncheckedUpdateWithoutUploaderInput>
+    create: XOR<ImageCreateWithoutUploaderInput, ImageUncheckedCreateWithoutUploaderInput>
+  }
+
+  export type ImageUpdateWithWhereUniqueWithoutUploaderInput = {
+    where: ImageWhereUniqueInput
+    data: XOR<ImageUpdateWithoutUploaderInput, ImageUncheckedUpdateWithoutUploaderInput>
+  }
+
+  export type ImageUpdateManyWithWhereWithoutUploaderInput = {
+    where: ImageScalarWhereInput
+    data: XOR<ImageUpdateManyMutationInput, ImageUncheckedUpdateManyWithoutUploaderInput>
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -18731,19 +23717,19 @@ export namespace Prisma {
     image?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
-    payments?: PaymentCreateNestedManyWithoutUserInput
+    profileImage?: ImageCreateNestedOneWithoutUserProfileForInput
+    organization?: OrganizationCreateNestedOneWithoutAdminInput
     sessions?: SessionCreateNestedManyWithoutUserInput
-    organizedEvents?: EventCreateNestedManyWithoutOrganizerInput
-    eventRegistrations?: EventRegistrationCreateNestedManyWithoutUserInput
+    createdEvents?: EventCreateNestedManyWithoutOrganizerInput
     createdMembershipPlans?: MembershipPlanCreateNestedManyWithoutCreatedByInput
-    profileImage?: ImageCreateNestedOneWithoutUserInput
+    initiatedPayments?: PaymentCreateNestedManyWithoutInitiatedByInput
+    managedSubscriptions?: SubscriptionCreateNestedManyWithoutManagedByInput
+    uploadedImages?: ImageCreateNestedManyWithoutUploaderInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -18752,21 +23738,21 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    profileImageId?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    profileImageId?: string | null
-    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
-    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    organization?: OrganizationUncheckedCreateNestedOneWithoutAdminInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    organizedEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
-    eventRegistrations?: EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+    createdEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
     createdMembershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutCreatedByInput
+    initiatedPayments?: PaymentUncheckedCreateNestedManyWithoutInitiatedByInput
+    managedSubscriptions?: SubscriptionUncheckedCreateNestedManyWithoutManagedByInput
+    uploadedImages?: ImageUncheckedCreateNestedManyWithoutUploaderInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -18793,19 +23779,19 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
-    payments?: PaymentUpdateManyWithoutUserNestedInput
+    profileImage?: ImageUpdateOneWithoutUserProfileForNestedInput
+    organization?: OrganizationUpdateOneWithoutAdminNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
-    organizedEvents?: EventUpdateManyWithoutOrganizerNestedInput
-    eventRegistrations?: EventRegistrationUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUpdateManyWithoutOrganizerNestedInput
     createdMembershipPlans?: MembershipPlanUpdateManyWithoutCreatedByNestedInput
-    profileImage?: ImageUpdateOneWithoutUserNestedInput
+    initiatedPayments?: PaymentUpdateManyWithoutInitiatedByNestedInput
+    managedSubscriptions?: SubscriptionUpdateManyWithoutManagedByNestedInput
+    uploadedImages?: ImageUpdateManyWithoutUploaderNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -18814,21 +23800,21 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
-    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    organization?: OrganizationUncheckedUpdateOneWithoutAdminNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    organizedEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
-    eventRegistrations?: EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
     createdMembershipPlans?: MembershipPlanUncheckedUpdateManyWithoutCreatedByNestedInput
+    initiatedPayments?: PaymentUncheckedUpdateManyWithoutInitiatedByNestedInput
+    managedSubscriptions?: SubscriptionUncheckedUpdateManyWithoutManagedByNestedInput
+    uploadedImages?: ImageUncheckedUpdateManyWithoutUploaderNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -18839,19 +23825,19 @@ export namespace Prisma {
     image?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
-    payments?: PaymentCreateNestedManyWithoutUserInput
+    profileImage?: ImageCreateNestedOneWithoutUserProfileForInput
+    organization?: OrganizationCreateNestedOneWithoutAdminInput
     accounts?: AccountCreateNestedManyWithoutUserInput
-    organizedEvents?: EventCreateNestedManyWithoutOrganizerInput
-    eventRegistrations?: EventRegistrationCreateNestedManyWithoutUserInput
+    createdEvents?: EventCreateNestedManyWithoutOrganizerInput
     createdMembershipPlans?: MembershipPlanCreateNestedManyWithoutCreatedByInput
-    profileImage?: ImageCreateNestedOneWithoutUserInput
+    initiatedPayments?: PaymentCreateNestedManyWithoutInitiatedByInput
+    managedSubscriptions?: SubscriptionCreateNestedManyWithoutManagedByInput
+    uploadedImages?: ImageCreateNestedManyWithoutUploaderInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -18860,21 +23846,21 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    profileImageId?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    profileImageId?: string | null
-    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
-    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    organization?: OrganizationUncheckedCreateNestedOneWithoutAdminInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    organizedEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
-    eventRegistrations?: EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+    createdEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
     createdMembershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutCreatedByInput
+    initiatedPayments?: PaymentUncheckedCreateNestedManyWithoutInitiatedByInput
+    managedSubscriptions?: SubscriptionUncheckedCreateNestedManyWithoutManagedByInput
+    uploadedImages?: ImageUncheckedCreateNestedManyWithoutUploaderInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -18901,19 +23887,19 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
-    payments?: PaymentUpdateManyWithoutUserNestedInput
+    profileImage?: ImageUpdateOneWithoutUserProfileForNestedInput
+    organization?: OrganizationUpdateOneWithoutAdminNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
-    organizedEvents?: EventUpdateManyWithoutOrganizerNestedInput
-    eventRegistrations?: EventRegistrationUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUpdateManyWithoutOrganizerNestedInput
     createdMembershipPlans?: MembershipPlanUpdateManyWithoutCreatedByNestedInput
-    profileImage?: ImageUpdateOneWithoutUserNestedInput
+    initiatedPayments?: PaymentUpdateManyWithoutInitiatedByNestedInput
+    managedSubscriptions?: SubscriptionUpdateManyWithoutManagedByNestedInput
+    uploadedImages?: ImageUpdateManyWithoutUploaderNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -18922,21 +23908,211 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
-    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    organization?: OrganizationUncheckedUpdateOneWithoutAdminNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    organizedEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
-    eventRegistrations?: EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
     createdMembershipPlans?: MembershipPlanUncheckedUpdateManyWithoutCreatedByNestedInput
+    initiatedPayments?: PaymentUncheckedUpdateManyWithoutInitiatedByNestedInput
+    managedSubscriptions?: SubscriptionUncheckedUpdateManyWithoutManagedByNestedInput
+    uploadedImages?: ImageUncheckedUpdateManyWithoutUploaderNestedInput
+  }
+
+  export type OrganizationCreateWithoutMembersInput = {
+    id?: string
+    name?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    admin: UserCreateNestedOneWithoutOrganizationInput
+    events?: EventCreateNestedManyWithoutOrganizationInput
+    membershipPlans?: MembershipPlanCreateNestedManyWithoutOrganizationInput
+    payments?: PaymentCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
+    images?: ImageCreateNestedManyWithoutOrganizationInput
+    eventRegistrations?: EventRegistrationCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationUncheckedCreateWithoutMembersInput = {
+    id?: string
+    name?: string | null
+    adminId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    events?: EventUncheckedCreateNestedManyWithoutOrganizationInput
+    membershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutOrganizationInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
+    images?: ImageUncheckedCreateNestedManyWithoutOrganizationInput
+    eventRegistrations?: EventRegistrationUncheckedCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationCreateOrConnectWithoutMembersInput = {
+    where: OrganizationWhereUniqueInput
+    create: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
+  }
+
+  export type SubscriptionCreateWithoutMemberInput = {
+    id?: string
+    stripeSubscriptionId?: string | null
+    status: $Enums.SubscriptionStatus
+    startDate?: Date | string
+    currentPeriodStart: Date | string
+    currentPeriodEnd: Date | string
+    cancelAtPeriodEnd?: boolean
+    canceledAt?: Date | string | null
+    trialStartDate?: Date | string | null
+    trialEndDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    managedBy?: UserCreateNestedOneWithoutManagedSubscriptionsInput
+    plan: MembershipPlanCreateNestedOneWithoutSubscriptionsInput
+    organization?: OrganizationCreateNestedOneWithoutSubscriptionsInput
+    payments?: PaymentCreateNestedManyWithoutSubscriptionInput
+  }
+
+  export type SubscriptionUncheckedCreateWithoutMemberInput = {
+    id?: string
+    managedById?: string | null
+    planId: string
+    organizationId?: string | null
+    stripeSubscriptionId?: string | null
+    status: $Enums.SubscriptionStatus
+    startDate?: Date | string
+    currentPeriodStart: Date | string
+    currentPeriodEnd: Date | string
+    cancelAtPeriodEnd?: boolean
+    canceledAt?: Date | string | null
+    trialStartDate?: Date | string | null
+    trialEndDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    payments?: PaymentUncheckedCreateNestedManyWithoutSubscriptionInput
+  }
+
+  export type SubscriptionCreateOrConnectWithoutMemberInput = {
+    where: SubscriptionWhereUniqueInput
+    create: XOR<SubscriptionCreateWithoutMemberInput, SubscriptionUncheckedCreateWithoutMemberInput>
+  }
+
+  export type SubscriptionCreateManyMemberInputEnvelope = {
+    data: SubscriptionCreateManyMemberInput | SubscriptionCreateManyMemberInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PaymentCreateWithoutMemberInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status?: $Enums.PaymentStatus
+    method?: $Enums.PaymentMethod
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    initiatedBy?: UserCreateNestedOneWithoutInitiatedPaymentsInput
+    organization?: OrganizationCreateNestedOneWithoutPaymentsInput
+    subscription?: SubscriptionCreateNestedOneWithoutPaymentsInput
+  }
+
+  export type PaymentUncheckedCreateWithoutMemberInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status?: $Enums.PaymentStatus
+    method?: $Enums.PaymentMethod
+    description?: string | null
+    initiatedById?: string | null
+    organizationId?: string | null
+    subscriptionId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PaymentCreateOrConnectWithoutMemberInput = {
+    where: PaymentWhereUniqueInput
+    create: XOR<PaymentCreateWithoutMemberInput, PaymentUncheckedCreateWithoutMemberInput>
+  }
+
+  export type PaymentCreateManyMemberInputEnvelope = {
+    data: PaymentCreateManyMemberInput | PaymentCreateManyMemberInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type OrganizationUpsertWithoutMembersInput = {
+    update: XOR<OrganizationUpdateWithoutMembersInput, OrganizationUncheckedUpdateWithoutMembersInput>
+    create: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
+    where?: OrganizationWhereInput
+  }
+
+  export type OrganizationUpdateToOneWithWhereWithoutMembersInput = {
+    where?: OrganizationWhereInput
+    data: XOR<OrganizationUpdateWithoutMembersInput, OrganizationUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type OrganizationUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    admin?: UserUpdateOneRequiredWithoutOrganizationNestedInput
+    events?: EventUpdateManyWithoutOrganizationNestedInput
+    membershipPlans?: MembershipPlanUpdateManyWithoutOrganizationNestedInput
+    payments?: PaymentUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
+    images?: ImageUpdateManyWithoutOrganizationNestedInput
+    eventRegistrations?: EventRegistrationUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    adminId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    events?: EventUncheckedUpdateManyWithoutOrganizationNestedInput
+    membershipPlans?: MembershipPlanUncheckedUpdateManyWithoutOrganizationNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
+    images?: ImageUncheckedUpdateManyWithoutOrganizationNestedInput
+    eventRegistrations?: EventRegistrationUncheckedUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type SubscriptionUpsertWithWhereUniqueWithoutMemberInput = {
+    where: SubscriptionWhereUniqueInput
+    update: XOR<SubscriptionUpdateWithoutMemberInput, SubscriptionUncheckedUpdateWithoutMemberInput>
+    create: XOR<SubscriptionCreateWithoutMemberInput, SubscriptionUncheckedCreateWithoutMemberInput>
+  }
+
+  export type SubscriptionUpdateWithWhereUniqueWithoutMemberInput = {
+    where: SubscriptionWhereUniqueInput
+    data: XOR<SubscriptionUpdateWithoutMemberInput, SubscriptionUncheckedUpdateWithoutMemberInput>
+  }
+
+  export type SubscriptionUpdateManyWithWhereWithoutMemberInput = {
+    where: SubscriptionScalarWhereInput
+    data: XOR<SubscriptionUpdateManyMutationInput, SubscriptionUncheckedUpdateManyWithoutMemberInput>
+  }
+
+  export type PaymentUpsertWithWhereUniqueWithoutMemberInput = {
+    where: PaymentWhereUniqueInput
+    update: XOR<PaymentUpdateWithoutMemberInput, PaymentUncheckedUpdateWithoutMemberInput>
+    create: XOR<PaymentCreateWithoutMemberInput, PaymentUncheckedCreateWithoutMemberInput>
+  }
+
+  export type PaymentUpdateWithWhereUniqueWithoutMemberInput = {
+    where: PaymentWhereUniqueInput
+    data: XOR<PaymentUpdateWithoutMemberInput, PaymentUncheckedUpdateWithoutMemberInput>
+  }
+
+  export type PaymentUpdateManyWithWhereWithoutMemberInput = {
+    where: PaymentScalarWhereInput
+    data: XOR<PaymentUpdateManyMutationInput, PaymentUncheckedUpdateManyWithoutMemberInput>
   }
 
   export type UserCreateWithoutCreatedMembershipPlansInput = {
@@ -18947,19 +24123,19 @@ export namespace Prisma {
     image?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
-    payments?: PaymentCreateNestedManyWithoutUserInput
+    profileImage?: ImageCreateNestedOneWithoutUserProfileForInput
+    organization?: OrganizationCreateNestedOneWithoutAdminInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
-    organizedEvents?: EventCreateNestedManyWithoutOrganizerInput
-    eventRegistrations?: EventRegistrationCreateNestedManyWithoutUserInput
-    profileImage?: ImageCreateNestedOneWithoutUserInput
+    createdEvents?: EventCreateNestedManyWithoutOrganizerInput
+    initiatedPayments?: PaymentCreateNestedManyWithoutInitiatedByInput
+    managedSubscriptions?: SubscriptionCreateNestedManyWithoutManagedByInput
+    uploadedImages?: ImageCreateNestedManyWithoutUploaderInput
   }
 
   export type UserUncheckedCreateWithoutCreatedMembershipPlansInput = {
@@ -18968,26 +24144,59 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    profileImageId?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    profileImageId?: string | null
-    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
-    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    organization?: OrganizationUncheckedCreateNestedOneWithoutAdminInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    organizedEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
-    eventRegistrations?: EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+    createdEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
+    initiatedPayments?: PaymentUncheckedCreateNestedManyWithoutInitiatedByInput
+    managedSubscriptions?: SubscriptionUncheckedCreateNestedManyWithoutManagedByInput
+    uploadedImages?: ImageUncheckedCreateNestedManyWithoutUploaderInput
   }
 
   export type UserCreateOrConnectWithoutCreatedMembershipPlansInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutCreatedMembershipPlansInput, UserUncheckedCreateWithoutCreatedMembershipPlansInput>
+  }
+
+  export type OrganizationCreateWithoutMembershipPlansInput = {
+    id?: string
+    name?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    admin: UserCreateNestedOneWithoutOrganizationInput
+    members?: MemberCreateNestedManyWithoutOrganizationInput
+    events?: EventCreateNestedManyWithoutOrganizationInput
+    payments?: PaymentCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
+    images?: ImageCreateNestedManyWithoutOrganizationInput
+    eventRegistrations?: EventRegistrationCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationUncheckedCreateWithoutMembershipPlansInput = {
+    id?: string
+    name?: string | null
+    adminId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: MemberUncheckedCreateNestedManyWithoutOrganizationInput
+    events?: EventUncheckedCreateNestedManyWithoutOrganizationInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
+    images?: ImageUncheckedCreateNestedManyWithoutOrganizationInput
+    eventRegistrations?: EventRegistrationUncheckedCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationCreateOrConnectWithoutMembershipPlansInput = {
+    where: OrganizationWhereUniqueInput
+    create: XOR<OrganizationCreateWithoutMembershipPlansInput, OrganizationUncheckedCreateWithoutMembershipPlansInput>
   }
 
   export type SubscriptionCreateWithoutPlanInput = {
@@ -19003,13 +24212,17 @@ export namespace Prisma {
     trialEndDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutSubscriptionsInput
+    managedBy?: UserCreateNestedOneWithoutManagedSubscriptionsInput
+    organization?: OrganizationCreateNestedOneWithoutSubscriptionsInput
+    member?: MemberCreateNestedOneWithoutSubscriptionsInput
     payments?: PaymentCreateNestedManyWithoutSubscriptionInput
   }
 
   export type SubscriptionUncheckedCreateWithoutPlanInput = {
     id?: string
-    userId: string
+    managedById?: string | null
+    organizationId?: string | null
+    memberId?: string | null
     stripeSubscriptionId?: string | null
     status: $Enums.SubscriptionStatus
     startDate?: Date | string
@@ -19053,19 +24266,19 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
-    payments?: PaymentUpdateManyWithoutUserNestedInput
+    profileImage?: ImageUpdateOneWithoutUserProfileForNestedInput
+    organization?: OrganizationUpdateOneWithoutAdminNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
-    organizedEvents?: EventUpdateManyWithoutOrganizerNestedInput
-    eventRegistrations?: EventRegistrationUpdateManyWithoutUserNestedInput
-    profileImage?: ImageUpdateOneWithoutUserNestedInput
+    createdEvents?: EventUpdateManyWithoutOrganizerNestedInput
+    initiatedPayments?: PaymentUpdateManyWithoutInitiatedByNestedInput
+    managedSubscriptions?: SubscriptionUpdateManyWithoutManagedByNestedInput
+    uploadedImages?: ImageUpdateManyWithoutUploaderNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedMembershipPlansInput = {
@@ -19074,21 +24287,60 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
-    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    organization?: OrganizationUncheckedUpdateOneWithoutAdminNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    organizedEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
-    eventRegistrations?: EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
+    initiatedPayments?: PaymentUncheckedUpdateManyWithoutInitiatedByNestedInput
+    managedSubscriptions?: SubscriptionUncheckedUpdateManyWithoutManagedByNestedInput
+    uploadedImages?: ImageUncheckedUpdateManyWithoutUploaderNestedInput
+  }
+
+  export type OrganizationUpsertWithoutMembershipPlansInput = {
+    update: XOR<OrganizationUpdateWithoutMembershipPlansInput, OrganizationUncheckedUpdateWithoutMembershipPlansInput>
+    create: XOR<OrganizationCreateWithoutMembershipPlansInput, OrganizationUncheckedCreateWithoutMembershipPlansInput>
+    where?: OrganizationWhereInput
+  }
+
+  export type OrganizationUpdateToOneWithWhereWithoutMembershipPlansInput = {
+    where?: OrganizationWhereInput
+    data: XOR<OrganizationUpdateWithoutMembershipPlansInput, OrganizationUncheckedUpdateWithoutMembershipPlansInput>
+  }
+
+  export type OrganizationUpdateWithoutMembershipPlansInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    admin?: UserUpdateOneRequiredWithoutOrganizationNestedInput
+    members?: MemberUpdateManyWithoutOrganizationNestedInput
+    events?: EventUpdateManyWithoutOrganizationNestedInput
+    payments?: PaymentUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
+    images?: ImageUpdateManyWithoutOrganizationNestedInput
+    eventRegistrations?: EventRegistrationUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateWithoutMembershipPlansInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    adminId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: MemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    events?: EventUncheckedUpdateManyWithoutOrganizationNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
+    images?: ImageUncheckedUpdateManyWithoutOrganizationNestedInput
+    eventRegistrations?: EventRegistrationUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type SubscriptionUpsertWithWhereUniqueWithoutPlanInput = {
@@ -19107,7 +24359,7 @@ export namespace Prisma {
     data: XOR<SubscriptionUpdateManyMutationInput, SubscriptionUncheckedUpdateManyWithoutPlanInput>
   }
 
-  export type UserCreateWithoutPaymentsInput = {
+  export type UserCreateWithoutInitiatedPaymentsInput = {
     id?: string
     name?: string | null
     email?: string | null
@@ -19115,47 +24367,80 @@ export namespace Prisma {
     image?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    profileImage?: ImageCreateNestedOneWithoutUserProfileForInput
+    organization?: OrganizationCreateNestedOneWithoutAdminInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
-    organizedEvents?: EventCreateNestedManyWithoutOrganizerInput
-    eventRegistrations?: EventRegistrationCreateNestedManyWithoutUserInput
+    createdEvents?: EventCreateNestedManyWithoutOrganizerInput
     createdMembershipPlans?: MembershipPlanCreateNestedManyWithoutCreatedByInput
-    profileImage?: ImageCreateNestedOneWithoutUserInput
+    managedSubscriptions?: SubscriptionCreateNestedManyWithoutManagedByInput
+    uploadedImages?: ImageCreateNestedManyWithoutUploaderInput
   }
 
-  export type UserUncheckedCreateWithoutPaymentsInput = {
+  export type UserUncheckedCreateWithoutInitiatedPaymentsInput = {
     id?: string
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    profileImageId?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    profileImageId?: string | null
-    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    organization?: OrganizationUncheckedCreateNestedOneWithoutAdminInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    organizedEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
-    eventRegistrations?: EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+    createdEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
     createdMembershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutCreatedByInput
+    managedSubscriptions?: SubscriptionUncheckedCreateNestedManyWithoutManagedByInput
+    uploadedImages?: ImageUncheckedCreateNestedManyWithoutUploaderInput
   }
 
-  export type UserCreateOrConnectWithoutPaymentsInput = {
+  export type UserCreateOrConnectWithoutInitiatedPaymentsInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutPaymentsInput, UserUncheckedCreateWithoutPaymentsInput>
+    create: XOR<UserCreateWithoutInitiatedPaymentsInput, UserUncheckedCreateWithoutInitiatedPaymentsInput>
+  }
+
+  export type OrganizationCreateWithoutPaymentsInput = {
+    id?: string
+    name?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    admin: UserCreateNestedOneWithoutOrganizationInput
+    members?: MemberCreateNestedManyWithoutOrganizationInput
+    events?: EventCreateNestedManyWithoutOrganizationInput
+    membershipPlans?: MembershipPlanCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
+    images?: ImageCreateNestedManyWithoutOrganizationInput
+    eventRegistrations?: EventRegistrationCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationUncheckedCreateWithoutPaymentsInput = {
+    id?: string
+    name?: string | null
+    adminId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: MemberUncheckedCreateNestedManyWithoutOrganizationInput
+    events?: EventUncheckedCreateNestedManyWithoutOrganizationInput
+    membershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
+    images?: ImageUncheckedCreateNestedManyWithoutOrganizationInput
+    eventRegistrations?: EventRegistrationUncheckedCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationCreateOrConnectWithoutPaymentsInput = {
+    where: OrganizationWhereUniqueInput
+    create: XOR<OrganizationCreateWithoutPaymentsInput, OrganizationUncheckedCreateWithoutPaymentsInput>
   }
 
   export type SubscriptionCreateWithoutPaymentsInput = {
@@ -19171,14 +24456,18 @@ export namespace Prisma {
     trialEndDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutSubscriptionsInput
+    managedBy?: UserCreateNestedOneWithoutManagedSubscriptionsInput
     plan: MembershipPlanCreateNestedOneWithoutSubscriptionsInput
+    organization?: OrganizationCreateNestedOneWithoutSubscriptionsInput
+    member?: MemberCreateNestedOneWithoutSubscriptionsInput
   }
 
   export type SubscriptionUncheckedCreateWithoutPaymentsInput = {
     id?: string
-    userId: string
+    managedById?: string | null
     planId: string
+    organizationId?: string | null
+    memberId?: string | null
     stripeSubscriptionId?: string | null
     status: $Enums.SubscriptionStatus
     startDate?: Date | string
@@ -19197,18 +24486,51 @@ export namespace Prisma {
     create: XOR<SubscriptionCreateWithoutPaymentsInput, SubscriptionUncheckedCreateWithoutPaymentsInput>
   }
 
-  export type UserUpsertWithoutPaymentsInput = {
-    update: XOR<UserUpdateWithoutPaymentsInput, UserUncheckedUpdateWithoutPaymentsInput>
-    create: XOR<UserCreateWithoutPaymentsInput, UserUncheckedCreateWithoutPaymentsInput>
+  export type MemberCreateWithoutPaymentsInput = {
+    id?: string
+    name: string
+    email?: string | null
+    phoneNumber?: string | null
+    status?: $Enums.MemberStatus
+    joinDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organization: OrganizationCreateNestedOneWithoutMembersInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutMemberInput
+  }
+
+  export type MemberUncheckedCreateWithoutPaymentsInput = {
+    id?: string
+    name: string
+    email?: string | null
+    phoneNumber?: string | null
+    status?: $Enums.MemberStatus
+    joinDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationId: string
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutMemberInput
+  }
+
+  export type MemberCreateOrConnectWithoutPaymentsInput = {
+    where: MemberWhereUniqueInput
+    create: XOR<MemberCreateWithoutPaymentsInput, MemberUncheckedCreateWithoutPaymentsInput>
+  }
+
+  export type UserUpsertWithoutInitiatedPaymentsInput = {
+    update: XOR<UserUpdateWithoutInitiatedPaymentsInput, UserUncheckedUpdateWithoutInitiatedPaymentsInput>
+    create: XOR<UserCreateWithoutInitiatedPaymentsInput, UserUncheckedCreateWithoutInitiatedPaymentsInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutPaymentsInput = {
+  export type UserUpdateToOneWithWhereWithoutInitiatedPaymentsInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutPaymentsInput, UserUncheckedUpdateWithoutPaymentsInput>
+    data: XOR<UserUpdateWithoutInitiatedPaymentsInput, UserUncheckedUpdateWithoutInitiatedPaymentsInput>
   }
 
-  export type UserUpdateWithoutPaymentsInput = {
+  export type UserUpdateWithoutInitiatedPaymentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19216,42 +24538,81 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    profileImage?: ImageUpdateOneWithoutUserProfileForNestedInput
+    organization?: OrganizationUpdateOneWithoutAdminNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
-    organizedEvents?: EventUpdateManyWithoutOrganizerNestedInput
-    eventRegistrations?: EventRegistrationUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUpdateManyWithoutOrganizerNestedInput
     createdMembershipPlans?: MembershipPlanUpdateManyWithoutCreatedByNestedInput
-    profileImage?: ImageUpdateOneWithoutUserNestedInput
+    managedSubscriptions?: SubscriptionUpdateManyWithoutManagedByNestedInput
+    uploadedImages?: ImageUpdateManyWithoutUploaderNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutPaymentsInput = {
+  export type UserUncheckedUpdateWithoutInitiatedPaymentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
-    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    organization?: OrganizationUncheckedUpdateOneWithoutAdminNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    organizedEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
-    eventRegistrations?: EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
     createdMembershipPlans?: MembershipPlanUncheckedUpdateManyWithoutCreatedByNestedInput
+    managedSubscriptions?: SubscriptionUncheckedUpdateManyWithoutManagedByNestedInput
+    uploadedImages?: ImageUncheckedUpdateManyWithoutUploaderNestedInput
+  }
+
+  export type OrganizationUpsertWithoutPaymentsInput = {
+    update: XOR<OrganizationUpdateWithoutPaymentsInput, OrganizationUncheckedUpdateWithoutPaymentsInput>
+    create: XOR<OrganizationCreateWithoutPaymentsInput, OrganizationUncheckedCreateWithoutPaymentsInput>
+    where?: OrganizationWhereInput
+  }
+
+  export type OrganizationUpdateToOneWithWhereWithoutPaymentsInput = {
+    where?: OrganizationWhereInput
+    data: XOR<OrganizationUpdateWithoutPaymentsInput, OrganizationUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type OrganizationUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    admin?: UserUpdateOneRequiredWithoutOrganizationNestedInput
+    members?: MemberUpdateManyWithoutOrganizationNestedInput
+    events?: EventUpdateManyWithoutOrganizationNestedInput
+    membershipPlans?: MembershipPlanUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
+    images?: ImageUpdateManyWithoutOrganizationNestedInput
+    eventRegistrations?: EventRegistrationUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    adminId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: MemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    events?: EventUncheckedUpdateManyWithoutOrganizationNestedInput
+    membershipPlans?: MembershipPlanUncheckedUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
+    images?: ImageUncheckedUpdateManyWithoutOrganizationNestedInput
+    eventRegistrations?: EventRegistrationUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type SubscriptionUpsertWithoutPaymentsInput = {
@@ -19278,14 +24639,18 @@ export namespace Prisma {
     trialEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutSubscriptionsNestedInput
+    managedBy?: UserUpdateOneWithoutManagedSubscriptionsNestedInput
     plan?: MembershipPlanUpdateOneRequiredWithoutSubscriptionsNestedInput
+    organization?: OrganizationUpdateOneWithoutSubscriptionsNestedInput
+    member?: MemberUpdateOneWithoutSubscriptionsNestedInput
   }
 
   export type SubscriptionUncheckedUpdateWithoutPaymentsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    managedById?: NullableStringFieldUpdateOperationsInput | string | null
     planId?: StringFieldUpdateOperationsInput | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19299,7 +24664,46 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserCreateWithoutSubscriptionsInput = {
+  export type MemberUpsertWithoutPaymentsInput = {
+    update: XOR<MemberUpdateWithoutPaymentsInput, MemberUncheckedUpdateWithoutPaymentsInput>
+    create: XOR<MemberCreateWithoutPaymentsInput, MemberUncheckedCreateWithoutPaymentsInput>
+    where?: MemberWhereInput
+  }
+
+  export type MemberUpdateToOneWithWhereWithoutPaymentsInput = {
+    where?: MemberWhereInput
+    data: XOR<MemberUpdateWithoutPaymentsInput, MemberUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type MemberUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneRequiredWithoutMembersNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutMemberNestedInput
+  }
+
+  export type MemberUncheckedUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutMemberNestedInput
+  }
+
+  export type UserCreateWithoutManagedSubscriptionsInput = {
     id?: string
     name?: string | null
     email?: string | null
@@ -19307,47 +24711,47 @@ export namespace Prisma {
     image?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    payments?: PaymentCreateNestedManyWithoutUserInput
+    profileImage?: ImageCreateNestedOneWithoutUserProfileForInput
+    organization?: OrganizationCreateNestedOneWithoutAdminInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
-    organizedEvents?: EventCreateNestedManyWithoutOrganizerInput
-    eventRegistrations?: EventRegistrationCreateNestedManyWithoutUserInput
+    createdEvents?: EventCreateNestedManyWithoutOrganizerInput
     createdMembershipPlans?: MembershipPlanCreateNestedManyWithoutCreatedByInput
-    profileImage?: ImageCreateNestedOneWithoutUserInput
+    initiatedPayments?: PaymentCreateNestedManyWithoutInitiatedByInput
+    uploadedImages?: ImageCreateNestedManyWithoutUploaderInput
   }
 
-  export type UserUncheckedCreateWithoutSubscriptionsInput = {
+  export type UserUncheckedCreateWithoutManagedSubscriptionsInput = {
     id?: string
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    profileImageId?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    profileImageId?: string | null
-    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    organization?: OrganizationUncheckedCreateNestedOneWithoutAdminInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    organizedEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
-    eventRegistrations?: EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+    createdEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
     createdMembershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutCreatedByInput
+    initiatedPayments?: PaymentUncheckedCreateNestedManyWithoutInitiatedByInput
+    uploadedImages?: ImageUncheckedCreateNestedManyWithoutUploaderInput
   }
 
-  export type UserCreateOrConnectWithoutSubscriptionsInput = {
+  export type UserCreateOrConnectWithoutManagedSubscriptionsInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutSubscriptionsInput, UserUncheckedCreateWithoutSubscriptionsInput>
+    create: XOR<UserCreateWithoutManagedSubscriptionsInput, UserUncheckedCreateWithoutManagedSubscriptionsInput>
   }
 
   export type MembershipPlanCreateWithoutSubscriptionsInput = {
@@ -19363,6 +24767,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutCreatedMembershipPlansInput
+    organization?: OrganizationCreateNestedOneWithoutMembershipPlansInput
   }
 
   export type MembershipPlanUncheckedCreateWithoutSubscriptionsInput = {
@@ -19376,6 +24781,7 @@ export namespace Prisma {
     stripePriceId?: string | null
     features?: MembershipPlanCreatefeaturesInput | string[]
     createdById?: string | null
+    organizationId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -19383,6 +24789,72 @@ export namespace Prisma {
   export type MembershipPlanCreateOrConnectWithoutSubscriptionsInput = {
     where: MembershipPlanWhereUniqueInput
     create: XOR<MembershipPlanCreateWithoutSubscriptionsInput, MembershipPlanUncheckedCreateWithoutSubscriptionsInput>
+  }
+
+  export type OrganizationCreateWithoutSubscriptionsInput = {
+    id?: string
+    name?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    admin: UserCreateNestedOneWithoutOrganizationInput
+    members?: MemberCreateNestedManyWithoutOrganizationInput
+    events?: EventCreateNestedManyWithoutOrganizationInput
+    membershipPlans?: MembershipPlanCreateNestedManyWithoutOrganizationInput
+    payments?: PaymentCreateNestedManyWithoutOrganizationInput
+    images?: ImageCreateNestedManyWithoutOrganizationInput
+    eventRegistrations?: EventRegistrationCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationUncheckedCreateWithoutSubscriptionsInput = {
+    id?: string
+    name?: string | null
+    adminId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: MemberUncheckedCreateNestedManyWithoutOrganizationInput
+    events?: EventUncheckedCreateNestedManyWithoutOrganizationInput
+    membershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutOrganizationInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutOrganizationInput
+    images?: ImageUncheckedCreateNestedManyWithoutOrganizationInput
+    eventRegistrations?: EventRegistrationUncheckedCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationCreateOrConnectWithoutSubscriptionsInput = {
+    where: OrganizationWhereUniqueInput
+    create: XOR<OrganizationCreateWithoutSubscriptionsInput, OrganizationUncheckedCreateWithoutSubscriptionsInput>
+  }
+
+  export type MemberCreateWithoutSubscriptionsInput = {
+    id?: string
+    name: string
+    email?: string | null
+    phoneNumber?: string | null
+    status?: $Enums.MemberStatus
+    joinDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organization: OrganizationCreateNestedOneWithoutMembersInput
+    payments?: PaymentCreateNestedManyWithoutMemberInput
+  }
+
+  export type MemberUncheckedCreateWithoutSubscriptionsInput = {
+    id?: string
+    name: string
+    email?: string | null
+    phoneNumber?: string | null
+    status?: $Enums.MemberStatus
+    joinDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationId: string
+    payments?: PaymentUncheckedCreateNestedManyWithoutMemberInput
+  }
+
+  export type MemberCreateOrConnectWithoutSubscriptionsInput = {
+    where: MemberWhereUniqueInput
+    create: XOR<MemberCreateWithoutSubscriptionsInput, MemberUncheckedCreateWithoutSubscriptionsInput>
   }
 
   export type PaymentCreateWithoutSubscriptionInput = {
@@ -19394,7 +24866,9 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutPaymentsInput
+    initiatedBy?: UserCreateNestedOneWithoutInitiatedPaymentsInput
+    organization?: OrganizationCreateNestedOneWithoutPaymentsInput
+    member?: MemberCreateNestedOneWithoutPaymentsInput
   }
 
   export type PaymentUncheckedCreateWithoutSubscriptionInput = {
@@ -19404,7 +24878,9 @@ export namespace Prisma {
     status?: $Enums.PaymentStatus
     method?: $Enums.PaymentMethod
     description?: string | null
-    userId: string
+    initiatedById?: string | null
+    organizationId?: string | null
+    memberId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -19419,18 +24895,18 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserUpsertWithoutSubscriptionsInput = {
-    update: XOR<UserUpdateWithoutSubscriptionsInput, UserUncheckedUpdateWithoutSubscriptionsInput>
-    create: XOR<UserCreateWithoutSubscriptionsInput, UserUncheckedCreateWithoutSubscriptionsInput>
+  export type UserUpsertWithoutManagedSubscriptionsInput = {
+    update: XOR<UserUpdateWithoutManagedSubscriptionsInput, UserUncheckedUpdateWithoutManagedSubscriptionsInput>
+    create: XOR<UserCreateWithoutManagedSubscriptionsInput, UserUncheckedCreateWithoutManagedSubscriptionsInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutSubscriptionsInput = {
+  export type UserUpdateToOneWithWhereWithoutManagedSubscriptionsInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutSubscriptionsInput, UserUncheckedUpdateWithoutSubscriptionsInput>
+    data: XOR<UserUpdateWithoutManagedSubscriptionsInput, UserUncheckedUpdateWithoutManagedSubscriptionsInput>
   }
 
-  export type UserUpdateWithoutSubscriptionsInput = {
+  export type UserUpdateWithoutManagedSubscriptionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19438,42 +24914,42 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    payments?: PaymentUpdateManyWithoutUserNestedInput
+    profileImage?: ImageUpdateOneWithoutUserProfileForNestedInput
+    organization?: OrganizationUpdateOneWithoutAdminNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
-    organizedEvents?: EventUpdateManyWithoutOrganizerNestedInput
-    eventRegistrations?: EventRegistrationUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUpdateManyWithoutOrganizerNestedInput
     createdMembershipPlans?: MembershipPlanUpdateManyWithoutCreatedByNestedInput
-    profileImage?: ImageUpdateOneWithoutUserNestedInput
+    initiatedPayments?: PaymentUpdateManyWithoutInitiatedByNestedInput
+    uploadedImages?: ImageUpdateManyWithoutUploaderNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutSubscriptionsInput = {
+  export type UserUncheckedUpdateWithoutManagedSubscriptionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
-    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    organization?: OrganizationUncheckedUpdateOneWithoutAdminNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    organizedEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
-    eventRegistrations?: EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
     createdMembershipPlans?: MembershipPlanUncheckedUpdateManyWithoutCreatedByNestedInput
+    initiatedPayments?: PaymentUncheckedUpdateManyWithoutInitiatedByNestedInput
+    uploadedImages?: ImageUncheckedUpdateManyWithoutUploaderNestedInput
   }
 
   export type MembershipPlanUpsertWithoutSubscriptionsInput = {
@@ -19500,6 +24976,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutCreatedMembershipPlansNestedInput
+    organization?: OrganizationUpdateOneWithoutMembershipPlansNestedInput
   }
 
   export type MembershipPlanUncheckedUpdateWithoutSubscriptionsInput = {
@@ -19513,8 +24990,87 @@ export namespace Prisma {
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     features?: MembershipPlanUpdatefeaturesInput | string[]
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganizationUpsertWithoutSubscriptionsInput = {
+    update: XOR<OrganizationUpdateWithoutSubscriptionsInput, OrganizationUncheckedUpdateWithoutSubscriptionsInput>
+    create: XOR<OrganizationCreateWithoutSubscriptionsInput, OrganizationUncheckedCreateWithoutSubscriptionsInput>
+    where?: OrganizationWhereInput
+  }
+
+  export type OrganizationUpdateToOneWithWhereWithoutSubscriptionsInput = {
+    where?: OrganizationWhereInput
+    data: XOR<OrganizationUpdateWithoutSubscriptionsInput, OrganizationUncheckedUpdateWithoutSubscriptionsInput>
+  }
+
+  export type OrganizationUpdateWithoutSubscriptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    admin?: UserUpdateOneRequiredWithoutOrganizationNestedInput
+    members?: MemberUpdateManyWithoutOrganizationNestedInput
+    events?: EventUpdateManyWithoutOrganizationNestedInput
+    membershipPlans?: MembershipPlanUpdateManyWithoutOrganizationNestedInput
+    payments?: PaymentUpdateManyWithoutOrganizationNestedInput
+    images?: ImageUpdateManyWithoutOrganizationNestedInput
+    eventRegistrations?: EventRegistrationUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateWithoutSubscriptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    adminId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: MemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    events?: EventUncheckedUpdateManyWithoutOrganizationNestedInput
+    membershipPlans?: MembershipPlanUncheckedUpdateManyWithoutOrganizationNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
+    images?: ImageUncheckedUpdateManyWithoutOrganizationNestedInput
+    eventRegistrations?: EventRegistrationUncheckedUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type MemberUpsertWithoutSubscriptionsInput = {
+    update: XOR<MemberUpdateWithoutSubscriptionsInput, MemberUncheckedUpdateWithoutSubscriptionsInput>
+    create: XOR<MemberCreateWithoutSubscriptionsInput, MemberUncheckedCreateWithoutSubscriptionsInput>
+    where?: MemberWhereInput
+  }
+
+  export type MemberUpdateToOneWithWhereWithoutSubscriptionsInput = {
+    where?: MemberWhereInput
+    data: XOR<MemberUpdateWithoutSubscriptionsInput, MemberUncheckedUpdateWithoutSubscriptionsInput>
+  }
+
+  export type MemberUpdateWithoutSubscriptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneRequiredWithoutMembersNestedInput
+    payments?: PaymentUpdateManyWithoutMemberNestedInput
+  }
+
+  export type MemberUncheckedUpdateWithoutSubscriptionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    payments?: PaymentUncheckedUpdateManyWithoutMemberNestedInput
   }
 
   export type PaymentUpsertWithWhereUniqueWithoutSubscriptionInput = {
@@ -19533,7 +25089,7 @@ export namespace Prisma {
     data: XOR<PaymentUpdateManyMutationInput, PaymentUncheckedUpdateManyWithoutSubscriptionInput>
   }
 
-  export type UserCreateWithoutOrganizedEventsInput = {
+  export type UserCreateWithoutCreatedEventsInput = {
     id?: string
     name?: string | null
     email?: string | null
@@ -19541,62 +25097,99 @@ export namespace Prisma {
     image?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
-    payments?: PaymentCreateNestedManyWithoutUserInput
+    profileImage?: ImageCreateNestedOneWithoutUserProfileForInput
+    organization?: OrganizationCreateNestedOneWithoutAdminInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
-    eventRegistrations?: EventRegistrationCreateNestedManyWithoutUserInput
     createdMembershipPlans?: MembershipPlanCreateNestedManyWithoutCreatedByInput
-    profileImage?: ImageCreateNestedOneWithoutUserInput
+    initiatedPayments?: PaymentCreateNestedManyWithoutInitiatedByInput
+    managedSubscriptions?: SubscriptionCreateNestedManyWithoutManagedByInput
+    uploadedImages?: ImageCreateNestedManyWithoutUploaderInput
   }
 
-  export type UserUncheckedCreateWithoutOrganizedEventsInput = {
+  export type UserUncheckedCreateWithoutCreatedEventsInput = {
     id?: string
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    profileImageId?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    profileImageId?: string | null
-    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
-    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    organization?: OrganizationUncheckedCreateNestedOneWithoutAdminInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    eventRegistrations?: EventRegistrationUncheckedCreateNestedManyWithoutUserInput
     createdMembershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutCreatedByInput
+    initiatedPayments?: PaymentUncheckedCreateNestedManyWithoutInitiatedByInput
+    managedSubscriptions?: SubscriptionUncheckedCreateNestedManyWithoutManagedByInput
+    uploadedImages?: ImageUncheckedCreateNestedManyWithoutUploaderInput
   }
 
-  export type UserCreateOrConnectWithoutOrganizedEventsInput = {
+  export type UserCreateOrConnectWithoutCreatedEventsInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutOrganizedEventsInput, UserUncheckedCreateWithoutOrganizedEventsInput>
+    create: XOR<UserCreateWithoutCreatedEventsInput, UserUncheckedCreateWithoutCreatedEventsInput>
+  }
+
+  export type OrganizationCreateWithoutEventsInput = {
+    id?: string
+    name?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    admin: UserCreateNestedOneWithoutOrganizationInput
+    members?: MemberCreateNestedManyWithoutOrganizationInput
+    membershipPlans?: MembershipPlanCreateNestedManyWithoutOrganizationInput
+    payments?: PaymentCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
+    images?: ImageCreateNestedManyWithoutOrganizationInput
+    eventRegistrations?: EventRegistrationCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationUncheckedCreateWithoutEventsInput = {
+    id?: string
+    name?: string | null
+    adminId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: MemberUncheckedCreateNestedManyWithoutOrganizationInput
+    membershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutOrganizationInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
+    images?: ImageUncheckedCreateNestedManyWithoutOrganizationInput
+    eventRegistrations?: EventRegistrationUncheckedCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationCreateOrConnectWithoutEventsInput = {
+    where: OrganizationWhereUniqueInput
+    create: XOR<OrganizationCreateWithoutEventsInput, OrganizationUncheckedCreateWithoutEventsInput>
   }
 
   export type EventRegistrationCreateWithoutEventInput = {
     id?: string
+    registrantName?: string | null
+    registrantEmail: string
     registrationDate?: Date | string
     status?: $Enums.RegistrationStatus
     notes?: string | null
     guestsCount?: number
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutEventRegistrationsInput
+    organization: OrganizationCreateNestedOneWithoutEventRegistrationsInput
   }
 
   export type EventRegistrationUncheckedCreateWithoutEventInput = {
     id?: string
-    userId: string
+    registrantName?: string | null
+    registrantEmail: string
+    organizationId: string
     registrationDate?: Date | string
     status?: $Enums.RegistrationStatus
     notes?: string | null
@@ -19614,51 +25207,57 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type ImageCreateWithoutEventInput = {
+  export type ImageCreateWithoutEventCoverForInput = {
     id?: string
+    url: string
+    alt?: string | null
     data: Uint8Array
-    filename?: string | null
     mimeType: string
     size: number
+    filename?: string | null
     width?: number | null
     height?: number | null
-    alt?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user?: UserCreateNestedOneWithoutProfileImageInput
+    uploader?: UserCreateNestedOneWithoutUploadedImagesInput
+    userProfileFor?: UserCreateNestedOneWithoutProfileImageInput
+    organization?: OrganizationCreateNestedOneWithoutImagesInput
   }
 
-  export type ImageUncheckedCreateWithoutEventInput = {
+  export type ImageUncheckedCreateWithoutEventCoverForInput = {
     id?: string
+    url: string
+    alt?: string | null
     data: Uint8Array
-    filename?: string | null
     mimeType: string
     size: number
+    filename?: string | null
     width?: number | null
     height?: number | null
-    alt?: string | null
+    uploaderId?: string | null
+    organizationId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user?: UserUncheckedCreateNestedOneWithoutProfileImageInput
+    userProfileFor?: UserUncheckedCreateNestedOneWithoutProfileImageInput
   }
 
-  export type ImageCreateOrConnectWithoutEventInput = {
+  export type ImageCreateOrConnectWithoutEventCoverForInput = {
     where: ImageWhereUniqueInput
-    create: XOR<ImageCreateWithoutEventInput, ImageUncheckedCreateWithoutEventInput>
+    create: XOR<ImageCreateWithoutEventCoverForInput, ImageUncheckedCreateWithoutEventCoverForInput>
   }
 
-  export type UserUpsertWithoutOrganizedEventsInput = {
-    update: XOR<UserUpdateWithoutOrganizedEventsInput, UserUncheckedUpdateWithoutOrganizedEventsInput>
-    create: XOR<UserCreateWithoutOrganizedEventsInput, UserUncheckedCreateWithoutOrganizedEventsInput>
+  export type UserUpsertWithoutCreatedEventsInput = {
+    update: XOR<UserUpdateWithoutCreatedEventsInput, UserUncheckedUpdateWithoutCreatedEventsInput>
+    create: XOR<UserCreateWithoutCreatedEventsInput, UserUncheckedCreateWithoutCreatedEventsInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutOrganizedEventsInput = {
+  export type UserUpdateToOneWithWhereWithoutCreatedEventsInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutOrganizedEventsInput, UserUncheckedUpdateWithoutOrganizedEventsInput>
+    data: XOR<UserUpdateWithoutCreatedEventsInput, UserUncheckedUpdateWithoutCreatedEventsInput>
   }
 
-  export type UserUpdateWithoutOrganizedEventsInput = {
+  export type UserUpdateWithoutCreatedEventsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19666,42 +25265,81 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
-    payments?: PaymentUpdateManyWithoutUserNestedInput
+    profileImage?: ImageUpdateOneWithoutUserProfileForNestedInput
+    organization?: OrganizationUpdateOneWithoutAdminNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
-    eventRegistrations?: EventRegistrationUpdateManyWithoutUserNestedInput
     createdMembershipPlans?: MembershipPlanUpdateManyWithoutCreatedByNestedInput
-    profileImage?: ImageUpdateOneWithoutUserNestedInput
+    initiatedPayments?: PaymentUpdateManyWithoutInitiatedByNestedInput
+    managedSubscriptions?: SubscriptionUpdateManyWithoutManagedByNestedInput
+    uploadedImages?: ImageUpdateManyWithoutUploaderNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutOrganizedEventsInput = {
+  export type UserUncheckedUpdateWithoutCreatedEventsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
-    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    organization?: OrganizationUncheckedUpdateOneWithoutAdminNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    eventRegistrations?: EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
     createdMembershipPlans?: MembershipPlanUncheckedUpdateManyWithoutCreatedByNestedInput
+    initiatedPayments?: PaymentUncheckedUpdateManyWithoutInitiatedByNestedInput
+    managedSubscriptions?: SubscriptionUncheckedUpdateManyWithoutManagedByNestedInput
+    uploadedImages?: ImageUncheckedUpdateManyWithoutUploaderNestedInput
+  }
+
+  export type OrganizationUpsertWithoutEventsInput = {
+    update: XOR<OrganizationUpdateWithoutEventsInput, OrganizationUncheckedUpdateWithoutEventsInput>
+    create: XOR<OrganizationCreateWithoutEventsInput, OrganizationUncheckedCreateWithoutEventsInput>
+    where?: OrganizationWhereInput
+  }
+
+  export type OrganizationUpdateToOneWithWhereWithoutEventsInput = {
+    where?: OrganizationWhereInput
+    data: XOR<OrganizationUpdateWithoutEventsInput, OrganizationUncheckedUpdateWithoutEventsInput>
+  }
+
+  export type OrganizationUpdateWithoutEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    admin?: UserUpdateOneRequiredWithoutOrganizationNestedInput
+    members?: MemberUpdateManyWithoutOrganizationNestedInput
+    membershipPlans?: MembershipPlanUpdateManyWithoutOrganizationNestedInput
+    payments?: PaymentUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
+    images?: ImageUpdateManyWithoutOrganizationNestedInput
+    eventRegistrations?: EventRegistrationUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateWithoutEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    adminId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: MemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    membershipPlans?: MembershipPlanUncheckedUpdateManyWithoutOrganizationNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
+    images?: ImageUncheckedUpdateManyWithoutOrganizationNestedInput
+    eventRegistrations?: EventRegistrationUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type EventRegistrationUpsertWithWhereUniqueWithoutEventInput = {
@@ -19720,43 +25358,49 @@ export namespace Prisma {
     data: XOR<EventRegistrationUpdateManyMutationInput, EventRegistrationUncheckedUpdateManyWithoutEventInput>
   }
 
-  export type ImageUpsertWithoutEventInput = {
-    update: XOR<ImageUpdateWithoutEventInput, ImageUncheckedUpdateWithoutEventInput>
-    create: XOR<ImageCreateWithoutEventInput, ImageUncheckedCreateWithoutEventInput>
+  export type ImageUpsertWithoutEventCoverForInput = {
+    update: XOR<ImageUpdateWithoutEventCoverForInput, ImageUncheckedUpdateWithoutEventCoverForInput>
+    create: XOR<ImageCreateWithoutEventCoverForInput, ImageUncheckedCreateWithoutEventCoverForInput>
     where?: ImageWhereInput
   }
 
-  export type ImageUpdateToOneWithWhereWithoutEventInput = {
+  export type ImageUpdateToOneWithWhereWithoutEventCoverForInput = {
     where?: ImageWhereInput
-    data: XOR<ImageUpdateWithoutEventInput, ImageUncheckedUpdateWithoutEventInput>
+    data: XOR<ImageUpdateWithoutEventCoverForInput, ImageUncheckedUpdateWithoutEventCoverForInput>
   }
 
-  export type ImageUpdateWithoutEventInput = {
+  export type ImageUpdateWithoutEventCoverForInput = {
     id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    alt?: NullableStringFieldUpdateOperationsInput | string | null
     data?: BytesFieldUpdateOperationsInput | Uint8Array
-    filename?: NullableStringFieldUpdateOperationsInput | string | null
     mimeType?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
+    filename?: NullableStringFieldUpdateOperationsInput | string | null
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
-    alt?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutProfileImageNestedInput
+    uploader?: UserUpdateOneWithoutUploadedImagesNestedInput
+    userProfileFor?: UserUpdateOneWithoutProfileImageNestedInput
+    organization?: OrganizationUpdateOneWithoutImagesNestedInput
   }
 
-  export type ImageUncheckedUpdateWithoutEventInput = {
+  export type ImageUncheckedUpdateWithoutEventCoverForInput = {
     id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    alt?: NullableStringFieldUpdateOperationsInput | string | null
     data?: BytesFieldUpdateOperationsInput | Uint8Array
-    filename?: NullableStringFieldUpdateOperationsInput | string | null
     mimeType?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
+    filename?: NullableStringFieldUpdateOperationsInput | string | null
     width?: NullableIntFieldUpdateOperationsInput | number | null
     height?: NullableIntFieldUpdateOperationsInput | number | null
-    alt?: NullableStringFieldUpdateOperationsInput | string | null
+    uploaderId?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUncheckedUpdateOneWithoutProfileImageNestedInput
+    userProfileFor?: UserUncheckedUpdateOneWithoutProfileImageNestedInput
   }
 
   export type EventCreateWithoutRegistrationsInput = {
@@ -19771,11 +25415,12 @@ export namespace Prisma {
     registrationDeadline?: Date | string | null
     status?: $Enums.EventStatus
     isPrivate?: boolean
-    coverImage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    organizer?: UserCreateNestedOneWithoutOrganizedEventsInput
-    eventImage?: ImageCreateNestedOneWithoutEventInput
+    eventImageId?: string | null
+    organizer?: UserCreateNestedOneWithoutCreatedEventsInput
+    organization?: OrganizationCreateNestedOneWithoutEventsInput
+    coverImage?: ImageCreateNestedOneWithoutEventCoverForInput
   }
 
   export type EventUncheckedCreateWithoutRegistrationsInput = {
@@ -19787,14 +25432,15 @@ export namespace Prisma {
     location?: string | null
     locationDetails?: string | null
     organizerId?: string | null
+    organizationId?: string | null
     capacity?: number | null
     registrationDeadline?: Date | string | null
     status?: $Enums.EventStatus
     isPrivate?: boolean
-    coverImage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     eventImageId?: string | null
+    coverImage?: ImageUncheckedCreateNestedOneWithoutEventCoverForInput
   }
 
   export type EventCreateOrConnectWithoutRegistrationsInput = {
@@ -19802,55 +25448,37 @@ export namespace Prisma {
     create: XOR<EventCreateWithoutRegistrationsInput, EventUncheckedCreateWithoutRegistrationsInput>
   }
 
-  export type UserCreateWithoutEventRegistrationsInput = {
+  export type OrganizationCreateWithoutEventRegistrationsInput = {
     id?: string
     name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    phoneNumber?: string | null
-    status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
-    joinDate?: Date | string | null
-    lastPayment?: Date | string | null
-    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
-    payments?: PaymentCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    organizedEvents?: EventCreateNestedManyWithoutOrganizerInput
-    createdMembershipPlans?: MembershipPlanCreateNestedManyWithoutCreatedByInput
-    profileImage?: ImageCreateNestedOneWithoutUserInput
+    admin: UserCreateNestedOneWithoutOrganizationInput
+    members?: MemberCreateNestedManyWithoutOrganizationInput
+    events?: EventCreateNestedManyWithoutOrganizationInput
+    membershipPlans?: MembershipPlanCreateNestedManyWithoutOrganizationInput
+    payments?: PaymentCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
+    images?: ImageCreateNestedManyWithoutOrganizationInput
   }
 
-  export type UserUncheckedCreateWithoutEventRegistrationsInput = {
+  export type OrganizationUncheckedCreateWithoutEventRegistrationsInput = {
     id?: string
     name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    phoneNumber?: string | null
-    status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
-    joinDate?: Date | string | null
-    lastPayment?: Date | string | null
-    notes?: string | null
+    adminId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    profileImageId?: string | null
-    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
-    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    organizedEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
-    createdMembershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutCreatedByInput
+    members?: MemberUncheckedCreateNestedManyWithoutOrganizationInput
+    events?: EventUncheckedCreateNestedManyWithoutOrganizationInput
+    membershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutOrganizationInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
+    images?: ImageUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
-  export type UserCreateOrConnectWithoutEventRegistrationsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutEventRegistrationsInput, UserUncheckedCreateWithoutEventRegistrationsInput>
+  export type OrganizationCreateOrConnectWithoutEventRegistrationsInput = {
+    where: OrganizationWhereUniqueInput
+    create: XOR<OrganizationCreateWithoutEventRegistrationsInput, OrganizationUncheckedCreateWithoutEventRegistrationsInput>
   }
 
   export type EventUpsertWithoutRegistrationsInput = {
@@ -19876,11 +25504,12 @@ export namespace Prisma {
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
-    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organizer?: UserUpdateOneWithoutOrganizedEventsNestedInput
-    eventImage?: ImageUpdateOneWithoutEventNestedInput
+    eventImageId?: NullableStringFieldUpdateOperationsInput | string | null
+    organizer?: UserUpdateOneWithoutCreatedEventsNestedInput
+    organization?: OrganizationUpdateOneWithoutEventsNestedInput
+    coverImage?: ImageUpdateOneWithoutEventCoverForNestedInput
   }
 
   export type EventUncheckedUpdateWithoutRegistrationsInput = {
@@ -19892,71 +25521,105 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     locationDetails?: NullableStringFieldUpdateOperationsInput | string | null
     organizerId?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
-    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     eventImageId?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: ImageUncheckedUpdateOneWithoutEventCoverForNestedInput
   }
 
-  export type UserUpsertWithoutEventRegistrationsInput = {
-    update: XOR<UserUpdateWithoutEventRegistrationsInput, UserUncheckedUpdateWithoutEventRegistrationsInput>
-    create: XOR<UserCreateWithoutEventRegistrationsInput, UserUncheckedCreateWithoutEventRegistrationsInput>
-    where?: UserWhereInput
+  export type OrganizationUpsertWithoutEventRegistrationsInput = {
+    update: XOR<OrganizationUpdateWithoutEventRegistrationsInput, OrganizationUncheckedUpdateWithoutEventRegistrationsInput>
+    create: XOR<OrganizationCreateWithoutEventRegistrationsInput, OrganizationUncheckedCreateWithoutEventRegistrationsInput>
+    where?: OrganizationWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutEventRegistrationsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutEventRegistrationsInput, UserUncheckedUpdateWithoutEventRegistrationsInput>
+  export type OrganizationUpdateToOneWithWhereWithoutEventRegistrationsInput = {
+    where?: OrganizationWhereInput
+    data: XOR<OrganizationUpdateWithoutEventRegistrationsInput, OrganizationUncheckedUpdateWithoutEventRegistrationsInput>
   }
 
-  export type UserUpdateWithoutEventRegistrationsInput = {
+  export type OrganizationUpdateWithoutEventRegistrationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
-    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
-    payments?: PaymentUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    organizedEvents?: EventUpdateManyWithoutOrganizerNestedInput
-    createdMembershipPlans?: MembershipPlanUpdateManyWithoutCreatedByNestedInput
-    profileImage?: ImageUpdateOneWithoutUserNestedInput
+    admin?: UserUpdateOneRequiredWithoutOrganizationNestedInput
+    members?: MemberUpdateManyWithoutOrganizationNestedInput
+    events?: EventUpdateManyWithoutOrganizationNestedInput
+    membershipPlans?: MembershipPlanUpdateManyWithoutOrganizationNestedInput
+    payments?: PaymentUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
+    images?: ImageUpdateManyWithoutOrganizationNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutEventRegistrationsInput = {
+  export type OrganizationUncheckedUpdateWithoutEventRegistrationsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
-    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    adminId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
-    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    organizedEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
-    createdMembershipPlans?: MembershipPlanUncheckedUpdateManyWithoutCreatedByNestedInput
+    members?: MemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    events?: EventUncheckedUpdateManyWithoutOrganizationNestedInput
+    membershipPlans?: MembershipPlanUncheckedUpdateManyWithoutOrganizationNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
+    images?: ImageUncheckedUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type UserCreateWithoutUploadedImagesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    phoneNumber?: string | null
+    status?: $Enums.MemberStatus
+    joinDate?: Date | string | null
+    lastPayment?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    profileImage?: ImageCreateNestedOneWithoutUserProfileForInput
+    organization?: OrganizationCreateNestedOneWithoutAdminInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    createdEvents?: EventCreateNestedManyWithoutOrganizerInput
+    createdMembershipPlans?: MembershipPlanCreateNestedManyWithoutCreatedByInput
+    initiatedPayments?: PaymentCreateNestedManyWithoutInitiatedByInput
+    managedSubscriptions?: SubscriptionCreateNestedManyWithoutManagedByInput
+  }
+
+  export type UserUncheckedCreateWithoutUploadedImagesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    profileImageId?: string | null
+    phoneNumber?: string | null
+    status?: $Enums.MemberStatus
+    joinDate?: Date | string | null
+    lastPayment?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organization?: OrganizationUncheckedCreateNestedOneWithoutAdminInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    createdEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
+    createdMembershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutCreatedByInput
+    initiatedPayments?: PaymentUncheckedCreateNestedManyWithoutInitiatedByInput
+    managedSubscriptions?: SubscriptionUncheckedCreateNestedManyWithoutManagedByInput
+  }
+
+  export type UserCreateOrConnectWithoutUploadedImagesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutUploadedImagesInput, UserUncheckedCreateWithoutUploadedImagesInput>
   }
 
   export type UserCreateWithoutProfileImageInput = {
@@ -19967,19 +25630,19 @@ export namespace Prisma {
     image?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
-    payments?: PaymentCreateNestedManyWithoutUserInput
+    organization?: OrganizationCreateNestedOneWithoutAdminInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
-    organizedEvents?: EventCreateNestedManyWithoutOrganizerInput
-    eventRegistrations?: EventRegistrationCreateNestedManyWithoutUserInput
+    createdEvents?: EventCreateNestedManyWithoutOrganizerInput
     createdMembershipPlans?: MembershipPlanCreateNestedManyWithoutCreatedByInput
+    initiatedPayments?: PaymentCreateNestedManyWithoutInitiatedByInput
+    managedSubscriptions?: SubscriptionCreateNestedManyWithoutManagedByInput
+    uploadedImages?: ImageCreateNestedManyWithoutUploaderInput
   }
 
   export type UserUncheckedCreateWithoutProfileImageInput = {
@@ -19990,19 +25653,19 @@ export namespace Prisma {
     image?: string | null
     phoneNumber?: string | null
     status?: $Enums.MemberStatus
-    role?: $Enums.MemberRole
     joinDate?: Date | string | null
     lastPayment?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
-    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    organization?: OrganizationUncheckedCreateNestedOneWithoutAdminInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    organizedEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
-    eventRegistrations?: EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+    createdEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
     createdMembershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutCreatedByInput
+    initiatedPayments?: PaymentUncheckedCreateNestedManyWithoutInitiatedByInput
+    managedSubscriptions?: SubscriptionUncheckedCreateNestedManyWithoutManagedByInput
+    uploadedImages?: ImageUncheckedCreateNestedManyWithoutUploaderInput
   }
 
   export type UserCreateOrConnectWithoutProfileImageInput = {
@@ -20010,7 +25673,40 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutProfileImageInput, UserUncheckedCreateWithoutProfileImageInput>
   }
 
-  export type EventCreateWithoutEventImageInput = {
+  export type OrganizationCreateWithoutImagesInput = {
+    id?: string
+    name?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    admin: UserCreateNestedOneWithoutOrganizationInput
+    members?: MemberCreateNestedManyWithoutOrganizationInput
+    events?: EventCreateNestedManyWithoutOrganizationInput
+    membershipPlans?: MembershipPlanCreateNestedManyWithoutOrganizationInput
+    payments?: PaymentCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
+    eventRegistrations?: EventRegistrationCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationUncheckedCreateWithoutImagesInput = {
+    id?: string
+    name?: string | null
+    adminId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: MemberUncheckedCreateNestedManyWithoutOrganizationInput
+    events?: EventUncheckedCreateNestedManyWithoutOrganizationInput
+    membershipPlans?: MembershipPlanUncheckedCreateNestedManyWithoutOrganizationInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
+    eventRegistrations?: EventRegistrationUncheckedCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationCreateOrConnectWithoutImagesInput = {
+    where: OrganizationWhereUniqueInput
+    create: XOR<OrganizationCreateWithoutImagesInput, OrganizationUncheckedCreateWithoutImagesInput>
+  }
+
+  export type EventCreateWithoutCoverImageInput = {
     id?: string
     name: string
     description?: string | null
@@ -20022,14 +25718,15 @@ export namespace Prisma {
     registrationDeadline?: Date | string | null
     status?: $Enums.EventStatus
     isPrivate?: boolean
-    coverImage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    organizer?: UserCreateNestedOneWithoutOrganizedEventsInput
+    eventImageId?: string | null
+    organizer?: UserCreateNestedOneWithoutCreatedEventsInput
+    organization?: OrganizationCreateNestedOneWithoutEventsInput
     registrations?: EventRegistrationCreateNestedManyWithoutEventInput
   }
 
-  export type EventUncheckedCreateWithoutEventImageInput = {
+  export type EventUncheckedCreateWithoutCoverImageInput = {
     id?: string
     name: string
     description?: string | null
@@ -20038,19 +25735,77 @@ export namespace Prisma {
     location?: string | null
     locationDetails?: string | null
     organizerId?: string | null
+    organizationId?: string | null
     capacity?: number | null
     registrationDeadline?: Date | string | null
     status?: $Enums.EventStatus
     isPrivate?: boolean
-    coverImage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    eventImageId?: string | null
     registrations?: EventRegistrationUncheckedCreateNestedManyWithoutEventInput
   }
 
-  export type EventCreateOrConnectWithoutEventImageInput = {
+  export type EventCreateOrConnectWithoutCoverImageInput = {
     where: EventWhereUniqueInput
-    create: XOR<EventCreateWithoutEventImageInput, EventUncheckedCreateWithoutEventImageInput>
+    create: XOR<EventCreateWithoutCoverImageInput, EventUncheckedCreateWithoutCoverImageInput>
+  }
+
+  export type UserUpsertWithoutUploadedImagesInput = {
+    update: XOR<UserUpdateWithoutUploadedImagesInput, UserUncheckedUpdateWithoutUploadedImagesInput>
+    create: XOR<UserCreateWithoutUploadedImagesInput, UserUncheckedCreateWithoutUploadedImagesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutUploadedImagesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUploadedImagesInput, UserUncheckedUpdateWithoutUploadedImagesInput>
+  }
+
+  export type UserUpdateWithoutUploadedImagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    profileImage?: ImageUpdateOneWithoutUserProfileForNestedInput
+    organization?: OrganizationUpdateOneWithoutAdminNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUpdateManyWithoutOrganizerNestedInput
+    createdMembershipPlans?: MembershipPlanUpdateManyWithoutCreatedByNestedInput
+    initiatedPayments?: PaymentUpdateManyWithoutInitiatedByNestedInput
+    managedSubscriptions?: SubscriptionUpdateManyWithoutManagedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutUploadedImagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImageId?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUncheckedUpdateOneWithoutAdminNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
+    createdMembershipPlans?: MembershipPlanUncheckedUpdateManyWithoutCreatedByNestedInput
+    initiatedPayments?: PaymentUncheckedUpdateManyWithoutInitiatedByNestedInput
+    managedSubscriptions?: SubscriptionUncheckedUpdateManyWithoutManagedByNestedInput
   }
 
   export type UserUpsertWithoutProfileImageInput = {
@@ -20072,19 +25827,19 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
-    payments?: PaymentUpdateManyWithoutUserNestedInput
+    organization?: OrganizationUpdateOneWithoutAdminNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
-    organizedEvents?: EventUpdateManyWithoutOrganizerNestedInput
-    eventRegistrations?: EventRegistrationUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUpdateManyWithoutOrganizerNestedInput
     createdMembershipPlans?: MembershipPlanUpdateManyWithoutCreatedByNestedInput
+    initiatedPayments?: PaymentUpdateManyWithoutInitiatedByNestedInput
+    managedSubscriptions?: SubscriptionUpdateManyWithoutManagedByNestedInput
+    uploadedImages?: ImageUpdateManyWithoutUploaderNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProfileImageInput = {
@@ -20095,33 +25850,72 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
-    role?: EnumMemberRoleFieldUpdateOperationsInput | $Enums.MemberRole
     joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastPayment?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    organization?: OrganizationUncheckedUpdateOneWithoutAdminNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    organizedEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
-    eventRegistrations?: EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    createdEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
     createdMembershipPlans?: MembershipPlanUncheckedUpdateManyWithoutCreatedByNestedInput
+    initiatedPayments?: PaymentUncheckedUpdateManyWithoutInitiatedByNestedInput
+    managedSubscriptions?: SubscriptionUncheckedUpdateManyWithoutManagedByNestedInput
+    uploadedImages?: ImageUncheckedUpdateManyWithoutUploaderNestedInput
   }
 
-  export type EventUpsertWithoutEventImageInput = {
-    update: XOR<EventUpdateWithoutEventImageInput, EventUncheckedUpdateWithoutEventImageInput>
-    create: XOR<EventCreateWithoutEventImageInput, EventUncheckedCreateWithoutEventImageInput>
+  export type OrganizationUpsertWithoutImagesInput = {
+    update: XOR<OrganizationUpdateWithoutImagesInput, OrganizationUncheckedUpdateWithoutImagesInput>
+    create: XOR<OrganizationCreateWithoutImagesInput, OrganizationUncheckedCreateWithoutImagesInput>
+    where?: OrganizationWhereInput
+  }
+
+  export type OrganizationUpdateToOneWithWhereWithoutImagesInput = {
+    where?: OrganizationWhereInput
+    data: XOR<OrganizationUpdateWithoutImagesInput, OrganizationUncheckedUpdateWithoutImagesInput>
+  }
+
+  export type OrganizationUpdateWithoutImagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    admin?: UserUpdateOneRequiredWithoutOrganizationNestedInput
+    members?: MemberUpdateManyWithoutOrganizationNestedInput
+    events?: EventUpdateManyWithoutOrganizationNestedInput
+    membershipPlans?: MembershipPlanUpdateManyWithoutOrganizationNestedInput
+    payments?: PaymentUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
+    eventRegistrations?: EventRegistrationUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateWithoutImagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    adminId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: MemberUncheckedUpdateManyWithoutOrganizationNestedInput
+    events?: EventUncheckedUpdateManyWithoutOrganizationNestedInput
+    membershipPlans?: MembershipPlanUncheckedUpdateManyWithoutOrganizationNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
+    eventRegistrations?: EventRegistrationUncheckedUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type EventUpsertWithoutCoverImageInput = {
+    update: XOR<EventUpdateWithoutCoverImageInput, EventUncheckedUpdateWithoutCoverImageInput>
+    create: XOR<EventCreateWithoutCoverImageInput, EventUncheckedCreateWithoutCoverImageInput>
     where?: EventWhereInput
   }
 
-  export type EventUpdateToOneWithWhereWithoutEventImageInput = {
+  export type EventUpdateToOneWithWhereWithoutCoverImageInput = {
     where?: EventWhereInput
-    data: XOR<EventUpdateWithoutEventImageInput, EventUncheckedUpdateWithoutEventImageInput>
+    data: XOR<EventUpdateWithoutCoverImageInput, EventUncheckedUpdateWithoutCoverImageInput>
   }
 
-  export type EventUpdateWithoutEventImageInput = {
+  export type EventUpdateWithoutCoverImageInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20133,14 +25927,15 @@ export namespace Prisma {
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
-    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organizer?: UserUpdateOneWithoutOrganizedEventsNestedInput
+    eventImageId?: NullableStringFieldUpdateOperationsInput | string | null
+    organizer?: UserUpdateOneWithoutCreatedEventsNestedInput
+    organization?: OrganizationUpdateOneWithoutEventsNestedInput
     registrations?: EventRegistrationUpdateManyWithoutEventNestedInput
   }
 
-  export type EventUncheckedUpdateWithoutEventImageInput = {
+  export type EventUncheckedUpdateWithoutCoverImageInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20149,19 +25944,81 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     locationDetails?: NullableStringFieldUpdateOperationsInput | string | null
     organizerId?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
-    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventImageId?: NullableStringFieldUpdateOperationsInput | string | null
     registrations?: EventRegistrationUncheckedUpdateManyWithoutEventNestedInput
   }
 
-  export type SubscriptionCreateManyUserInput = {
+  export type MemberCreateManyOrganizationInput = {
     id?: string
+    name: string
+    email?: string | null
+    phoneNumber?: string | null
+    status?: $Enums.MemberStatus
+    joinDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EventCreateManyOrganizationInput = {
+    id?: string
+    name: string
+    description?: string | null
+    date: Date | string
+    endDate?: Date | string | null
+    location?: string | null
+    locationDetails?: string | null
+    organizerId?: string | null
+    capacity?: number | null
+    registrationDeadline?: Date | string | null
+    status?: $Enums.EventStatus
+    isPrivate?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    eventImageId?: string | null
+  }
+
+  export type MembershipPlanCreateManyOrganizationInput = {
+    id?: string
+    name: string
+    description?: string | null
+    price: Decimal | DecimalJsLike | number | string
+    currency?: string
+    interval: $Enums.BillingInterval
+    active?: boolean
+    stripePriceId?: string | null
+    features?: MembershipPlanCreatefeaturesInput | string[]
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PaymentCreateManyOrganizationInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status?: $Enums.PaymentStatus
+    method?: $Enums.PaymentMethod
+    description?: string | null
+    initiatedById?: string | null
+    subscriptionId?: string | null
+    memberId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubscriptionCreateManyOrganizationInput = {
+    id?: string
+    managedById?: string | null
     planId: string
+    memberId?: string | null
     stripeSubscriptionId?: string | null
     status: $Enums.SubscriptionStatus
     startDate?: Date | string
@@ -20175,16 +26032,361 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type PaymentCreateManyUserInput = {
+  export type ImageCreateManyOrganizationInput = {
     id?: string
-    amount: Decimal | DecimalJsLike | number | string
-    currency?: string
-    status?: $Enums.PaymentStatus
-    method?: $Enums.PaymentMethod
-    description?: string | null
-    subscriptionId?: string | null
+    url: string
+    alt?: string | null
+    data: Uint8Array
+    mimeType: string
+    size: number
+    filename?: string | null
+    width?: number | null
+    height?: number | null
+    uploaderId?: string | null
+    eventCoverForId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type EventRegistrationCreateManyOrganizationInput = {
+    id?: string
+    eventId: string
+    registrantName?: string | null
+    registrantEmail: string
+    registrationDate?: Date | string
+    status?: $Enums.RegistrationStatus
+    notes?: string | null
+    guestsCount?: number
+    updatedAt?: Date | string
+  }
+
+  export type MemberUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptions?: SubscriptionUpdateManyWithoutMemberNestedInput
+    payments?: PaymentUpdateManyWithoutMemberNestedInput
+  }
+
+  export type MemberUncheckedUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutMemberNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutMemberNestedInput
+  }
+
+  export type MemberUncheckedUpdateManyWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    capacity?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventImageId?: NullableStringFieldUpdateOperationsInput | string | null
+    organizer?: UserUpdateOneWithoutCreatedEventsNestedInput
+    registrations?: EventRegistrationUpdateManyWithoutEventNestedInput
+    coverImage?: ImageUpdateOneWithoutEventCoverForNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    organizerId?: NullableStringFieldUpdateOperationsInput | string | null
+    capacity?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventImageId?: NullableStringFieldUpdateOperationsInput | string | null
+    registrations?: EventRegistrationUncheckedUpdateManyWithoutEventNestedInput
+    coverImage?: ImageUncheckedUpdateOneWithoutEventCoverForNestedInput
+  }
+
+  export type EventUncheckedUpdateManyWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    locationDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    organizerId?: NullableStringFieldUpdateOperationsInput | string | null
+    capacity?: NullableIntFieldUpdateOperationsInput | number | null
+    registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventImageId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MembershipPlanUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    interval?: EnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval
+    active?: BoolFieldUpdateOperationsInput | boolean
+    stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
+    features?: MembershipPlanUpdatefeaturesInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutCreatedMembershipPlansNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutPlanNestedInput
+  }
+
+  export type MembershipPlanUncheckedUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    interval?: EnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval
+    active?: BoolFieldUpdateOperationsInput | boolean
+    stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
+    features?: MembershipPlanUpdatefeaturesInput | string[]
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutPlanNestedInput
+  }
+
+  export type MembershipPlanUncheckedUpdateManyWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    interval?: EnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval
+    active?: BoolFieldUpdateOperationsInput | boolean
+    stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
+    features?: MembershipPlanUpdatefeaturesInput | string[]
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    initiatedBy?: UserUpdateOneWithoutInitiatedPaymentsNestedInput
+    subscription?: SubscriptionUpdateOneWithoutPaymentsNestedInput
+    member?: MemberUpdateOneWithoutPaymentsNestedInput
+  }
+
+  export type PaymentUncheckedUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    initiatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    subscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentUncheckedUpdateManyWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    initiatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    subscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    cancelAtPeriodEnd?: BoolFieldUpdateOperationsInput | boolean
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    managedBy?: UserUpdateOneWithoutManagedSubscriptionsNestedInput
+    plan?: MembershipPlanUpdateOneRequiredWithoutSubscriptionsNestedInput
+    member?: MemberUpdateOneWithoutSubscriptionsNestedInput
+    payments?: PaymentUpdateManyWithoutSubscriptionNestedInput
+  }
+
+  export type SubscriptionUncheckedUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    managedById?: NullableStringFieldUpdateOperationsInput | string | null
+    planId?: StringFieldUpdateOperationsInput | string
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    cancelAtPeriodEnd?: BoolFieldUpdateOperationsInput | boolean
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payments?: PaymentUncheckedUpdateManyWithoutSubscriptionNestedInput
+  }
+
+  export type SubscriptionUncheckedUpdateManyWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    managedById?: NullableStringFieldUpdateOperationsInput | string | null
+    planId?: StringFieldUpdateOperationsInput | string
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    cancelAtPeriodEnd?: BoolFieldUpdateOperationsInput | boolean
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ImageUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    alt?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: BytesFieldUpdateOperationsInput | Uint8Array
+    mimeType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    filename?: NullableStringFieldUpdateOperationsInput | string | null
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    uploader?: UserUpdateOneWithoutUploadedImagesNestedInput
+    userProfileFor?: UserUpdateOneWithoutProfileImageNestedInput
+    eventCoverFor?: EventUpdateOneWithoutCoverImageNestedInput
+  }
+
+  export type ImageUncheckedUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    alt?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: BytesFieldUpdateOperationsInput | Uint8Array
+    mimeType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    filename?: NullableStringFieldUpdateOperationsInput | string | null
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    uploaderId?: NullableStringFieldUpdateOperationsInput | string | null
+    eventCoverForId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userProfileFor?: UserUncheckedUpdateOneWithoutProfileImageNestedInput
+  }
+
+  export type ImageUncheckedUpdateManyWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    alt?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: BytesFieldUpdateOperationsInput | Uint8Array
+    mimeType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    filename?: NullableStringFieldUpdateOperationsInput | string | null
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    uploaderId?: NullableStringFieldUpdateOperationsInput | string | null
+    eventCoverForId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventRegistrationUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    registrantName?: NullableStringFieldUpdateOperationsInput | string | null
+    registrantEmail?: StringFieldUpdateOperationsInput | string
+    registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    guestsCount?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
+  }
+
+  export type EventRegistrationUncheckedUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    registrantName?: NullableStringFieldUpdateOperationsInput | string | null
+    registrantEmail?: StringFieldUpdateOperationsInput | string
+    registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    guestsCount?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventRegistrationUncheckedUpdateManyWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    registrantName?: NullableStringFieldUpdateOperationsInput | string | null
+    registrantEmail?: StringFieldUpdateOperationsInput | string
+    registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    guestsCount?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AccountCreateManyUserInput = {
@@ -20215,24 +26417,14 @@ export namespace Prisma {
     endDate?: Date | string | null
     location?: string | null
     locationDetails?: string | null
+    organizationId?: string | null
     capacity?: number | null
     registrationDeadline?: Date | string | null
     status?: $Enums.EventStatus
     isPrivate?: boolean
-    coverImage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     eventImageId?: string | null
-  }
-
-  export type EventRegistrationCreateManyUserInput = {
-    id?: string
-    eventId: string
-    registrationDate?: Date | string
-    status?: $Enums.RegistrationStatus
-    notes?: string | null
-    guestsCount?: number
-    updatedAt?: Date | string
   }
 
   export type MembershipPlanCreateManyCreatedByInput = {
@@ -20245,94 +26437,57 @@ export namespace Prisma {
     active?: boolean
     stripePriceId?: string | null
     features?: MembershipPlanCreatefeaturesInput | string[]
+    organizationId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type SubscriptionUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    currentPeriodStart?: DateTimeFieldUpdateOperationsInput | Date | string
-    currentPeriodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    cancelAtPeriodEnd?: BoolFieldUpdateOperationsInput | boolean
-    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    trialStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    trialEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    plan?: MembershipPlanUpdateOneRequiredWithoutSubscriptionsNestedInput
-    payments?: PaymentUpdateManyWithoutSubscriptionNestedInput
+  export type PaymentCreateManyInitiatedByInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status?: $Enums.PaymentStatus
+    method?: $Enums.PaymentMethod
+    description?: string | null
+    organizationId?: string | null
+    subscriptionId?: string | null
+    memberId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type SubscriptionUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    planId?: StringFieldUpdateOperationsInput | string
-    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    currentPeriodStart?: DateTimeFieldUpdateOperationsInput | Date | string
-    currentPeriodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    cancelAtPeriodEnd?: BoolFieldUpdateOperationsInput | boolean
-    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    trialStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    trialEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    payments?: PaymentUncheckedUpdateManyWithoutSubscriptionNestedInput
+  export type SubscriptionCreateManyManagedByInput = {
+    id?: string
+    planId: string
+    organizationId?: string | null
+    memberId?: string | null
+    stripeSubscriptionId?: string | null
+    status: $Enums.SubscriptionStatus
+    startDate?: Date | string
+    currentPeriodStart: Date | string
+    currentPeriodEnd: Date | string
+    cancelAtPeriodEnd?: boolean
+    canceledAt?: Date | string | null
+    trialStartDate?: Date | string | null
+    trialEndDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type SubscriptionUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    planId?: StringFieldUpdateOperationsInput | string
-    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    currentPeriodStart?: DateTimeFieldUpdateOperationsInput | Date | string
-    currentPeriodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    cancelAtPeriodEnd?: BoolFieldUpdateOperationsInput | boolean
-    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    trialStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    trialEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PaymentUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    currency?: StringFieldUpdateOperationsInput | string
-    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
-    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscription?: SubscriptionUpdateOneWithoutPaymentsNestedInput
-  }
-
-  export type PaymentUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    currency?: StringFieldUpdateOperationsInput | string
-    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
-    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    subscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PaymentUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    currency?: StringFieldUpdateOperationsInput | string
-    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
-    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    subscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type ImageCreateManyUploaderInput = {
+    id?: string
+    url: string
+    alt?: string | null
+    data: Uint8Array
+    mimeType: string
+    size: number
+    filename?: string | null
+    width?: number | null
+    height?: number | null
+    organizationId?: string | null
+    eventCoverForId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -20407,11 +26562,12 @@ export namespace Prisma {
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
-    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventImageId?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: OrganizationUpdateOneWithoutEventsNestedInput
     registrations?: EventRegistrationUpdateManyWithoutEventNestedInput
-    eventImage?: ImageUpdateOneWithoutEventNestedInput
+    coverImage?: ImageUpdateOneWithoutEventCoverForNestedInput
   }
 
   export type EventUncheckedUpdateWithoutOrganizerInput = {
@@ -20422,15 +26578,16 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     locationDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
-    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     eventImageId?: NullableStringFieldUpdateOperationsInput | string | null
     registrations?: EventRegistrationUncheckedUpdateManyWithoutEventNestedInput
+    coverImage?: ImageUncheckedUpdateOneWithoutEventCoverForNestedInput
   }
 
   export type EventUncheckedUpdateManyWithoutOrganizerInput = {
@@ -20441,44 +26598,14 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: NullableStringFieldUpdateOperationsInput | string | null
     locationDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     capacity?: NullableIntFieldUpdateOperationsInput | number | null
     registrationDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
-    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     eventImageId?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type EventRegistrationUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    guestsCount?: IntFieldUpdateOperationsInput | number
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    event?: EventUpdateOneRequiredWithoutRegistrationsNestedInput
-  }
-
-  export type EventRegistrationUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    eventId?: StringFieldUpdateOperationsInput | string
-    registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    guestsCount?: IntFieldUpdateOperationsInput | number
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type EventRegistrationUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    eventId?: StringFieldUpdateOperationsInput | string
-    registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    guestsCount?: IntFieldUpdateOperationsInput | number
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MembershipPlanUpdateWithoutCreatedByInput = {
@@ -20493,6 +26620,7 @@ export namespace Prisma {
     features?: MembershipPlanUpdatefeaturesInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneWithoutMembershipPlansNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutPlanNestedInput
   }
 
@@ -20506,6 +26634,7 @@ export namespace Prisma {
     active?: BoolFieldUpdateOperationsInput | boolean
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     features?: MembershipPlanUpdatefeaturesInput | string[]
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutPlanNestedInput
@@ -20521,13 +26650,294 @@ export namespace Prisma {
     active?: BoolFieldUpdateOperationsInput | boolean
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
     features?: MembershipPlanUpdatefeaturesInput | string[]
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentUpdateWithoutInitiatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneWithoutPaymentsNestedInput
+    subscription?: SubscriptionUpdateOneWithoutPaymentsNestedInput
+    member?: MemberUpdateOneWithoutPaymentsNestedInput
+  }
+
+  export type PaymentUncheckedUpdateWithoutInitiatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    subscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentUncheckedUpdateManyWithoutInitiatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    subscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionUpdateWithoutManagedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    cancelAtPeriodEnd?: BoolFieldUpdateOperationsInput | boolean
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    plan?: MembershipPlanUpdateOneRequiredWithoutSubscriptionsNestedInput
+    organization?: OrganizationUpdateOneWithoutSubscriptionsNestedInput
+    member?: MemberUpdateOneWithoutSubscriptionsNestedInput
+    payments?: PaymentUpdateManyWithoutSubscriptionNestedInput
+  }
+
+  export type SubscriptionUncheckedUpdateWithoutManagedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    planId?: StringFieldUpdateOperationsInput | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    cancelAtPeriodEnd?: BoolFieldUpdateOperationsInput | boolean
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payments?: PaymentUncheckedUpdateManyWithoutSubscriptionNestedInput
+  }
+
+  export type SubscriptionUncheckedUpdateManyWithoutManagedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    planId?: StringFieldUpdateOperationsInput | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    cancelAtPeriodEnd?: BoolFieldUpdateOperationsInput | boolean
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ImageUpdateWithoutUploaderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    alt?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: BytesFieldUpdateOperationsInput | Uint8Array
+    mimeType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    filename?: NullableStringFieldUpdateOperationsInput | string | null
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userProfileFor?: UserUpdateOneWithoutProfileImageNestedInput
+    organization?: OrganizationUpdateOneWithoutImagesNestedInput
+    eventCoverFor?: EventUpdateOneWithoutCoverImageNestedInput
+  }
+
+  export type ImageUncheckedUpdateWithoutUploaderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    alt?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: BytesFieldUpdateOperationsInput | Uint8Array
+    mimeType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    filename?: NullableStringFieldUpdateOperationsInput | string | null
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    eventCoverForId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userProfileFor?: UserUncheckedUpdateOneWithoutProfileImageNestedInput
+  }
+
+  export type ImageUncheckedUpdateManyWithoutUploaderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    alt?: NullableStringFieldUpdateOperationsInput | string | null
+    data?: BytesFieldUpdateOperationsInput | Uint8Array
+    mimeType?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    filename?: NullableStringFieldUpdateOperationsInput | string | null
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    eventCoverForId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionCreateManyMemberInput = {
+    id?: string
+    managedById?: string | null
+    planId: string
+    organizationId?: string | null
+    stripeSubscriptionId?: string | null
+    status: $Enums.SubscriptionStatus
+    startDate?: Date | string
+    currentPeriodStart: Date | string
+    currentPeriodEnd: Date | string
+    cancelAtPeriodEnd?: boolean
+    canceledAt?: Date | string | null
+    trialStartDate?: Date | string | null
+    trialEndDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PaymentCreateManyMemberInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status?: $Enums.PaymentStatus
+    method?: $Enums.PaymentMethod
+    description?: string | null
+    initiatedById?: string | null
+    organizationId?: string | null
+    subscriptionId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubscriptionUpdateWithoutMemberInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    cancelAtPeriodEnd?: BoolFieldUpdateOperationsInput | boolean
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    managedBy?: UserUpdateOneWithoutManagedSubscriptionsNestedInput
+    plan?: MembershipPlanUpdateOneRequiredWithoutSubscriptionsNestedInput
+    organization?: OrganizationUpdateOneWithoutSubscriptionsNestedInput
+    payments?: PaymentUpdateManyWithoutSubscriptionNestedInput
+  }
+
+  export type SubscriptionUncheckedUpdateWithoutMemberInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    managedById?: NullableStringFieldUpdateOperationsInput | string | null
+    planId?: StringFieldUpdateOperationsInput | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    cancelAtPeriodEnd?: BoolFieldUpdateOperationsInput | boolean
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payments?: PaymentUncheckedUpdateManyWithoutSubscriptionNestedInput
+  }
+
+  export type SubscriptionUncheckedUpdateManyWithoutMemberInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    managedById?: NullableStringFieldUpdateOperationsInput | string | null
+    planId?: StringFieldUpdateOperationsInput | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentPeriodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    cancelAtPeriodEnd?: BoolFieldUpdateOperationsInput | boolean
+    canceledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trialEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentUpdateWithoutMemberInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    initiatedBy?: UserUpdateOneWithoutInitiatedPaymentsNestedInput
+    organization?: OrganizationUpdateOneWithoutPaymentsNestedInput
+    subscription?: SubscriptionUpdateOneWithoutPaymentsNestedInput
+  }
+
+  export type PaymentUncheckedUpdateWithoutMemberInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    initiatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    subscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentUncheckedUpdateManyWithoutMemberInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    initiatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    subscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SubscriptionCreateManyPlanInput = {
     id?: string
-    userId: string
+    managedById?: string | null
+    organizationId?: string | null
+    memberId?: string | null
     stripeSubscriptionId?: string | null
     status: $Enums.SubscriptionStatus
     startDate?: Date | string
@@ -20554,13 +26964,17 @@ export namespace Prisma {
     trialEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutSubscriptionsNestedInput
+    managedBy?: UserUpdateOneWithoutManagedSubscriptionsNestedInput
+    organization?: OrganizationUpdateOneWithoutSubscriptionsNestedInput
+    member?: MemberUpdateOneWithoutSubscriptionsNestedInput
     payments?: PaymentUpdateManyWithoutSubscriptionNestedInput
   }
 
   export type SubscriptionUncheckedUpdateWithoutPlanInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    managedById?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20577,7 +26991,9 @@ export namespace Prisma {
 
   export type SubscriptionUncheckedUpdateManyWithoutPlanInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    managedById?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20598,7 +27014,9 @@ export namespace Prisma {
     status?: $Enums.PaymentStatus
     method?: $Enums.PaymentMethod
     description?: string | null
-    userId: string
+    initiatedById?: string | null
+    organizationId?: string | null
+    memberId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -20612,7 +27030,9 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
+    initiatedBy?: UserUpdateOneWithoutInitiatedPaymentsNestedInput
+    organization?: OrganizationUpdateOneWithoutPaymentsNestedInput
+    member?: MemberUpdateOneWithoutPaymentsNestedInput
   }
 
   export type PaymentUncheckedUpdateWithoutSubscriptionInput = {
@@ -20622,7 +27042,9 @@ export namespace Prisma {
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: StringFieldUpdateOperationsInput | string
+    initiatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -20634,14 +27056,18 @@ export namespace Prisma {
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
     method?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: StringFieldUpdateOperationsInput | string
+    initiatedById?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    memberId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EventRegistrationCreateManyEventInput = {
     id?: string
-    userId: string
+    registrantName?: string | null
+    registrantEmail: string
+    organizationId: string
     registrationDate?: Date | string
     status?: $Enums.RegistrationStatus
     notes?: string | null
@@ -20651,17 +27077,21 @@ export namespace Prisma {
 
   export type EventRegistrationUpdateWithoutEventInput = {
     id?: StringFieldUpdateOperationsInput | string
+    registrantName?: NullableStringFieldUpdateOperationsInput | string | null
+    registrantEmail?: StringFieldUpdateOperationsInput | string
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     guestsCount?: IntFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutEventRegistrationsNestedInput
+    organization?: OrganizationUpdateOneRequiredWithoutEventRegistrationsNestedInput
   }
 
   export type EventRegistrationUncheckedUpdateWithoutEventInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    registrantName?: NullableStringFieldUpdateOperationsInput | string | null
+    registrantEmail?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20671,7 +27101,9 @@ export namespace Prisma {
 
   export type EventRegistrationUncheckedUpdateManyWithoutEventInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    registrantName?: NullableStringFieldUpdateOperationsInput | string | null
+    registrantEmail?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
     registrationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
     notes?: NullableStringFieldUpdateOperationsInput | string | null

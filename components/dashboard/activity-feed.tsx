@@ -24,7 +24,7 @@ export function ActivityFeed({ activities, className }: ActivityFeedProps) {
   const getActivityIcon = (type: string) => {
     switch (type) {
       case "member":
-        return <User size={14} className="text-[#4EA8DE]" />;
+        return <User size={14} className="text-[#AD49E1]" />;
       case "payment":
         return <CreditCard size={14} className="text-[#FFC46B]" />;
       case "event":

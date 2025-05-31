@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Member, Subscription, MembershipPlan } from '@/types';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -20,6 +19,45 @@ import { PlusCircle, Edit, Trash2, ShieldCheck, ShieldOff, Loader2 } from 'lucid
 import { subscriptionStatusLabels, subscriptionStatusColors } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
+
+type SubscriptionStatus = 'ACTIVE' | 'CANCELED' | 'PAST_DUE' | 'UNPAID' | 'TRIAL' | string;
+
+interface Member {
+  id: string;
+  name: string;
+  email: string | null;
+  status: string;
+  role?: string;
+  joinDate: string | null;
+  notes: string | null;
+  avatar?: string;
+  phoneNumber: string | null;
+  createdAt: string;
+  updatedAt: string;
+  subscriptions?: Subscription[];
+}
+
+interface MembershipPlan {
+  id: string;
+  name: string;
+  description?: string;
+  price: number;
+  currency: string;
+  interval: string;
+  active: boolean;
+  features?: string[];
+}
+
+interface Subscription {
+  id: string;
+  status: SubscriptionStatus;
+  startDate: string;
+  currentPeriodStart: string;
+  currentPeriodEnd: string;
+  cancelAtPeriodEnd: boolean;
+  canceledAt: string | null;
+  plan: MembershipPlan;
+}
 
 interface ManageSubscriptionModalProps {
   member: Member;
@@ -42,10 +80,9 @@ export function ManageSubscriptionModal({ member, activeSubscription: initialAct
     setIsLoadingPlans(true);
     try {
       const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-      const res = await fetch(`${baseUrl}/api/plans?active=true`); // Fetch only active plans
+      const res = await fetch(`${baseUrl}/api/plans?active=true`);
       if (!res.ok) throw new Error('Failed to fetch plans');
       const plansData: MembershipPlan[] = await res.json();
-      // Ensure price is a number for plans fetched here as well
       setAvailablePlans(plansData.map(p => ({ ...p, price: Number(p.price) })));
     } catch (error) {
       toast.error('Could not load plans', { description: error instanceof Error ? error.message : 'Unknown error' });
@@ -78,7 +115,6 @@ export function ManageSubscriptionModal({ member, activeSubscription: initialAct
         throw new Error(errorData.message || 'Failed to create subscription');
       }
       const newSubscription: Subscription = await res.json();
-      // Ensure dates and price are correctly formatted/typed for the new subscription
       const formattedNewSubscription: Subscription = {
         ...newSubscription,
         startDate: format(new Date(newSubscription.startDate), 'yyyy-MM-dd'),
@@ -92,9 +128,7 @@ export function ManageSubscriptionModal({ member, activeSubscription: initialAct
       setCurrentSubscription(formattedNewSubscription);
       toast.success(`Subscribed ${member.name} to ${formattedNewSubscription.plan.name} successfully!`);
       setSelectedPlanId(undefined);
-      // No automatic close, user can see the new state or we can add router.refresh() and close
-      // router.refresh(); // if parent page needs to update immediately
-      setIsOpen(false); // Close modal on success
+      setIsOpen(false);
     } catch (error) {
       toast.error('Subscription failed', { description: error instanceof Error ? error.message : 'Unknown error' });
     } finally {
@@ -107,8 +141,6 @@ export function ManageSubscriptionModal({ member, activeSubscription: initialAct
     setIsSubmitting(true);
     try {
       const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-      // For this example, we set cancelAtPeriodEnd to true.
-      // A more robust implementation might immediately set status to CANCELED or handle it differently.
       const res = await fetch(`${baseUrl}/api/subscriptions/${currentSubscription.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -132,7 +164,7 @@ export function ManageSubscriptionModal({ member, activeSubscription: initialAct
       };
       setCurrentSubscription(formattedUpdatedSubscription);
       toast.success('Subscription status updated to Canceled.');
-      setIsOpen(false); // Close modal on success
+      setIsOpen(false);
     } catch (error) {
       toast.error('Failed to cancel subscription', { description: error instanceof Error ? error.message : 'Unknown error' });
     } finally {
@@ -168,8 +200,8 @@ export function ManageSubscriptionModal({ member, activeSubscription: initialAct
           <div className="space-y-4 py-4">
             <p><strong>Current Plan:</strong> {currentSubscription.plan.name}</p>
             <p><strong>Status:</strong> 
-                <span className={cn("px-2 py-0.5 ml-1 rounded-full text-xs font-medium", subscriptionStatusColors[currentSubscription.status], "border")}>
-                    {subscriptionStatusLabels[currentSubscription.status] || currentSubscription.status}
+                <span className={cn("px-2 py-0.5 ml-1 rounded-full text-xs font-medium", subscriptionStatusColors[currentSubscription.status as keyof typeof subscriptionStatusColors] || "bg-gray-100 text-gray-800", "border")}>
+                    {subscriptionStatusLabels[currentSubscription.status as keyof typeof subscriptionStatusLabels] || currentSubscription.status}
                 </span>
             </p>
             <p><strong>Price:</strong> {new Intl.NumberFormat('en-US', { style: 'currency', currency: currentSubscription.plan.currency }).format(currentSubscription.plan.price)} / {currentSubscription.plan.interval.toLowerCase()}</p>
@@ -213,7 +245,7 @@ export function ManageSubscriptionModal({ member, activeSubscription: initialAct
                 <p>No active plans available. Please add some plans first.</p>
               )}
             </div>
-            <Button onClick={handleSubscribe} disabled={isSubmitting || isLoadingPlans || !selectedPlanId || availablePlans.length === 0} className="w-full bg-[#4EA8DE] hover:bg-[#4EA8DE]/90">
+            <Button onClick={handleSubscribe} disabled={isSubmitting || isLoadingPlans || !selectedPlanId || availablePlans.length === 0} className="w-full bg-[#AD49E1] hover:bg-[#AD49E1]/90">
               {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ShieldCheck className="mr-2 h-4 w-4"/>}
               Subscribe Member
             </Button>

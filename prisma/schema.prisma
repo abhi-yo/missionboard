@@ -10,40 +10,59 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DB_URL")
+  provider          = "postgresql"
+  url               = env("DB_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Added for local shadow DB
 }
 
-model User {
+model Organization {
   id            String    @id @default(cuid())
   name          String?
-  email         String?   @unique
+  adminId       String    @unique // The User who is the admin of this organization
+  admin         User      @relation("AdminToOrganization", fields: [adminId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  members         Member[]
+  events          Event[]
+  membershipPlans MembershipPlan[]
+  payments        Payment[]
+  subscriptions   Subscription[]
+  images          Image[]
+  eventRegistrations EventRegistration[]
+}
+
+model User { // Represents an Admin of an Organization
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique // Email should be unique for platform users (admins)
   emailVerified DateTime?
-  image         String?   // Was avatar, maps to NextAuth's image
-  
-  // App-specific fields (previously Member fields)
+  image         String?   // Avatar for the admin
+
+  // Add this field for profile image relation
+  profileImageId String?   @unique
+  profileImage   Image?    @relation("UserProfileImage", fields: [profileImageId], references: [id])
+
   phoneNumber   String?
-  status        MemberStatus @default(active)
-  role          MemberRole   @default(ADMIN) // All platform users are admins
+  status        MemberStatus @default(active) // Status of the admin user
+
+  // Link to the Organization this User administers
+  organization   Organization? @relation("AdminToOrganization") // This is the inverse side of the one-to-one with Organization.admin
+
   joinDate      DateTime?    @default(now())
-  lastPayment   DateTime?
+  lastPayment   DateTime? // This might relate to platform subscription, not org payments
   notes         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   
-  subscriptions Subscription[]
-  payments      Payment[]      // Added payments relation
-  accounts      Account[]     // For NextAuth
-  sessions      Session[]     // For NextAuth
+  accounts      Account[]
+  sessions      Session[]
 
-  // Relations for Event Management
-  organizedEvents    Event[]             @relation("OrganizedEvents")
-  eventRegistrations EventRegistration[]
-  createdMembershipPlans MembershipPlan[] @relation("AdminCreatedPlans") // Added for plans created by admin
-  
-  // Relation to Profile Image
-  profileImage      Image?              @relation("UserProfileImage", fields: [profileImageId], references: [id])
-  profileImageId    String?             @unique
+  createdEvents          Event[]             @relation("AdminCreatedEvents")
+  createdMembershipPlans MembershipPlan[]    @relation("AdminCreatedPlans")
+  initiatedPayments      Payment[]           @relation("AdminInitiatedPayments")
+  managedSubscriptions   Subscription[]      @relation("AdminManagedSubscriptions")
+  uploadedImages         Image[]             @relation("AdminUploadedImagesForProfile")
 }
 
 // NextAuth specific models
@@ -82,6 +101,7 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+// Enum for User/Member status
 enum MemberStatus {
   active
   pending
@@ -89,10 +109,7 @@ enum MemberStatus {
   cancelled
 }
 
-// Defines roles for platform operators
-enum MemberRole {
-  ADMIN  // Everyone who can log in is an admin of their organization's data
-}
+// Removed MemberRole enum as it's not needed with the new structure
 
 enum BillingInterval {
   MONTHLY
@@ -107,6 +124,35 @@ enum SubscriptionStatus {
   TRIALING
 }
 
+// Member model (data records, not login-enabled users)
+model Member {
+  id            String    @id @default(cuid())
+  name          String
+  email         String?   // Optional, for record-keeping
+  phoneNumber   String?
+  status        MemberStatus @default(active)
+  joinDate      DateTime? @default(now())
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  organizationId String // This should eventually be non-nullable after data migration
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  // If members have profile images, distinct from User (admin) profile image
+  // profileImage      Image?              @relation("MemberProfileImage", fields: [profileImageId], references: [id])
+  // profileImageId    String?             @unique
+
+  // Subscriptions this member has
+  subscriptions Subscription[] @relation
+  
+  // Add payments relationship
+  payments      Payment[]
+  
+  // eventRegistrations EventRegistration[] @relation("MemberEventRegistrations") // Registrations by this member data
+}
+
+
 model MembershipPlan {
   id                 String            @id @default(cuid())
   name               String
@@ -118,12 +164,17 @@ model MembershipPlan {
   stripePriceId      String?           @unique
   features           String[]
   
-  createdById        String?   // ID of the admin who created this plan
-  createdBy          User?     @relation("AdminCreatedPlans", fields: [createdById], references: [id], onDelete: SetNull) // If admin deleted, plan can remain or be reassigned
+  createdById        String?   // ID of the admin User who created this plan
+  createdBy          User?     @relation("AdminCreatedPlans", fields: [createdById], references: [id], onDelete: SetNull)
+
+  organizationId     String? // Temporarily optional
+  organization       Organization?      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   subscriptions      Subscription[]
   createdAt          DateTime          @default(now())
   updatedAt          DateTime          @updatedAt
+
+  @@index([organizationId])
 }
 
 enum PaymentStatus {
@@ -147,25 +198,42 @@ model Payment {
   method      PaymentMethod @default(OTHER)
   description String?
   
-  // Relation to the User/Member who made the payment
-  userId      String
-  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  initiatedById String? 
+  initiatedBy   User?   @relation("AdminInitiatedPayments", fields: [initiatedById], references: [id], onDelete: SetNull)
   
-  // Optional relation to a specific subscription
+  organizationId String? // Temporarily optional
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
   subscriptionId String?
   subscription   Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
   
+  // Add direct member relationship
+  memberId     String?
+  member       Member?     @relation(fields: [memberId], references: [id], onDelete: SetNull)
+  
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
+
+  @@index([organizationId])
+  @@index([memberId])
 }
 
 model Subscription {
   id                   String             @id @default(cuid())
-  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId               String            
+  
+  managedById          String? 
+  managedBy            User?   @relation("AdminManagedSubscriptions", fields: [managedById], references: [id], onDelete: SetNull)
+
   plan                 MembershipPlan     @relation(fields: [planId], references: [id])
   planId               String
   
+  organizationId       String? 
+  organization         Organization?       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Link to the specific member this subscription is for
+  memberId             String?            // Foreign key to the Member
+  member               Member?            @relation(fields: [memberId], references: [id], onDelete: SetNull)
+
   stripeSubscriptionId String?            @unique
   status               SubscriptionStatus
   
@@ -179,11 +247,13 @@ model Subscription {
   trialStartDate       DateTime?
   trialEndDate         DateTime?
   
-  // Relation to payments for this subscription
   payments             Payment[]
   
   createdAt            DateTime           @default(now())
   updatedAt            DateTime           @updatedAt
+
+  @@index([organizationId])
+  @@index([memberId]) // Added index for memberId
 }
 
 // Event Management Models
@@ -217,32 +287,48 @@ model Event {
   locationDetails      String?   // e.g., "Room 5", "Zoom Link: ..."
   
   organizerId          String?   
-  organizer            User?     @relation("OrganizedEvents", fields: [organizerId], references: [id], onDelete: SetNull)
+  organizer            User?     @relation("AdminCreatedEvents", fields: [organizerId], references: [id], onDelete: SetNull)
   
+  organizationId       String? // Temporarily optional
+  organization         Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
   capacity             Int?      // Max attendees, null for unlimited
   registrationDeadline DateTime? // When registration closes
   
   status               EventStatus @default(DRAFT)
   isPrivate            Boolean   @default(false)
-  coverImage           String?   // URL for event image (legacy field)
+  // coverImage           String?   // URL for event image (legacy field) // Keep commented if using relation
 
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
 
   registrations        EventRegistration[]
   
-  // Relation to Event Cover Image
-  eventImage           Image?    @relation("EventCoverImage", fields: [eventImageId], references: [id])
-  eventImageId         String?   @unique
+  // Relation to Event Cover Image (one-to-one)
+  coverImage           Image?    @relation("EventCoverImageRelation") // Renamed relation for clarity
+  eventImageId         String?   @unique // Foreign key for the cover image (if used directly like this)
+                                        // This field on Event implies Image.eventCoverFor is the other side.
+
+  // If an event can have multiple images (gallery)
+  // eventGalleryImages   Image[]   @relation("EventGalleryImagesRelation")
+
+
+  @@index([organizationId])
+  @@index([eventImageId]) // Index this if you query events by their cover image ID
 }
 
 model EventRegistration {
   id                 String             @id @default(cuid())
   eventId            String
   event              Event              @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  userId             String
-  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   
+  // Registrant info (for public/non-logged-in users)
+  registrantName     String?
+  registrantEmail    String    // Email is likely key for public registrations
+  
+  organizationId     String // This should eventually be non-nullable. Assumes new registrations will have it.
+  organization       Organization @relation(fields: [organizationId], references: [id], onDelete:Cascade)
+
   registrationDate   DateTime           @default(now())
   status             RegistrationStatus @default(CONFIRMED)
   notes              String?
@@ -250,25 +336,48 @@ model EventRegistration {
   
   updatedAt          DateTime           @updatedAt
 
-  @@unique([eventId, userId])
-  @@index([userId])
+  // Ensures a person (by email) can only register once for an event
+  @@unique([eventId, registrantEmail]) 
+  @@index([registrantEmail])
   @@index([eventId])
+  @@index([organizationId])
 }
 
 // Image storage model
 model Image {
   id          String    @id @default(cuid())
-  data        Bytes     // Binary data for the image
+  url         String    // Now required
+  alt         String?
+  
+  // Binary storage fields
+  data        Bytes     // Binary image data
+  mimeType    String    // Content type (e.g., image/jpeg)
+  size        Int       // File size in bytes
+  
+  // Add these fields
   filename    String?   // Original filename
-  mimeType    String    // MIME type (e.g., image/jpeg)
-  size        Int       // Size in bytes
-  width       Int?      // Image width (optional)
-  height      Int?      // Image height (optional)
-  alt         String?   // Alt text for accessibility
+  width       Int?      // Image width in pixels
+  height      Int?      // Image height in pixels
+  
+  // Who uploaded this image (Admin)
+  uploaderId    String?
+  uploader      User?     @relation("AdminUploadedImagesForProfile", fields: [uploaderId], references: [id], onDelete: SetNull)
+
+  // Add relation for user profile image
+  userProfileFor User?  @relation("UserProfileImage")
+
+  // For which organization
+  organizationId String? // Temporarily optional
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // This image is THE cover image FOR this event (one-to-one with Event.coverImage)
+  eventCoverFor Event? @relation("EventCoverImageRelation", fields: [eventCoverForId], references: [id], onDelete: SetNull)
+  eventCoverForId String? @unique // This foreign key on Image makes it a cover for one Event
+
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  
-  // Relations
-  user        User?     @relation("UserProfileImage")
-  event       Event?    @relation("EventCoverImage")
+
+  @@index([organizationId])
+  @@index([uploaderId])
+  @@index([eventCoverForId])
 }

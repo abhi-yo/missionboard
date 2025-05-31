@@ -3,14 +3,14 @@ import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
-import { MemberRole, MemberStatus } from "@/lib/generated/prisma";
+import { /* MemberRole, */ MemberStatus } from "@/lib/generated/prisma";
 import type { User as PrismaUserType } from "@/lib/generated/prisma";
 
 // Extend NextAuth User and Session types to include our custom fields
 declare module "next-auth" {
   interface User extends Partial<Omit<PrismaUserType, 'id'| 'email'| 'name'| 'image'>> { 
     id: string; 
-    role?: MemberRole;
+    // role?: MemberRole; // Removed
     status?: MemberStatus;
   }
   interface Session {
@@ -22,7 +22,7 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     id?: string;
-    role?: MemberRole;
+    // role?: MemberRole; // Removed
     status?: MemberStatus;
     accessToken?: string;
     //picture?: string;
@@ -139,7 +139,7 @@ export const authOptions: AuthOptions = {
           token.name = accountEntry.user.name;
           token.email = accountEntry.user.email;
           token.picture = accountEntry.user.image;
-          token.role = accountEntry.user.role;
+          // token.role = accountEntry.user.role; // Removed
           token.status = accountEntry.user.status;
         } else if (user) {
           // Fallback to direct user lookup for compatibility
@@ -150,7 +150,7 @@ export const authOptions: AuthOptions = {
             token.name = dbUser.name;
             token.email = dbUser.email;
             token.picture = dbUser.image;
-            token.role = dbUser.role;
+            // token.role = dbUser.role; // Removed
             token.status = dbUser.status;
           } else {
             console.error("[DEBUG] JWT: CRITICAL - dbUser not found in initial sign-in for id:", user.id);
@@ -164,9 +164,9 @@ export const authOptions: AuthOptions = {
       // Case 2: Session update triggered (e.g., by client calling useSession().update())
       if (trigger === "update" && updateSessionData) {
         // Update token with the new session data
-        if (updateSessionData.role) {
-          token.role = updateSessionData.role;
-        }
+        // if (updateSessionData.role) { // Removed
+        //   token.role = updateSessionData.role; // Removed
+        // } // Removed
         if (updateSessionData.status) {
           token.status = updateSessionData.status;
         }
@@ -177,12 +177,12 @@ export const authOptions: AuthOptions = {
       // Case 3: Subsequent JWT access (token already exists)
       // Attempt to "repair" token if role or status is missing but we have an id.
       // This can happen if user signed in before these fields were correctly populated.
-      if (token && token.id && (token.role === undefined || token.status === undefined)) {
-        console.log("[DEBUG] JWT: Token exists but role or status is missing. Attempting to fetch from DB for user ID:", token.id);
+      if (token && token.id && (/* token.role === undefined || */ token.status === undefined)) { // Adjusted condition
+        console.log("[DEBUG] JWT: Token exists but status is missing. Attempting to fetch from DB for user ID:", token.id);
         const dbUser = await prisma.user.findUnique({ where: { id: token.id } });
         if (dbUser) {
           console.log("[DEBUG] JWT: dbUser found for repair:", JSON.parse(JSON.stringify(dbUser)));
-          token.role = dbUser.role;
+          // token.role = dbUser.role; // Removed
           token.status = dbUser.status;
           // Also ensure other core fields are up-to-date if they could change
           token.name = dbUser.name;
@@ -198,12 +198,20 @@ export const authOptions: AuthOptions = {
       if (token.id && trigger !== "update") {
         try {
           const latestUser = await prisma.user.findUnique({ 
-            where: { id: token.id } 
+            where: { id: token.id },
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              image: true,
+              // role: true, // Removed
+              status: true
+            }
           });
           
           if (latestUser) {
             // Update role and status from database
-            token.role = latestUser.role;
+            // token.role = latestUser.role; // Removed
             token.status = latestUser.status;
             token.name = latestUser.name;
             token.email = latestUser.email;
@@ -230,14 +238,14 @@ export const authOptions: AuthOptions = {
         session.user.name = token.name || null; 
         session.user.email = token.email || null; 
         session.user.image = token.picture || null; 
-        session.user.role = token.role; 
+        // session.user.role = token.role; // Removed
         session.user.status = token.status; 
             
         if (!token.id && !token.sub) {
             console.error("[DEBUG] Session: CRITICAL - Both token.id and token.sub are undefined. Session user ID defaulted to empty string.");
         }
-        if (token.role === undefined || token.status === undefined) {
-            console.warn("[DEBUG] Session: Role or Status is undefined in the token when populating session. Token:", JSON.parse(JSON.stringify(token)));
+        if (/*token.role === undefined ||*/ token.status === undefined) { // Adjusted condition
+            console.warn("[DEBUG] Session: Status is undefined in the token when populating session. Token:", JSON.parse(JSON.stringify(token)));
         }
         
         console.log("[DEBUG] Session: After enhancement:", JSON.parse(JSON.stringify(session)));
@@ -245,6 +253,22 @@ export const authOptions: AuthOptions = {
       },
   },
   events: {
+    async createUser(message) {
+      console.log("[DEBUG] CreateUser event triggered for user:", message.user.id);
+      if (message.user && message.user.id) {
+        try {
+          await prisma.organization.create({
+            data: {
+              name: `${message.user.name || 'New User'}'s Organization`,
+              adminId: message.user.id,
+            },
+          });
+          console.log(`[DEBUG] Organization created for user: ${message.user.id}`);
+        } catch (error) {
+          console.error(`[ERROR] Failed to create organization for user ${message.user.id}:`, error);
+        }
+      }
+    },
     async signOut({ session, token }) {
       console.log("[DEBUG] SignOut event triggered", { session, token });
     },

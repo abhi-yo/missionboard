@@ -39,7 +39,7 @@ export default function DashboardLayout({
         
         <main className="flex-1 pt-16">
           {/* Background pattern grid */}
-          <div className="absolute inset-0 bg-grid-pattern bg-[radial-gradient(#4EA8DE_1px,transparent_1px)] [background-size:20px_20px] opacity-[0.03] pointer-events-none z-0" />
+          <div className="absolute inset-0 bg-grid-pattern bg-[radial-gradient(#AD49E1_1px,transparent_1px)] [background-size:20px_20px] opacity-[0.03] pointer-events-none z-0" />
           
           {children}
         </main>

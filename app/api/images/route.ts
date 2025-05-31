@@ -4,13 +4,9 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { prisma } from '@/lib/prisma';
 
 // Set body size limit to 10MB
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '10mb',
-    },
-  },
-};
+export const dynamic = 'force-dynamic';
+export const maxDuration = 30; // 30 seconds
+export const runtime = 'nodejs';
 
 // POST - Create a new image
 export async function POST(request: NextRequest) {
@@ -45,6 +41,7 @@ export async function POST(request: NextRequest) {
           width: body.width || null,
           height: body.height || null,
           alt: body.alt || null,
+          url: `/api/images/${crypto.randomUUID()}`, // Generate a URL for API access
         }
       });
       

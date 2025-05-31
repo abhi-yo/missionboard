@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { MemberRole } from "@/lib/generated/prisma";
 import { z } from 'zod';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
@@ -18,12 +17,12 @@ const userUpdateSchema = z.object({
   notes: z.string().nullable().optional(),
 });
 
-// GET a single user by ID
+// GET a user by ID
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
     const session = await getServerSession(authOptions);
     
-    if (!session) {
+    if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -33,17 +32,20 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
       where: {
         id: userId,
       },
-      include: {
-        subscriptions: {
-          include: {
-            plan: true
-          }
-        }
-      }
     });
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // Check if the requesting user has permission to view this user
+    // For now, we use our workaround to check if this user was created by the current user
+    const isCreatedByCurrentAdmin = user.notes && user.notes.includes(`Created by: ${session.user.id}`);
+    const isSelf = user.id === session.user.id;
+    
+    // Only allow access if the user is viewing themselves or a user they created
+    if (!isSelf && !isCreatedByCurrentAdmin) {
+      return NextResponse.json({ message: "Unauthorized: This user doesn't belong to your organization" }, { status: 403 });
     }
 
     return NextResponse.json(user);
@@ -60,11 +62,6 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-    
-    // Check if user has admin or editor privileges
-    if (session.user.role !== MemberRole.ADMIN) {
-      return NextResponse.json({ message: "Unauthorized: Insufficient privileges" }, { status: 403 });
     }
     
     const userId = params.id;
@@ -85,6 +82,15 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // Check if the requesting user has permission to update this user
+    // For now, we use our workaround to check if this user was created by the current user
+    const isCreatedByCurrentAdmin = user.notes && user.notes.includes(`Created by: ${session.user.id}`);
+    const isSelf = user.id === session.user.id;
+    
+    if (!isSelf && !isCreatedByCurrentAdmin) {
+      return NextResponse.json({ message: "Unauthorized: You cannot update users that don't belong to your organization" }, { status: 403 });
     }
 
     if (email && email !== user.email) {
@@ -129,27 +135,32 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    // Check if user has admin or editor privileges
-    if (session.user.role !== MemberRole.ADMIN) {
-      return NextResponse.json({ message: "Unauthorized: Insufficient privileges" }, { status: 403 });
-    }
-    
     const userId = params.id;
 
     const user = await prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
+      where: { id: userId },
     });
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
+    // Check if the requesting user has permission to delete this user
+    // For now, we use our workaround to check if this user was created by the current user
+    const isCreatedByCurrentAdmin = user.notes && user.notes.includes(`Created by: ${session.user.id}`);
+    
+    // Users should not be able to delete themselves
+    if (user.id === session.user.id) {
+      return NextResponse.json({ message: "Cannot delete your own account" }, { status: 403 });
+    }
+    
+    // Only allow deletion if the user was created by the current admin
+    if (!isCreatedByCurrentAdmin) {
+      return NextResponse.json({ message: "Unauthorized: You cannot delete users that don't belong to your organization" }, { status: 403 });
+    }
+
     await prisma.user.delete({
-      where: {
-        id: userId,
-      },
+      where: { id: userId },
     });
 
     return NextResponse.json({ success: true });

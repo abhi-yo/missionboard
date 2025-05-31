@@ -93,9 +93,11 @@ export default function UserDetailPage() {
     );
   }
 
-  const statusColor = user.status && userStatuses[user.status] 
-    ? userStatuses[user.status].color 
+  const statusColor = user.status && userStatuses[user.status as keyof typeof userStatuses] 
+    ? userStatuses[user.status as keyof typeof userStatuses].color 
     : '';
+
+  const userNameInitials = user.name ? user.name.split(' ').map((n: string) => n[0]).join('') : 'U';
 
   return (
     <PageContainer>
@@ -109,7 +111,7 @@ export default function UserDetailPage() {
           <h1 className="text-3xl font-bold">{user.name || 'Unnamed User'}</h1>
           {user.status && (
             <Badge variant="outline" className={cn("ml-4", statusColor)}>
-              {userStatuses[user.status]?.label || user.status}
+              {userStatuses[user.status as keyof typeof userStatuses]?.label || user.status}
             </Badge>
           )}
         </div>
@@ -130,7 +132,7 @@ export default function UserDetailPage() {
             <Avatar className="h-24 w-24 mb-4">
               <AvatarImage src={user.image || undefined} />
               <AvatarFallback className="text-lg">
-                {user.name ? user.name.split(' ').map(n => n[0]).join('') : 'U'}
+                {userNameInitials}
               </AvatarFallback>
             </Avatar>
             <h2 className="text-xl font-semibold">{user.name || 'Unnamed User'}</h2>

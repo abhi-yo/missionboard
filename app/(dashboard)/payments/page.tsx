@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { PageContainer } from "@/components/layout/page-container";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,10 +11,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { Check, CreditCard, Download, Plus, Search, X, Building, DollarSign } from "lucide-react";
+import { Check, CreditCard, Download, Plus, Search, X, Building, DollarSign, MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import { RecordPaymentModal } from "@/components/dashboard/payments/record-payment-modal";
 import { PaymentStatus, PaymentMethod } from "@/lib/generated/prisma";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 type Payment = {
   id: string;
@@ -23,11 +24,11 @@ type Payment = {
   status: PaymentStatus;
   method: PaymentMethod;
   description?: string;
-  userId: string;
+  initiatedById?: string;
   subscriptionId?: string;
   createdAt: string;
   updatedAt: string;
-  user: {
+  initiatedBy?: {
     id: string;
     name?: string;
     email?: string;
@@ -37,6 +38,11 @@ type Payment = {
     plan: {
       name: string;
     };
+  };
+  member?: {
+    id: string;
+    name: string;
+    email?: string;
   };
 };
 
@@ -63,6 +69,7 @@ export default function PaymentsPage() {
         throw new Error('Failed to fetch payments');
       }
       const data: Payment[] = await response.json();
+      console.log("Payments data:", data);
       setPayments(data);
       
       // Calculate stats
@@ -93,20 +100,18 @@ export default function PaymentsPage() {
     fetchPayments();
   }, []);
   
-  const filteredPayments = payments.filter(payment => {
-    const userName = payment.user?.name || '';
-    const userEmail = payment.user?.email || '';
-    const desc = payment.description || '';
+  const filteredPayments = useMemo(() => {
+    if (!searchTerm.trim()) return payments;
     
-    const matchesSearch = 
-      userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      userEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      desc.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesStatus = statusFilter === "all" ? true : payment.status.toLowerCase() === statusFilter.toLowerCase();
-    
-    return matchesSearch && matchesStatus;
-  });
+    const term = searchTerm.toLowerCase();
+    return payments.filter(payment => 
+      payment.initiatedBy?.name?.toLowerCase().includes(term) || 
+      payment.member?.name?.toLowerCase().includes(term) ||
+      payment.subscription?.plan.name.toLowerCase().includes(term) ||
+      payment.description?.toLowerCase().includes(term) ||
+      payment.amount.toString().includes(term)
+    );
+  }, [payments, searchTerm]);
   
   const getStatusBadge = (status: PaymentStatus) => {
     switch (status) {
@@ -161,12 +166,18 @@ export default function PaymentsPage() {
     }
   };
   
+  // Function to view payment details
+  const viewDetails = (paymentId: string) => {
+    toast.info(`Viewing details for payment ${paymentId}`);
+    // This would navigate to a payment details page or open a modal
+  };
+  
   return (
     <PageContainer>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <h1 className="text-3xl font-bold tracking-tight">Payments</h1>
         <Button 
-          className="gap-2 bg-[#4EA8DE] hover:bg-[#4EA8DE]/90"
+          className="gap-2 bg-[#AD49E1] hover:bg-[#AD49E1]/90"
           onClick={() => setIsModalOpen(true)}
         >
           <Plus size={16} />
@@ -275,14 +286,20 @@ export default function PaymentsPage() {
                     filteredPayments.map((payment) => (
                       <TableRow key={payment.id} className="hover:bg-accent/30">
                         <TableCell className="font-medium">
-                          {payment.user?.name || 'Unknown User'}
-                          <div className="text-xs text-muted-foreground">
-                            {payment.user?.email}
-                          </div>
+                          {payment.member?.name || 'No Member'}
                         </TableCell>
                         <TableCell>${Number(payment.amount).toFixed(2)}</TableCell>
                         <TableCell>{format(new Date(payment.createdAt), "MMM d, yyyy")}</TableCell>
-                        <TableCell>{getStatusBadge(payment.status)}</TableCell>
+                        <TableCell>
+                          <Badge 
+                            variant={
+                              payment.status === PaymentStatus.COMPLETED ? "default" : 
+                              payment.status === PaymentStatus.PENDING ? "outline" : "destructive"
+                            }
+                          >
+                            {payment.status}
+                          </Badge>
+                        </TableCell>
                         <TableCell className="flex items-center">
                           {getPaymentMethodIcon(payment.method)}
                           <span className="capitalize">{formatPaymentMethod(payment.method)}</span>
@@ -294,9 +311,23 @@ export default function PaymentsPage() {
                             : 'No description')}
                         </TableCell>
                         <TableCell className="text-right">
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <Download size={14} />
-                          </Button>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                              <DropdownMenuItem onClick={() => viewDetails(payment.id)}>
+                                View Details
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className="text-red-600">
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </TableCell>
                       </TableRow>
                     ))

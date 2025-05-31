@@ -14,7 +14,6 @@ import { subscriptionStatusLabels, subscriptionStatusColors } from '@/lib/consta
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
-import { MemberRole } from '@/lib/generated/prisma'; // Added for role comparison
 import { AssignSubscriptionModal } from '@/components/dashboard/subscriptions/assign-subscription-modal'; // Path to be created
 
 function formatDisplayDate(dateString: string | null | undefined) {
@@ -72,78 +71,122 @@ export default function SubscriptionsPage() {
   }, []);
 
   return (
-    <PageContainer>
-      <div className="flex items-center justify-between mb-6">
+    <PageContainer className="space-y-6">
+      <div className="flex flex-col space-y-1.5 sm:flex-row sm:space-y-0 sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">All Subscriptions</h1>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm mt-1">
             View and manage all member subscriptions.
           </p>
         </div>
-        <Button onClick={() => setIsAssignModalOpen(true)}>
-          <PlusCircle size={18} className="mr-2" />
+        <Button 
+          onClick={() => setIsAssignModalOpen(true)} 
+          className="mt-3 sm:mt-0 bg-[#9D43CC] hover:bg-[#9D43CC]/90 gap-2 w-full sm:w-auto"
+        >
+          <PlusCircle size={16} />
           Assign Subscription
         </Button>
       </div>
 
-      <Card className="border-border/40 bg-card/40 backdrop-blur-md">
-        <CardHeader>
-          <CardTitle>Subscription Records</CardTitle>
+      <Card className="border border-border/30 bg-card/30 backdrop-blur-sm shadow-sm rounded-xl overflow-hidden">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-xl">Subscription Records</CardTitle>
           <CardDescription>A list of all subscriptions in the system.</CardDescription>
         </CardHeader>
         <CardContent>
-          {isLoading && <p>Loading subscriptions...</p>}
-          {error && <p className="text-destructive">Error: {error}</p>}
-          {!isLoading && !error && subscriptions.length === 0 && <p>No subscriptions found.</p>}
+          {isLoading && (
+            <div className="flex justify-center items-center py-8">
+              <div className="animate-pulse text-muted-foreground">Loading subscriptions...</div>
+            </div>
+          )}
+          
+          {error && (
+            <div className="bg-destructive/10 border border-destructive/20 text-destructive rounded-lg p-4 my-2">
+              <p>Error: {error}</p>
+            </div>
+          )}
+          
+          {!isLoading && !error && subscriptions.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
+              <p className="text-muted-foreground mb-2">No subscriptions found.</p>
+              <p className="text-sm text-muted-foreground">Get started by assigning a subscription to a member.</p>
+            </div>
+          )}
+          
           {!isLoading && !error && subscriptions.length > 0 && (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Member</TableHead>
-                  <TableHead>Plan</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Price</TableHead>
-                  <TableHead>Current Period</TableHead>
-                  <TableHead>Created At</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {subscriptions.map((sub) => (
-                  <TableRow key={sub.id}>
-                    <TableCell className="font-medium">
-                        {sub.user?.name || 'N/A'} <br/>
-                        <span className="text-xs text-muted-foreground">{sub.user?.email || sub.userId}</span>
-                    </TableCell>
-                    <TableCell>{sub.plan.name}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className={cn("whitespace-nowrap", subscriptionStatusColors[sub.status])}>
-                        {subscriptionStatusLabels[sub.status] || sub.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>{new Intl.NumberFormat('en-US', { style: 'currency', currency: sub.plan.currency }).format(sub.plan.price)} / {sub.plan.interval.toLowerCase()}</TableCell>
-                    <TableCell className="whitespace-nowrap">{sub.currentPeriodStart} - {sub.currentPeriodEnd}</TableCell>
-                    <TableCell>{sub.createdAt}</TableCell>
-                    <TableCell className="text-right">
-                        <Link href={`/users/${sub.userId}#subscription`}>
-                            <Button variant="outline" size="sm" className="gap-1">
-                                <Eye size={14}/> View
-                            </Button>
-                        </Link>
-                    </TableCell>
+            <div className="rounded-lg overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow className="hover:bg-background/40">
+                    <TableHead>Member</TableHead>
+                    <TableHead>Plan</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Price</TableHead>
+                    <TableHead>Current Period</TableHead>
+                    <TableHead>Created</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {subscriptions.map((sub) => (
+                    <TableRow key={sub.id} className="hover:bg-background/40">
+                      <TableCell>
+                        <div className="font-medium">{sub.user?.name || 'N/A'}</div>
+                        <div className="text-xs text-muted-foreground truncate max-w-[180px]">
+                          {sub.user?.email || sub.userId}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="font-medium">{sub.plan.name}</div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge 
+                          variant="outline" 
+                          className={cn("whitespace-nowrap", subscriptionStatusColors[sub.status])}
+                        >
+                          {subscriptionStatusLabels[sub.status] || sub.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex flex-col">
+                          <span>{new Intl.NumberFormat('en-US', { style: 'currency', currency: sub.plan.currency }).format(sub.plan.price)}</span>
+                          <span className="text-xs text-muted-foreground capitalize">per {sub.plan.interval.toLowerCase()}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap">
+                        <div className="flex flex-col text-sm">
+                          <div>From: {sub.currentPeriodStart}</div>
+                          <div>To: {sub.currentPeriodEnd}</div>
+                        </div>
+                      </TableCell>
+                      <TableCell>{sub.createdAt}</TableCell>
+                      <TableCell className="text-right">
+                        <Link href={`/users/${sub.userId}#subscription`}>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="gap-1 hover:bg-[#9D43CC]/10 hover:text-[#9D43CC] hover:border-[#9D43CC]/20"
+                          >
+                            <Eye size={14}/> 
+                            View
+                          </Button>
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>
+      
       <AssignSubscriptionModal
         isOpen={isAssignModalOpen}
         onClose={() => setIsAssignModalOpen(false)}
         onSubscriptionAssigned={() => {
-          fetchSubscriptions(); // Refresh list on success
-          setIsAssignModalOpen(false); // Ensure modal closes
+          fetchSubscriptions();
+          setIsAssignModalOpen(false);
         }}
       />
     </PageContainer>

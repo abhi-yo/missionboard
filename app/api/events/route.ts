@@ -9,15 +9,18 @@ export const dynamic = 'force-dynamic';
 // GET - Get all events for the logged in user
 export async function GET(request: Request) {
   try {
+    console.log("[/api/events GET] Attempting to fetch events");
     const session = await getServerSession(authOptions);
     
     if (!session || !session.user?.id) {
+      console.log("[/api/events GET] Unauthorized: No session or user ID");
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const userId = session.user.id;
+    console.log("[/api/events GET] Fetching events for admin:", userId);
     
-    // Get all events where the user is the organizer
+    // Get all events where the user is the organizer (admin-specific)
     const events = await prisma.event.findMany({
       where: {
         organizerId: userId
@@ -37,22 +40,18 @@ export async function GET(request: Request) {
             status: true,
             registrationDate: true,
             guestsCount: true,
-            user: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
-                image: true
-              }
-            }
+            registrantName: true,
+            registrantEmail: true
           }
         },
-        eventImage: true
+        coverImage: true
       },
       orderBy: {
         date: 'asc'
       }
     });
+
+    console.log(`[/api/events GET] Found ${events.length} events`);
 
     // Categorize and format the events for the frontend
     const formattedEvents = events.map(event => {
@@ -73,9 +72,9 @@ export async function GET(request: Request) {
       }
       
       // Set the image URL properly - first try the relation, then fallback to coverImage
-      const imageUrl = event.eventImage 
-        ? `/api/images/${event.eventImage.id}`
-        : event.coverImage || '';
+      const imageUrl = event.coverImage 
+        ? `/api/images/${event.coverImage.id}`
+        : '';
       
       return {
         id: event.id,
@@ -95,12 +94,17 @@ export async function GET(request: Request) {
         createdAt: event.createdAt.toISOString(),
         updatedAt: event.updatedAt.toISOString(),
         image: imageUrl,
+        organizer: event.organizer ? {
+          id: event.organizer.id,
+          name: event.organizer.name,
+          email: event.organizer.email
+        } : null
       };
     });
 
     return NextResponse.json(formattedEvents);
   } catch (error) {
-    console.error("Error fetching events:", error);
+    console.error("[/api/events GET] Error fetching events:", error);
     return NextResponse.json({ message: "Failed to fetch events" }, { status: 500 });
   }
 }
@@ -108,13 +112,16 @@ export async function GET(request: Request) {
 // POST - Create a new event
 export async function POST(request: Request) {
   try {
+    console.log("[/api/events POST] Attempting to create event");
     const session = await getServerSession(authOptions);
     
     if (!session || !session.user?.id) {
+      console.log("[/api/events POST] Unauthorized: No session or user ID");
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const userId = session.user.id;
+    console.log("[/api/events POST] Creating event for admin:", userId);
     
     try {
       // Parse the JSON body
@@ -132,15 +139,19 @@ export async function POST(request: Request) {
         isPrivate = false,
         registrationDeadline,
         image,
-        eventImageId
+        eventCoverForId
       } = body;
+      
+      console.log("[/api/events POST] Event data:", JSON.stringify(body));
       
       // Validate required fields
       if (!title) {
+        console.log("[/api/events POST] Missing title");
         return NextResponse.json({ message: "Event title is required" }, { status: 400 });
       }
       
       if (!date) {
+        console.log("[/api/events POST] Missing date");
         return NextResponse.json({ message: "Event date is required" }, { status: 400 });
       }
       
@@ -148,6 +159,7 @@ export async function POST(request: Request) {
         // Convert date string to Date object to validate it
         new Date(date);
       } catch (dateError) {
+        console.log("[/api/events POST] Invalid date format");
         return NextResponse.json({ message: "Invalid event date format" }, { status: 400 });
       }
       
@@ -163,10 +175,9 @@ export async function POST(request: Request) {
           capacity: capacity ? parseInt(capacity) : null,
           isPrivate: Boolean(isPrivate),
           registrationDeadline: registrationDeadline ? new Date(registrationDeadline) : null,
-          coverImage: image || null,
-          eventImage: eventImageId ? {
+          coverImage: eventCoverForId ? {
             connect: {
-              id: eventImageId
+              id: eventCoverForId
             }
           } : undefined,
           status: EventStatus.SCHEDULED,
@@ -178,16 +189,17 @@ export async function POST(request: Request) {
         }
       });
       
+      console.log("[/api/events POST] Event created successfully:", event.id);
       return NextResponse.json(event, { status: 201 });
     } catch (parseError: any) {
-      console.error("Error parsing event data:", parseError);
+      console.error("[/api/events POST] Error parsing event data:", parseError);
       return NextResponse.json({ 
         message: "Invalid request data", 
         details: parseError.message 
       }, { status: 400 });
     }
   } catch (error: any) {
-    console.error("Error creating event:", error);
+    console.error("[/api/events POST] Error creating event:", error);
     return NextResponse.json({ 
       message: "Failed to create event", 
       details: error.message || "Unknown error" 

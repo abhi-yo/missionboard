@@ -2,15 +2,15 @@ import {
   Users, CalendarDays, CreditCard, BarChart3, 
   Settings, Home, Bell, LogOut, 
   User, PlusCircle, Calendar, DollarSign, 
-  TrendingUp, Check, X, FileText
+  TrendingUp, Check, X, FileText, LayoutDashboard
 } from "lucide-react";
-import { MemberStatus, MemberRole, SubscriptionStatus } from "@/lib/generated/prisma";
+import { MemberStatus, /* MemberRole, */ SubscriptionStatus } from "@/lib/generated/prisma";
 
 export const sidebarItems = [
   {
-    title: "Home",
+    title: "Dashboard",
     href: "/dashboard",
-    icon: Home,
+    icon: LayoutDashboard,
   },
   {
     title: "Users",
@@ -70,15 +70,18 @@ export const quickActions = [
   },
 ];
 
+export const userRoles = {
+  admin: { label: "Admin", color: "bg-purple-500/20 text-purple-500 border-purple-500/50" },
+  manager: { label: "Manager", color: "bg-blue-500/20 text-blue-500 border-blue-500/50" },
+  member: { label: "Member", color: "bg-green-500/20 text-green-500 border-green-500/50" },
+  guest: { label: "Guest", color: "bg-orange-500/20 text-orange-500 border-orange-500/50" },
+};
+
 export const userStatuses: Record<MemberStatus, { label: string; color: string }> = {
   [MemberStatus.active]: { label: "Active", color: "bg-emerald-500/20 text-emerald-500 border-emerald-500/50" },
   [MemberStatus.pending]: { label: "Pending", color: "bg-amber-500/20 text-amber-500 border-amber-500/50" },
   [MemberStatus.inactive]: { label: "Inactive", color: "bg-gray-500/20 text-gray-400 border-gray-500/50" },
   [MemberStatus.cancelled]: { label: "Cancelled", color: "bg-rose-500/20 text-rose-500 border-rose-500/50" },
-};
-
-export const userRoles: Record<MemberRole, { label: string }> = {
-  [MemberRole.ADMIN]: { label: "User" },
 };
 
 export const subscriptionStatusLabels: Record<SubscriptionStatus, string> = {

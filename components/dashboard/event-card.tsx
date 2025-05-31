@@ -4,7 +4,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, MapPin, Users, Edit, Trash, Ban } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
 import { Event } from "@/types";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -41,6 +40,12 @@ export function EventCard({ event, className, onStatusChange }: EventCardProps) 
   const registrationPercentage = event.capacity 
     ? Math.round((event.registered / event.capacity) * 100)
     : 0;
+
+  const getProgressColor = () => {
+    if (registrationPercentage >= 90) return "bg-rose-500";
+    if (registrationPercentage >= 75) return "bg-amber-500";
+    return "bg-emerald-500";
+  };
   
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -175,17 +180,12 @@ export function EventCard({ event, className, onStatusChange }: EventCardProps) 
                   <span>{event.capacity || '∞'} capacity</span>
                 </div>
                 {event.capacity > 0 && (
-                  <Progress 
-                    value={registrationPercentage} 
-                    className="h-1" 
-                    style={{
-                      "--progress-fill": registrationPercentage >= 90 
-                        ? "var(--rose-500)" 
-                        : registrationPercentage >= 75 
-                          ? "var(--amber-500)" 
-                          : "var(--emerald-500)"
-                    } as React.CSSProperties}
-                  />
+                  <div className="w-full bg-secondary h-1 rounded-full overflow-hidden">
+                    <div 
+                      className={`h-full ${getProgressColor()} transition-all`}
+                      style={{ width: `${registrationPercentage}%` }}
+                    />
+                  </div>
                 )}
               </div>
             </div>
@@ -194,7 +194,7 @@ export function EventCard({ event, className, onStatusChange }: EventCardProps) 
           <div className="flex gap-2">
             <Button 
               size="sm" 
-              className="w-full bg-[#4EA8DE] hover:bg-[#4EA8DE]/90" 
+              className="w-full bg-[#AD49E1] hover:bg-[#AD49E1]/90" 
               disabled={event.status !== "upcoming"}
               asChild
             >

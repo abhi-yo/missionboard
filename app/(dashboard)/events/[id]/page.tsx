@@ -20,7 +20,6 @@ import { format } from "date-fns";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -140,7 +139,8 @@ export default function EventDetailsPage({ params }: { params: { id: string } })
   // Calculate percentage of capacity filled
   const calculateCapacityPercentage = () => {
     if (!event || !event.capacity) return 0;
-    return Math.min(100, Math.round((event.registered / event.capacity) * 100));
+    const percentage = Math.min(100, Math.round((event.registered / event.capacity) * 100));
+    return percentage;
   };
   
   if (isLoading) {
@@ -249,7 +249,7 @@ export default function EventDetailsPage({ params }: { params: { id: string } })
             
             <Button 
               size="sm"
-              className="bg-[#4EA8DE] hover:bg-[#4EA8DE]/90"
+              className="bg-[#AD49E1] hover:bg-[#AD49E1]/90"
               asChild
             >
               <Link href={`/events/${event.id}/edit`}>
@@ -397,10 +397,12 @@ export default function EventDetailsPage({ params }: { params: { id: string } })
                   
                   {event.capacity && (
                     <div className="w-full mt-2">
-                      <Progress 
-                        value={calculateCapacityPercentage()} 
-                        className="h-1.5" 
-                      />
+                      <div className="w-full bg-secondary h-1.5 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-primary transition-all"
+                          style={{ width: `${calculateCapacityPercentage()}%` }}
+                        />
+                      </div>
                       <div className="flex justify-between text-xs mt-1">
                         <span className={cn(
                           calculateCapacityPercentage() >= 90 

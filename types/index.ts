@@ -1,7 +1,7 @@
-import { MemberStatus, MemberRole, SubscriptionStatus as PrismaSubscriptionStatusEnum, Prisma, MembershipPlan as PrismaMembershipPlan, Subscription as PrismaSubscription, User as PrismaUser } from '@/lib/generated/prisma';
+import { MemberStatus, SubscriptionStatus as PrismaSubscriptionStatusEnum, Prisma, MembershipPlan as PrismaMembershipPlan, Subscription as PrismaSubscription, User as PrismaUser } from '@/lib/generated/prisma';
 
 // Re-export enums for convenience if they are not used directly from generated types elsewhere
-export { MemberStatus, MemberRole };
+export { MemberStatus};
 export type SubscriptionStatus = PrismaSubscriptionStatusEnum; // Alias for clarity
 
 // Extend Prisma types if needed for frontend specific properties, or use them directly.
@@ -46,7 +46,6 @@ export interface User {
   image?: string | null;
   phoneNumber?: string | null;
   status: MemberStatus;
-  role: MemberRole;
   joinDate?: string | null;
   lastPayment?: string | null;
   notes?: string | null;

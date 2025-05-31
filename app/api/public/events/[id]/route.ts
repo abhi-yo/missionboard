@@ -33,7 +33,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
             guestsCount: true
           }
         },
-        eventImage: true
+        coverImage: true
       }
     });
     
@@ -48,8 +48,8 @@ export async function GET(request: Request, { params }: { params: { id: string }
     const attendeeCount = event.registrations.reduce((sum, reg) => sum + reg.guestsCount + 1, 0);
     
     // Set the image URL properly - first try the relation, then fallback to coverImage
-    const imageUrl = event.eventImage 
-      ? `/api/images/${event.eventImage.id}`
+    const imageUrl = event.coverImage 
+      ? `/api/images/${event.coverImage.id}`
       : event.coverImage || '/images/default-event.jpg';
       
     // Format the event for public consumption
