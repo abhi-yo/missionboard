@@ -8,13 +8,9 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 export const dynamic = 'force-dynamic';
 
 const subscriptionCreateSchema = z.object({
-  userId: z.string().cuid({ message: "Invalid User ID" }),
+  memberId: z.string().cuid({ message: "Invalid Member ID" }),
   planId: z.string().cuid({ message: "Invalid Plan ID" }),
-  // For simplicity, we'll set status and dates automatically for now.
-  // More complex logic might involve Stripe webhooks or manual settings.
-  // status: z.nativeEnum(SubscriptionStatus).optional().default(SubscriptionStatus.ACTIVE),
-  // currentPeriodStart: z.string().datetime().optional(), // Or calculate based on plan
-  // currentPeriodEnd: z.string().datetime().optional(),   // Or calculate based on plan
+  organizationId: z.string().cuid({ message: "Invalid Organization ID" }),
 });
 
 export async function POST(request: Request) {
@@ -31,11 +27,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "Validation failed", errors: validation.error.flatten().fieldErrors }, { status: 400 });
     }
 
-    const { userId, planId } = validation.data;
+    const { memberId, planId, organizationId } = validation.data;
+    const managedById = session.user.id;
 
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    const member = await prisma.member.findUnique({ where: { id: memberId } });
+    if (!member) {
+      return NextResponse.json({ message: "Member not found" }, { status: 404 });
     }
 
     const plan = await prisma.membershipPlan.findUnique({ where: { id: planId } });
@@ -57,15 +54,17 @@ export async function POST(request: Request) {
 
     const newSubscription = await prisma.subscription.create({
       data: {
-        userId,
+        managedById,
+        memberId,
         planId,
+        organizationId,
         status: SubscriptionStatus.ACTIVE,
         startDate,
         currentPeriodStart,
         currentPeriodEnd,
       },
       include: {
-        user: { select: { id: true, name: true, email: true } },
+        member: { select: { id: true, name: true, email: true } },
         plan: { select: { id: true, name: true, price: true, interval: true, currency: true } },
       }
     });
@@ -92,12 +91,12 @@ export async function GET(request: Request) {
         console.log(`[/api/subscriptions GET] Session valid for user ID: ${session.user.id}. Fetching subscriptions for this user.`);
         const subscriptions = await prisma.subscription.findMany({
             where: {
-                userId: session.user.id 
+                managedById: session.user.id 
             },
             orderBy: { createdAt: 'desc' },
             include: {
-                user: { select: { id:true, name: true, email: true } },
-                plan: { select: { id:true, name: true, price: true, interval: true, currency: true } },
+                member: { select: { id: true, name: true, email: true } },
+                plan: { select: { id: true, name: true, price: true, interval: true, currency: true } },
             }
         });
         console.log(`[/api/subscriptions GET] Fetched subscriptions count for user ${session.user.id}:`, subscriptions.length);

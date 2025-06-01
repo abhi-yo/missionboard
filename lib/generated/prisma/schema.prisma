@@ -39,6 +39,10 @@ model User {
   emailVerified DateTime?
   image         String? // Avatar for the admin
 
+  // Add this field for profile image relation
+  profileImageId String? @unique
+  profileImage   Image?  @relation("UserProfileImage", fields: [profileImageId], references: [id])
+
   phoneNumber String?
   status      MemberStatus @default(active) // Status of the admin user
 
@@ -343,14 +347,22 @@ model Image {
   url String // Now required
   alt String?
 
-  // Add fields for binary storage
+  // Binary storage fields
   data     Bytes // Binary image data
   mimeType String // Content type (e.g., image/jpeg)
   size     Int // File size in bytes
 
+  // Add these fields
+  filename String? // Original filename
+  width    Int? // Image width in pixels
+  height   Int? // Image height in pixels
+
   // Who uploaded this image (Admin)
   uploaderId String?
   uploader   User?   @relation("AdminUploadedImagesForProfile", fields: [uploaderId], references: [id], onDelete: SetNull)
+
+  // Add relation for user profile image
+  userProfileFor User? @relation("UserProfileImage")
 
   // For which organization
   organizationId String? // Temporarily optional
@@ -360,13 +372,8 @@ model Image {
   eventCoverFor   Event?  @relation("EventCoverImageRelation", fields: [eventCoverForId], references: [id], onDelete: SetNull)
   eventCoverForId String? @unique // This foreign key on Image makes it a cover for one Event
 
-  // If an image can be part of an event's gallery (many-to-many or one-to-many)
-  // eventGallery      Event? @relation("EventGalleryImagesRelation", fields: [eventGalleryId], references: [id])
-  // eventGalleryId    String?
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  // @@index([eventGalleryId])
 
   @@index([organizationId])
   @@index([uploaderId])
