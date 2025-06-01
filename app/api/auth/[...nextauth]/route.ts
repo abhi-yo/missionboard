@@ -88,41 +88,21 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async signIn({ user, account, profile }) {
-      // Always allow sign in. User creation is handled by the adapter.
-      // The Prisma adapter and schema default (User.role @default(ADMIN))
-      // will handle setting the role for new users.
       if (user && user.email) {
         try {
-          console.log(`[DEBUG] Sign in attempt for user with email: ${user.email}`);
-          // The Prisma adapter handles user creation or lookup.
-          // If it's a new user, the schema default for 'role' (ADMIN) will apply.
-          // If it's an existing user, their existing role will be used.
-          // No explicit role update is needed here for new users anymore.
-          
-          // Removed the block that checked for !existingUser and updated role to MemberRole.member
-          // const existingUser = await prisma.user.findUnique({ ... });
-          // if (!existingUser) { ... await prisma.user.update({ data: { role: MemberRole.member ... } }) ... }
-
+          return true;
         } catch (error) {
-          console.error("[ERROR] Error during signIn (logging only, not critical for flow):", error);
+          console.error("[ERROR] Error during signIn:", error);
+          return true;
         }
       }
-      return true; // Always allow sign-in
+      return true;
     },
     async jwt({ token, user, account, trigger, session: updateSessionData }) {
-      console.log("[DEBUG] JWT: Enter", { token: JSON.parse(JSON.stringify(token)), user: JSON.parse(JSON.stringify(user || {})), account: JSON.parse(JSON.stringify(account || {})), trigger, updateSessionData: JSON.parse(JSON.stringify(updateSessionData || {})) });
-
-      // Case 1: Initial Sign-in
       if (account && user && user.id) {
-        console.log("[DEBUG] JWT: Initial sign-in path. User from callback:", JSON.parse(JSON.stringify(user)));
-        
-        // Get provider-specific ID (ensures unique users across providers)
         const providerAccountId = account.providerAccountId;
         const provider = account.provider;
         
-        console.log(`[DEBUG] JWT: Provider: ${provider}, ProviderAccountId: ${providerAccountId}`);
-        
-        // Find the user account by provider details
         const accountEntry = await prisma.account.findFirst({
           where: {
             provider: provider,
@@ -134,67 +114,41 @@ export const authOptions: AuthOptions = {
         });
         
         if (accountEntry && accountEntry.user) {
-          console.log("[DEBUG] JWT: Found matching account and user:", JSON.parse(JSON.stringify(accountEntry.user)));
           token.id = accountEntry.user.id;
           token.name = accountEntry.user.name;
           token.email = accountEntry.user.email;
           token.picture = accountEntry.user.image;
-          // token.role = accountEntry.user.role; // Removed
           token.status = accountEntry.user.status;
         } else if (user) {
-          // Fallback to direct user lookup for compatibility
           const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
           if (dbUser) {
-            console.log("[DEBUG] JWT: dbUser found during initial sign-in:", JSON.parse(JSON.stringify(dbUser)));
             token.id = dbUser.id;
             token.name = dbUser.name;
             token.email = dbUser.email;
             token.picture = dbUser.image;
-            // token.role = dbUser.role; // Removed
             token.status = dbUser.status;
-          } else {
-            console.error("[DEBUG] JWT: CRITICAL - dbUser not found in initial sign-in for id:", user.id);
           }
         }
-        
-        console.log("[DEBUG] JWT: Token populated after initial sign-in:", JSON.parse(JSON.stringify(token)));
         return token;
       }
 
-      // Case 2: Session update triggered (e.g., by client calling useSession().update())
       if (trigger === "update" && updateSessionData) {
-        // Update token with the new session data
-        // if (updateSessionData.role) { // Removed
-        //   token.role = updateSessionData.role; // Removed
-        // } // Removed
         if (updateSessionData.status) {
           token.status = updateSessionData.status;
         }
-        console.log("[DEBUG] JWT: Token updated from session update:", JSON.parse(JSON.stringify(token)));
         return token;
       }
 
-      // Case 3: Subsequent JWT access (token already exists)
-      // Attempt to "repair" token if role or status is missing but we have an id.
-      // This can happen if user signed in before these fields were correctly populated.
-      if (token && token.id && (/* token.role === undefined || */ token.status === undefined)) { // Adjusted condition
-        console.log("[DEBUG] JWT: Token exists but status is missing. Attempting to fetch from DB for user ID:", token.id);
+      if (token && token.id && token.status === undefined) {
         const dbUser = await prisma.user.findUnique({ where: { id: token.id } });
         if (dbUser) {
-          console.log("[DEBUG] JWT: dbUser found for repair:", JSON.parse(JSON.stringify(dbUser)));
-          // token.role = dbUser.role; // Removed
           token.status = dbUser.status;
-          // Also ensure other core fields are up-to-date if they could change
           token.name = dbUser.name;
           token.email = dbUser.email;
           token.picture = dbUser.image;
-          console.log("[DEBUG] JWT: Token after repair attempt:", JSON.parse(JSON.stringify(token)));
-        } else {
-          console.warn("[DEBUG] JWT: dbUser not found during repair attempt for ID:", token.id);
         }
       }
       
-      // For non-update triggers, always check for latest user data
       if (token.id && trigger !== "update") {
         try {
           const latestUser = await prisma.user.findUnique({ 
@@ -204,53 +158,36 @@ export const authOptions: AuthOptions = {
               name: true,
               email: true,
               image: true,
-              // role: true, // Removed
               status: true
             }
           });
           
           if (latestUser) {
-            // Update role and status from database
-            // token.role = latestUser.role; // Removed
             token.status = latestUser.status;
             token.name = latestUser.name;
             token.email = latestUser.email;
             token.picture = latestUser.image;
-            console.log("[DEBUG] JWT: Token updated with latest user data:", JSON.parse(JSON.stringify(token)));
           }
         } catch (error) {
           console.error("[ERROR] Failed to fetch latest user data:", error);
         }
       }
       
-      console.log("[DEBUG] JWT: Returning token for subsequent access:", JSON.parse(JSON.stringify(token)));
       return token;
     },
     async session({ session, token }) {
-        console.log("[DEBUG] Session: Enter", { session: JSON.parse(JSON.stringify(session)), token: JSON.parse(JSON.stringify(token)) });
-        
-        if (!session.user) {
-            console.warn("[DEBUG] Session: session.user was initially undefined. Initializing.");
-            session.user = { id: "", name: null, email: null, image: null }; 
-        }
+      if (!session.user) {
+        session.user = { id: "", name: null, email: null, image: null }; 
+      }
 
-        session.user.id = token.id || token.sub || ""; 
-        session.user.name = token.name || null; 
-        session.user.email = token.email || null; 
-        session.user.image = token.picture || null; 
-        // session.user.role = token.role; // Removed
-        session.user.status = token.status; 
-            
-        if (!token.id && !token.sub) {
-            console.error("[DEBUG] Session: CRITICAL - Both token.id and token.sub are undefined. Session user ID defaulted to empty string.");
-        }
-        if (/*token.role === undefined ||*/ token.status === undefined) { // Adjusted condition
-            console.warn("[DEBUG] Session: Status is undefined in the token when populating session. Token:", JSON.parse(JSON.stringify(token)));
-        }
-        
-        console.log("[DEBUG] Session: After enhancement:", JSON.parse(JSON.stringify(session)));
-        return session;
-      },
+      session.user.id = token.id || token.sub || ""; 
+      session.user.name = token.name || null; 
+      session.user.email = token.email || null; 
+      session.user.image = token.picture || null; 
+      session.user.status = token.status; 
+      
+      return session;
+    },
   },
   events: {
     async createUser(message) {
@@ -278,10 +215,10 @@ export const authOptions: AuthOptions = {
   },
   pages: {
     signIn: "/auth/signin",
-    error: "/auth/signin",
+    error: "/auth/error",
   },
   secret: process.env.NEXTAUTH_SECRET,
-  debug: process.env.NODE_ENV !== 'production',
+  debug: process.env.NODE_ENV === "development",
 };
 
 const handler = NextAuth(authOptions);
