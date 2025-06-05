@@ -15,7 +15,6 @@ import { BillingInterval } from '@/lib/generated/prisma';
 import { toast } from 'sonner';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import { createApiUrl } from "@/lib/api-utils";
 
 // Helper to get enum keys for select options
 const billingIntervalOptions = Object.keys(BillingInterval).map(key => ({
@@ -60,41 +59,72 @@ export default function NewPlanPage() {
         return;
     }
 
+    // Ensure all required fields are present
+    if (!name || !interval) {
+      setApiErrors({
+        form: ["Please fill in all required fields"]
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Sanitize and prepare the data
+    const numericPrice = typeof price === 'string' ? parseFloat(price) : price;
+    
     const planData = {
       name,
-      description: description || null,
-      price: Number(price), // Ensure price is a number
+      description: description || undefined,
+      price: numericPrice, 
       currency,
       interval,
       features,
       active,
-      stripePriceId: stripePriceId || null,
+      stripePriceId: stripePriceId || undefined,
     };
 
     try {
-      const res = await fetch(createApiUrl('/plans'), {
+      // For debugging in dev/production
+      console.log("Submitting plan data:", JSON.stringify(planData));
+      
+      // Don't use relative URL here - use absolute URL for client-side fetch
+      const baseUrl = window.location.origin;
+      
+      const res = await fetch(`${baseUrl}/api/plans`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(planData),
       });
 
+      const responseText = await res.text();
+      console.log("Server response:", responseText);
+      
+      let errorData;
+      try {
+        errorData = responseText ? JSON.parse(responseText) : {};
+      } catch (e) {
+        console.error("Failed to parse response as JSON:", e);
+        errorData = { error: "Invalid server response" };
+      }
+
       if (!res.ok) {
-        const errorData = await res.json();
-        if (res.status === 400 && errorData.errors) {
-          setApiErrors(errorData.errors);
-          const errorMessages = Object.values(errorData.errors).flat().join("; ");
+        if (res.status === 400 && errorData.details) {
+          setApiErrors(typeof errorData.details === 'object' ? errorData.details : { form: [errorData.details] });
+          const errorMessages = typeof errorData.details === 'object' 
+            ? Object.values(errorData.details).flat().join("; ")
+            : errorData.details;
           toast.error('Validation failed', { description: errorMessages });
         } else {
-          const message = errorData.message || 'Failed to create plan';
+          const message = errorData.error || errorData.message || 'Failed to create plan';
           setApiErrors({ form: [message] });
           toast.error('Error creating plan', { description: message });
         }
-        return;
+      } else {
+        toast.success(`Plan "${name}" created successfully!`);
+        router.push('/plans');
+        router.refresh(); 
       }
-
-      toast.success(`Plan "${name}" created successfully!`);
-      router.push('/plans');
-      router.refresh(); // To ensure the list on /plans is updated if it was cached client-side
     } catch (error) {
       console.error("Error creating plan:", error);
       const message = error instanceof Error ? error.message : 'An unexpected error occurred.';

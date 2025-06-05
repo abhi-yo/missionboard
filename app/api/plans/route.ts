@@ -100,20 +100,45 @@ export async function POST(request: Request) {
     }
     const organizationId = adminUserWithOrg.organization.id;
 
+    // Parse request body with more detailed error handling
     let body;
     try {
-      body = await request.json();
+      const text = await request.text();
+      console.log("[/api/plans POST] Raw request body:", text);
+      
+      // Handle empty body case
+      if (!text || text.trim() === '') {
+        return NextResponse.json({ 
+          error: "Empty request body", 
+          details: "Request body cannot be empty" 
+        }, { status: 400 });
+      }
+      
+      // Try to parse JSON
+      body = JSON.parse(text);
+      console.log("[/api/plans POST] Parsed request body:", JSON.stringify(body));
     } catch (err) {
+      console.error("[/api/plans POST] JSON parse error:", err);
       return NextResponse.json({ 
-        error: "Invalid request body",
-        details: "The request body is not valid JSON" 
+        error: "Invalid JSON", 
+        details: err instanceof Error ? err.message : "Could not parse request body" 
       }, { status: 400 });
+    }
+
+    // Special handling for price field
+    if (typeof body.price === 'string') {
+      try {
+        body.price = parseFloat(body.price);
+        console.log("[/api/plans POST] Converted price from string to number:", body.price);
+      } catch (err) {
+        console.error("[/api/plans POST] Price conversion error:", err);
+      }
     }
 
     const validation = planSchema.safeParse(body);
 
     if (!validation.success) {
-      console.log("[/api/plans POST] Validation failed:", validation.error.errors);
+      console.log("[/api/plans POST] Validation failed:", JSON.stringify(validation.error.errors));
       return NextResponse.json({ 
         error: "Validation failed", 
         details: validation.error.flatten().fieldErrors 

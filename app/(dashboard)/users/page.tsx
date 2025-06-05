@@ -3,17 +3,22 @@ import { PageContainer } from "@/components/layout/page-container";
 import { UserList } from "@/components/dashboard/user-list"; // Renamed component
 import { User } from "@/types"; // Changed from Member to User
 import { headers } from 'next/headers'; // Import headers
-import { createApiUrl } from "@/lib/api-utils";
 import { ApiErrorDisplay } from "@/components/dashboard/api-error-display";
 
 async function getUsers(): Promise<User[]> {
   // Forward headers for authentication
   const forwardedHeaders = { 'cookie': headers().get('cookie') || '' };
-
-  // Use relative URL - this works in both production and development
-  const res = await fetch(createApiUrl('/users'), {
+  
+  // Server-side rendering needs absolute URL
+  const baseUrl = process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}` 
+    : process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  
+  const res = await fetch(`${baseUrl}/api/users`, {
     cache: 'no-store',
     headers: forwardedHeaders,
+    // Important for server components
+    next: { revalidate: 0 }
   });
 
   if (!res.ok) {

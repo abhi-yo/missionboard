@@ -28,7 +28,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { createApiUrl } from '@/lib/api-utils';
 
 interface PlanWithTypedPrice extends Omit<MembershipPlan, 'price'> {
   price: number; // Ensure price is treated as a number on the client
@@ -52,16 +51,31 @@ export default function PlansPage() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(createApiUrl('/plans'), { cache: 'no-store' });
+      // Use absolute URL for client-side fetch
+      const baseUrl = window.location.origin;
+      const response = await fetch(`${baseUrl}/api/plans`, { 
+        cache: 'no-store',
+        method: 'GET'
+      });
+      
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ message: 'Failed to fetch plans' }));
-        throw new Error(errorData.message || 'Failed to fetch plans');
+        const errorText = await response.text();
+        console.error("Error response:", errorText);
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch {
+          errorData = { message: 'Failed to fetch plans' };
+        }
+        throw new Error(errorData.message || `Failed to fetch plans (${response.status})`);
       }
+      
       const data: MembershipPlan[] = await response.json();
       // Prisma Decimal can be string or number, ensure it's number for client-side calcs/display
       const typedPlans = data.map(plan => ({ ...plan, price: Number(plan.price) }));
       setPlans(typedPlans);
     } catch (err: any) {
+      console.error("Fetch plans error:", err);
       setError(err.message);
       toast.error('Error fetching plans', { description: err.message });
     } finally {
@@ -77,7 +91,9 @@ export default function PlansPage() {
     if (!planToDelete) return;
     setIsDeleting(true);
     try {
-      const res = await fetch(createApiUrl(`/plans/${planToDelete.id}`), {
+      // Use absolute URL for client-side fetch
+      const baseUrl = window.location.origin;
+      const res = await fetch(`${baseUrl}/api/plans/${planToDelete.id}`, {
         method: 'DELETE',
       });
 
@@ -105,7 +121,9 @@ export default function PlansPage() {
 
     setIsSubscribingPlanId(planId);
     try {
-      const response = await fetch(createApiUrl('/subscriptions'), {
+      // Use absolute URL for client-side fetch
+      const baseUrl = window.location.origin;
+      const response = await fetch(`${baseUrl}/api/subscriptions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
