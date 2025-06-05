@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     icon: '/appicon.png',
     apple: '/appicon.png',
   },
+  metadataBase: new URL('https://missionboard-one.vercel.app'),
   openGraph: {
     title: "MissionBoard | Membership Command Center",
     description: "Modern membership management for clubs, non-profits, and community groups",
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
     siteName: "MissionBoard",
     images: [
       {
-        url: "/og.png",
+        url: "https://missionboard-one.vercel.app/og.png",
         width: 1200,
         height: 630,
         alt: "MissionBoard"
@@ -28,6 +29,9 @@ export const metadata: Metadata = {
     ],
     locale: "en_US",
     type: "website",
+  },
+  other: {
+    'og:logo': 'https://missionboard-one.vercel.app/appicon.png',
   },
 };
 
