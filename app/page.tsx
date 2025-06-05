@@ -22,6 +22,9 @@ import {
 import { Features } from '@/components/ui/features-8'
 import { Squares } from '@/components/ui/squares-background'
 
+// Add utility class for extra small screens - will be used with Tailwind's responsive utilities
+import './xs-screens.css';
+
 // GSAP ScrollSmoother type (can be refined if more specific types are available)
 interface ScrollSmoother {
   effects: (target: HTMLElement, config: object) => void;
@@ -39,6 +42,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeTab, setActiveTab] = useState('monthly');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
   
   const smoothWrapperRef = useRef<HTMLDivElement>(null);
@@ -293,37 +297,32 @@ export default function Home() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
               className={cn(
-                "fixed left-0 right-0 z-50 mx-auto px-4 sm:px-6 transition-all duration-500",
+                "fixed left-0 right-0 z-50 mx-auto px-3 sm:px-6 transition-all duration-500",
                 isScrolled ? "top-2" : "top-4"
               )}
             >
               <div className={cn(
                 "mx-auto max-w-7xl rounded-2xl backdrop-blur-xl border border-white/[0.08]",
                 isScrolled 
-                  ? "bg-[#09090B]/80 shadow-[0_8px_32px_rgba(0,0,0,0.12)] py-3" 
-                  : "bg-[#09090B]/60 shadow-[0_8px_32px_rgba(0,0,0,0.08)] py-4"
+                  ? "bg-[#09090B]/80 shadow-[0_8px_32px_rgba(0,0,0,0.12)] py-0 sm:py-3" 
+                  : "bg-[#09090B]/60 shadow-[0_8px_32px_rgba(0,0,0,0.08)] py-2 sm:py-4"
               )}>
-                <div className="flex justify-between items-center px-6">
+                <div className="flex justify-between items-center px-3 sm:px-6">
                   <div 
                     className="flex items-center cursor-pointer group"
                     onClick={() => router.push('/')}
                   >
-                    <Image src="/appicon.png" alt="MissionBoard Logo" width={42} height={42} className="rounded-xl group-hover:scale-95 transition-transform duration-300 mr-1" />
-                    <h1 className="text-xl font-semibold font-heading bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">
+                    <Image src="/appicon.png" alt="MissionBoard Logo" width={36} height={36} className="rounded-xl group-hover:scale-95 transition-transform duration-300 mr-1 sm:w-[42px] sm:h-[42px]" />
+                    <h1 className="text-lg sm:text-xl font-semibold font-heading bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">
                       MissionBoard
                     </h1>
                   </div>
                   
                   <nav className="hidden md:flex items-center space-x-8">
-                    {/* <a 
-                      href="#features" 
-                      onClick={(e) => { e.preventDefault(); scrollToSection('features'); }}
-                      className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
-                    >Working</a> */}
                     <a 
-                    href="/discover-events"
-                    className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  >Events</a>
+                      href="/discover-events"
+                      className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    >Events</a>
                     
                     <a 
                       href="#faqs" 
@@ -332,11 +331,11 @@ export default function Home() {
                     >FAQs</a>
                   </nav>
                   
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2 sm:space-x-4">
                     {status === 'authenticated' ? (
                       <Button 
                         onClick={() => router.push('/dashboard')}
-                        className="bg-white/10 hover:bg-white/20 text-white font-medium rounded-xl px-6 py-2.5 transition-all duration-300"
+                        className="hidden md:inline-flex bg-white/10 hover:bg-white/20 text-white font-medium rounded-xl px-3 sm:px-6 py-2 transition-all duration-300 text-sm sm:text-base"
                       >
                         Dashboard
                       </Button>
@@ -351,24 +350,93 @@ export default function Home() {
                         </Button>
                         <Button 
                           onClick={handleGetStarted}
-                          className="font-medium rounded-xl px-6 py-2.5 bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-300"
+                          className="hidden md:inline-flex font-medium rounded-xl px-3 sm:px-6 py-2 sm:py-2.5 bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-300 text-sm sm:text-base"
                         >
                           Get Started
                         </Button>
                       </>
                     )}
+                    
+                    {/* Mobile menu button */}
+                    <button
+                      className="md:hidden p-1 rounded-md hover:bg-white/10 transition-colors"
+                      onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    >
+                      {mobileMenuOpen ? (
+                        <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      ) : (
+                        <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                      )}
+                    </button>
                   </div>
                 </div>
+                
+                {/* Mobile menu */}
+                <AnimatePresence>
+                  {mobileMenuOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="md:hidden overflow-hidden border-t border-white/10 mt-2"
+                    >
+                      <div className="py-3 px-4 space-y-3">
+                        <a 
+                          href="/discover-events"
+                          className="block py-2 px-3 text-base font-medium text-white/80 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+                        >
+                          Events
+                        </a>
+                        <a 
+                          href="#faqs" 
+                          onClick={(e) => { 
+                            e.preventDefault(); 
+                            scrollToSection('faqs'); 
+                            setMobileMenuOpen(false); 
+                          }}
+                          className="block py-2 px-3 text-base font-medium text-white/80 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+                        >
+                          FAQs
+                        </a>
+                        {status === 'authenticated' ? (
+                          <Button
+                            onClick={() => { router.push('/dashboard'); setMobileMenuOpen(false); }}
+                            className="w-full justify-start text-left py-2 px-3 text-base font-medium text-white/80 hover:text-white transition-colors rounded-lg bg-white/5 hover:bg-white/10"
+                          >
+                            Dashboard
+                          </Button>
+                        ) : (
+                          <>
+                            <Button
+                              onClick={() => { handleGetStarted(); setMobileMenuOpen(false); }}
+                              className="w-full justify-start text-left py-2 px-3 text-base font-medium text-primary-foreground bg-primary hover:bg-primary/90 transition-colors rounded-lg"
+                            >
+                              Get Started
+                            </Button>
+                            <Button
+                              onClick={() => { handleGetStarted(); setMobileMenuOpen(false); }}
+                              variant="outline"
+                              className="w-full justify-start text-left py-2 px-3 text-base font-medium text-white/80 hover:text-white transition-colors rounded-lg border-white/10 bg-white/5 hover:bg-white/10"
+                            >
+                              Sign In
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.header>
 
             {/* Hero Section */}
-            <section className="relative pt-28 pb-20 md:pt-36 md:pb-32 px-4 sm:px-6 overflow-hidden">
-            
-              
+            <section className="relative pt-24 sm:pt-28 pb-16 md:pt-36 md:pb-32 px-4 sm:px-6 overflow-hidden">
               <div className="absolute inset-0 z-0">
-                
-          
                 <Squares 
                   direction="diagonal"
                   className="opacity-30"
@@ -381,25 +449,25 @@ export default function Home() {
 
               <div className="max-w-7xl mx-auto grid md:grid-cols-5 gap-8 md:gap-4 lg:gap-8 md:items-center relative z-10">
                 <motion.div 
-                  className="md:col-span-2 space-y-6 md:space-y-8 text-center md:text-left order-1 md:order-1"
+                  className="md:col-span-2 space-y-5 md:space-y-8 text-center md:text-left"
                   variants={heroTextVariants}
                   initial="hidden"
                   animate="visible"
                 >
                   <motion.div 
                     variants={heroChildVariants}
-                    className="inline-flex items-center gap-x-2 bg-[#1A1A1F] backdrop-blur-sm border border-white/10 rounded-full px-4 py-1.5 text-sm font-medium text-white/90 mb-4 md:mb-6 mx-auto md:mx-0"
+                    className="inline-flex items-center gap-x-2 bg-[#1A1A1F] backdrop-blur-sm border border-white/10 rounded-full px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium text-white/90 mb-4 md:mb-6 mx-auto md:mx-0"
                   >
-                    <span className="relative flex h-2.5 w-2.5">
+                    <span className="relative flex h-2 sm:h-2.5 w-2 sm:w-2.5">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-400"></span>
+                      <span className="relative inline-flex rounded-full h-2 sm:h-2.5 w-2 sm:w-2.5 bg-green-400"></span>
                     </span>
                     Early Access Launching June 2025
                   </motion.div>
 
                   <motion.h1 
                     variants={heroChildVariants} 
-                    className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight !leading-[1.1] md:!leading-[1.05] text-white font-heading"
+                    className="text-4xl xs:text-5xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight !leading-[1.1] md:!leading-[1.05] text-white font-heading"
                   >
                     Simplify Your
                     <br />
@@ -415,32 +483,32 @@ export default function Home() {
 
                   <motion.p 
                     variants={heroChildVariants} 
-                    className="text-lg sm:text-xl text-white/80 max-w-lg mx-auto md:mx-0 leading-relaxed"
+                    className="text-sm sm:text-base md:text-lg text-white/80 max-w-lg mx-auto md:mx-0 leading-relaxed"
                   >
                     Track members, collect dues, plan events — your all-in-one mission control panel.
                   </motion.p>
 
                   <motion.div 
                     variants={heroChildVariants} 
-                    className="flex flex-col sm:flex-row gap-4 pt-4 justify-center md:justify-start"
+                    className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 sm:pt-4 justify-center md:justify-start"
                   >
-                    <motion.div whileHover={{ scale: 0.98 }} whileTap={{ scale: 0.96 }}>
+                    <motion.div whileHover={{ scale: 0.98 }} whileTap={{ scale: 0.96 }} className="w-full sm:w-auto">
                       <Button 
                         onClick={status === 'authenticated' 
                           ? () => router.push('/dashboard')
                           : handleGetStarted
                         }
                         size="lg" 
-                        className="bg-white text-[#0A0A0B] hover:bg-white/90 shadow-[0_8px_16px_rgba(255,255,255,0.1)] transition-all duration-300 ease-out hover:shadow-xl h-14 px-8 rounded-xl text-lg font-medium"
+                        className="w-full sm:w-auto bg-white text-[#0A0A0B] hover:bg-white/90 shadow-[0_8px_16px_rgba(255,255,255,0.1)] transition-all duration-300 ease-out hover:shadow-xl h-10 sm:h-12 px-5 sm:px-6 rounded-lg text-sm sm:text-base font-medium"
                       >
                         {status === 'authenticated' ? 'Go to Dashboard' : 'Get Started'}
                       </Button>
                     </motion.div>
-                    <motion.div whileHover={{ scale: 0.98 }} whileTap={{ scale: 0.96 }}>
+                    <motion.div whileHover={{ scale: 0.98 }} whileTap={{ scale: 0.96 }} className="w-full sm:w-auto">
                       <Button 
                         variant="outline" 
                         size="lg"
-                        className="border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 text-white shadow-md transition-all duration-300 ease-out hover:shadow-lg h-14 px-8 rounded-xl text-lg font-medium"
+                        className="w-full sm:w-auto border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 text-white shadow-md transition-all duration-300 ease-out hover:shadow-lg h-10 sm:h-12 px-5 sm:px-6 rounded-lg text-sm sm:text-base font-medium"
                         onClick={() => { scrollToSection('features'); }}
                       >
                         Learn More
@@ -453,7 +521,7 @@ export default function Home() {
                   variants={heroImageVariants}
                   initial="hidden"
                   animate="visible"
-                  className="relative h-[500px] sm:h-[610px] w-full order-2 md:order-2 md:col-span-3"
+                  className="relative h-[350px] xs:h-[400px] sm:h-[500px] md:h-[600px] w-full md:col-span-3 order-1 md:order-2"
                 >
                   <div className="absolute inset-0 flex items-center justify-center">
                     <motion.div 
@@ -464,9 +532,9 @@ export default function Home() {
                       }}
                       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     >
-                      {/* Top floating card */}
+                      {/* Top floating card - hidden on very small screens, shown on xs and up */}
                       <motion.div 
-                        className="absolute -top-16 left-1/2 -translate-x-1/2 w-[90%] h-auto backdrop-blur-md bg-white/5 rounded-xl border border-white/15 shadow-xl p-4 z-20 transform rotate-[-5deg] opacity-90 hover:opacity-100 transition-opacity duration-300"
+                        className="absolute -top-10 sm:-top-16 left-1/2 -translate-x-1/2 w-[85%] sm:w-[90%] h-auto backdrop-blur-md bg-white/5 rounded-xl border border-white/15 shadow-xl p-3 sm:p-4 z-20 transform rotate-[-5deg] opacity-90 hover:opacity-100 transition-opacity duration-300 hidden xs:flex"
                         initial={{ y: -10, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.7, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -476,142 +544,155 @@ export default function Home() {
                           transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
                         }}
                       >
-                        <div className="flex items-center space-x-4">
-                          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold shadow-md">M</div>
+                        <div className="flex items-center space-x-3 sm:space-x-4">
+                          <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold shadow-md text-xs sm:text-sm">M</div>
                           <div className="flex-1">
-                            <div className="h-2.5 bg-white/30 rounded-full w-24 mb-2"></div>
-                            <div className="h-2 bg-white/20 rounded-full w-16"></div>
+                            <div className="h-2 sm:h-2.5 bg-white/30 rounded-full w-16 sm:w-24 mb-1 sm:mb-2"></div>
+                            <div className="h-1.5 sm:h-2 bg-white/20 rounded-full w-12 sm:w-16"></div>
                           </div>
-                          <div className="bg-green-500/20 text-green-300 text-xs px-3 py-1 rounded-full font-medium border border-green-500/30">Mission Active</div>
+                          <div className="bg-green-500/20 text-green-300 text-xs px-2 sm:px-3 py-1 rounded-full font-medium border border-green-500/30 text-[10px] sm:text-xs whitespace-nowrap">Mission Active</div>
                         </div>
                       </motion.div>
                         
                       {/* Main dashboard mockup */}
                       <div className="absolute inset-0 bg-background/80 backdrop-blur-md rounded-2xl overflow-hidden z-10 border border-white/10">
-                        <div className="h-14 border-b border-white/10 flex items-center px-6">
-                          <div className="flex items-center space-x-3">
-                            <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                              <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <div className="h-10 sm:h-14 border-b border-white/10 flex items-center px-2 sm:px-6">
+                          <div className="flex items-center space-x-1 sm:space-x-3">
+                            <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                              <svg className="h-3 w-3 sm:h-4 sm:w-4 text-primary" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M4 6C4 4.89543 4.89543 4 6 4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V6Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                                 <path d="M9 10.5L11 12.5L16 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                               </svg>
                             </div>
-                            <span className="text-sm font-medium text-white">Mission Dashboard</span>
+                            <span className="text-xs sm:text-sm font-medium text-white">Mission Dashboard</span>
                           </div>
-                          <div className="ml-auto flex items-center space-x-3">
-                            <div className="h-8 w-8 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 transition-colors cursor-pointer">
-                              <svg className="h-4 w-4 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <div className="ml-auto flex items-center space-x-1 sm:space-x-3">
+                            <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 transition-colors cursor-pointer hidden xs:flex">
+                              <svg className="h-3 w-3 sm:h-4 sm:w-4 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                               </svg>
                             </div>
-                            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white font-medium border-2 border-background shadow-sm">
+                            <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-white text-[10px] sm:font-medium border-2 border-background shadow-sm">
                               A
                             </div>
                           </div>
                         </div>
                         
-                        <div className="p-6">
-                          <div className="grid grid-cols-2 gap-4 mb-6">
-                            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-                              <div className="flex items-center justify-between mb-4">
-                                <div className="text-sm font-medium text-white/90">Missions Overview</div>
-                                <div className="bg-primary/20 rounded-full h-7 w-7 flex items-center justify-center">
-                                  <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="p-2 sm:p-6">
+                          <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-2 sm:mb-6">
+                            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-2 sm:p-4 border border-white/10">
+                              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                                <div className="text-xs sm:text-sm font-medium text-white/90">Missions</div>
+                                <div className="bg-primary/20 rounded-full h-5 w-5 sm:h-7 sm:w-7 flex items-center justify-center">
+                                  <svg className="h-3 w-3 sm:h-4 sm:w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                   </svg>
                                 </div>
                               </div>
-                              <div className="space-y-3">
+                              <div className="space-y-2 sm:space-y-3">
                                 <div className="space-y-1">
                                   <div className="flex justify-between items-center">
-                                    <div className="text-xs text-white/70">Active</div>
-                                    <div className="text-xs font-medium text-white/90">72%</div>
+                                    <div className="text-[10px] xs:text-xs text-white/70">Active</div>
+                                    <div className="text-[10px] xs:text-xs font-medium text-white/90">72%</div>
                                   </div>
-                                  <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                  <div className="w-full h-1 sm:h-1.5 bg-white/10 rounded-full overflow-hidden">
                                     <div className="bg-primary h-full rounded-full" style={{ width: "72%" }}></div>
                                   </div>
                                 </div>
                                 <div className="space-y-1">
                                   <div className="flex justify-between items-center">
-                                    <div className="text-xs text-white/70">Completed</div>
-                                    <div className="text-xs font-medium text-white/90">24%</div>
+                                    <div className="text-[10px] xs:text-xs text-white/70">Completed</div>
+                                    <div className="text-[10px] xs:text-xs font-medium text-white/90">24%</div>
                                   </div>
-                                  <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                  <div className="w-full h-1 sm:h-1.5 bg-white/10 rounded-full overflow-hidden">
                                     <div className="bg-green-500 h-full rounded-full" style={{ width: "24%" }}></div>
                                   </div>
                                 </div>
                               </div>
                             </div>
                             
-                            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-                              <div className="flex items-center justify-between mb-4">
-                                <div className="text-sm font-medium text-white/90">Team Activity</div>
-                                <div className="bg-purple-500/20 rounded-full h-7 w-7 flex items-center justify-center">
-                                  <svg className="h-4 w-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-2 sm:p-4 border border-white/10">
+                              <div className="flex items-center justify-between mb-2 sm:mb-4">
+                                <div className="text-xs sm:text-sm font-medium text-white/90">Team</div>
+                                <div className="bg-purple-500/20 rounded-full h-5 w-5 sm:h-7 sm:w-7 flex items-center justify-center">
+                                  <svg className="h-3 w-3 sm:h-4 sm:w-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                   </svg>
                                 </div>
                               </div>
                               <div className="flex items-center justify-between">
-                                <div className="flex -space-x-2">
-                                  <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 border-2 border-background flex items-center justify-center text-xs text-white font-medium">AS</div>
-                                  <div className="h-8 w-8 rounded-full bg-gradient-to-br from-green-500 to-blue-500 border-2 border-background flex items-center justify-center text-xs text-white font-medium">JD</div>
-                                  <div className="h-8 w-8 rounded-full bg-gradient-to-br from-yellow-500 to-orange-500 border-2 border-background flex items-center justify-center text-xs text-white font-medium">MK</div>
-                                  <div className="h-8 w-8 rounded-full bg-white/20 border-2 border-background flex items-center justify-center text-xs text-white font-medium"><div>+4</div></div>
+                                <div className="flex -space-x-1 sm:-space-x-2">
+                                  <div className="h-5 w-5 sm:h-8 sm:w-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 border-2 border-background flex items-center justify-center text-[8px] xs:text-xs text-white">AS</div>
+                                  <div className="h-5 w-5 sm:h-8 sm:w-8 rounded-full bg-gradient-to-br from-green-500 to-blue-500 border-2 border-background flex items-center justify-center text-[8px] xs:text-xs text-white">JD</div>
+                                  <div className="h-5 w-5 sm:h-8 sm:w-8 rounded-full bg-gradient-to-br from-yellow-500 to-orange-500 border-2 border-background flex items-center justify-center text-[8px] xs:text-xs text-white">MK</div>
+                                  <div className="h-5 w-5 sm:h-8 sm:w-8 rounded-full bg-white/20 border-2 border-background flex items-center justify-center text-[8px] xs:text-xs text-white"><div>+4</div></div>
                                 </div>
-                                <Button variant="ghost" size="sm" className="h-8 px-3 text-xs bg-white/10 hover:bg-white/20 text-white rounded-lg">
+                                <Button variant="ghost" size="sm" className="h-5 sm:h-8 px-2 sm:px-3 text-[8px] xs:text-xs bg-white/10 hover:bg-white/20 text-white rounded-lg">
                                   Invite
                                 </Button>
                               </div>
                             </div>
                           </div>
                           
-                          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 mb-4">
-                            <div className="flex items-center justify-between mb-4">
-                              <div className="text-sm font-medium text-white/90">Upcoming Activities</div>
-                              <Button variant="ghost" size="sm" className="h-7 px-3 text-xs bg-primary/20 hover:bg-primary/30 text-primary rounded-lg">
+                          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-2 sm:p-4 border border-white/10 mb-2 sm:mb-4">
+                            <div className="flex items-center justify-between mb-2 sm:mb-4">
+                              <div className="text-xs sm:text-sm font-medium text-white/90">Upcoming</div>
+                              <Button variant="ghost" size="sm" className="h-5 sm:h-7 px-2 sm:px-3 text-[8px] xs:text-xs bg-primary/20 hover:bg-primary/30 text-primary rounded-lg">
                                 View All
                               </Button>
                             </div>
                             
-                            <div className="space-y-3">
-                              <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer border border-white/5">
-                                <div className="flex items-center space-x-3">
-                                  <div className="h-5 w-5 rounded bg-green-500/20 border border-green-500/50 flex items-center justify-center">
-                                    <svg className="h-3 w-3 text-green-500" viewBox="0 0 24 24" fill="none">
+                            <div className="space-y-1 sm:space-y-3">
+                              <div className="flex items-center justify-between p-1.5 sm:p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer border border-white/5 flex">
+                                <div className="flex items-center space-x-1 sm:space-x-3">
+                                  <div className="h-3 w-3 sm:h-5 sm:w-5 rounded bg-green-500/20 border border-green-500/50 flex items-center justify-center">
+                                    <svg className="h-2 w-2 sm:h-3 sm:w-3 text-green-500" viewBox="0 0 24 24" fill="none">
                                       <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
                                   </div>
-                                  <span className="text-sm text-white/80">Finalize Q3 Mission Plan</span>
+                                  <span className="text-[10px] xs:text-xs sm:text-sm text-white/80">Finalize Q3 Plan</span>
                                 </div>
-                                <span className="text-xs text-white/50">Yesterday</span>
+                                <span className="text-[8px] xs:text-[10px] sm:text-xs text-white/50">Yesterday</span>
+                              </div>
+                              <div className="flex items-center justify-between p-1.5 sm:p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer border border-white/5 flex">
+                                <div className="flex items-center space-x-1 sm:space-x-3">
+                                  <div className="h-3 w-3 sm:h-5 sm:w-5 rounded bg-white/10 border border-white/50 flex items-center justify-center">
+                                  
+                                  </div>
+                                  <span className="text-[10px] xs:text-xs sm:text-sm text-white/80">Volunteer Schedules</span>
+                                </div>
+                                <span className="text-[8px] xs:text-[10px] sm:text-xs text-white/50">Today</span>
+                              </div>
+
+                              <div className="flex items-center justify-between p-1.5 sm:p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer border border-white/5 flex">
+                                <div className="flex items-center space-x-1 sm:space-x-3">
+                                  <div className="h-3 w-3 sm:h-5 sm:w-5 rounded bg-white/10 border border-white/50 flex items-center justify-center">
+                                  
+                                  </div>
+                                  <span className="text-[10px] xs:text-xs sm:text-sm text-white/80">Send Event Invitations</span>
+                                </div>
+                                <span className="text-[8px] xs:text-[10px] sm:text-xs text-white/50">Tomorrow</span>
                               </div>
                               
-                              <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer border border-white/5">
-                                <div className="flex items-center space-x-3">
-                                  <div className="h-5 w-5 rounded bg-white/10 border border-white/30 flex items-center justify-center">
-                                  </div>
-                                  <span className="text-sm text-white/80">Coordinate Volunteer Schedules</span>
-                                </div>
-                                <span className="text-xs text-white/50">Today</span>
-                              </div>
                               
-                              <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer border border-white/5">
-                                <div className="flex items-center space-x-3">
-                                  <div className="h-5 w-5 rounded bg-white/10 border border-white/30 flex items-center justify-center">
+                  
+
+                              {/* <div className="flex items-center justify-between p-1.5 sm:p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer border border-white/5 hidden md:flex">
+                                <div className="flex items-center space-x-1 sm:space-x-3">
+                                  <div className="h-3 w-3 sm:h-5 sm:w-5 rounded bg-white/10 border border-white/30 flex items-center justify-center">
                                   </div>
-                                  <span className="text-sm text-white/80">Send Event Invitations</span>
+                                  <span className="text-[10px] xs:text-xs sm:text-sm text-white/80">Review Q3 Budget</span>
                                 </div>
-                                <span className="text-xs text-white/50">Tomorrow</span>
-                              </div>
+                                <span className="text-[8px] xs:text-[10px] sm:text-xs text-white/50">Next Week</span>
+                              </div> */}
                             </div>
                           </div>
                         </div>
                       </div>
                       
-                      {/* Bottom notification */}
+                      {/* Bottom notification - ensure visibility on xs screens and up */}
                       <motion.div 
-                        className="absolute -bottom-12 right-8 w-[75%] backdrop-blur-md bg-white/5 rounded-xl border border-white/15 shadow-xl p-3 z-20 transform rotate-[3deg] opacity-90 hover:opacity-100 transition-opacity duration-300"
+                        className="absolute -bottom-8 sm:-bottom-12 right-4 sm:right-8 w-[70%] sm:w-[75%] backdrop-blur-md bg-white/5 rounded-xl border border-white/15 shadow-xl p-2 sm:p-3 z-20 transform rotate-[3deg] opacity-90 hover:opacity-100 transition-opacity duration-300 flex"
                         initial={{ y: 10, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.9, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -621,23 +702,23 @@ export default function Home() {
                           transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
                         }}
                       >
-                        <div className="flex items-center space-x-3">
-                          <div className="h-9 w-9 rounded-full flex items-center justify-center bg-primary/20 text-primary">
-                            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="flex items-center space-x-2 sm:space-x-3">
+                          <div className="h-7 w-7 sm:h-9 sm:w-9 rounded-full flex items-center justify-center bg-primary/20 text-primary">
+                            <svg className="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                           </div>
                           <div>
-                            <div className="text-sm font-medium text-white">New Event Scheduled!</div>
-                            <div className="text-xs text-white/60">Team meetup next Friday.</div>
+                            <div className="text-xs sm:text-sm font-medium text-white">New Event Scheduled!</div>
+                            <div className="text-[10px] sm:text-xs text-white/60">Team meetup next Friday.</div>
                           </div>
                         </div>
                       </motion.div>
                     </motion.div>
                   </div>
-                </motion.div> {/* End of right column mockup */}
-              </div> {/* End of Hero Grid */}
-            </section> {/* End of Hero Section */}
+                </motion.div>
+              </div>
+            </section>
 
             {/* How It Works Section */}
             {/* <AnimatedSection id="how-it-works" className="py-16 md:py-24 px-4 sm:px-6 bg-[#121212] relative">
@@ -661,18 +742,17 @@ export default function Home() {
             </AnimatedSection> */}
 
             {/* FAQs Section */}
-            <AnimatedSection id="faqs" className="py-16 md:py-24 px-4 sm:px-6 bg-[#050505] relative">
+            <AnimatedSection id="faqs" className="py-12 md:py-24 px-4 sm:px-6 bg-[#050505] relative">
             <div className="absolute inset-0">
                 <div className="absolute inset-0 bg-gradient-to-b from-[#070707] via-[#050505] to-[#020202]" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(255,255,255,0.05),transparent_70%)] ml-[50px]" />
-               
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.05),transparent_70%)]" />
               </div>
-              <div className="max-w-3xl mx-auto text-center mb-16 relative z-10">
-              <span className="inline-block mb-4 px-4 py-1.5 bg-primary/10 border border-primary/30 rounded-full text-sm font-medium text-primary">
+              <div className="max-w-3xl mx-auto text-center mb-8 sm:mb-16 relative z-10">
+              <span className="inline-block mb-3 sm:mb-4 px-3 sm:px-4 py-1.5 bg-primary/10 border border-primary/30 rounded-full text-xs sm:text-sm font-medium text-primary">
                     Want to know more?
                   </span>
-                <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-white">Frequently Asked Questions</h2>
-                <p className="text-xl text-muted-foreground">Everything you need to know about MissionBoard</p>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 text-white">Frequently Asked Questions</h2>
+                <p className="text-base sm:text-lg md:text-xl text-muted-foreground">Everything you need to know about MissionBoard</p>
               </div>
               <div className="max-w-4xl mx-auto relative z-10">
                 <Accordion type="single" collapsible className="w-full">
@@ -689,10 +769,10 @@ export default function Home() {
                       }}
                     >
                       <AccordionItem value={faq.id} className="border-b border-white/10">
-                        <AccordionTrigger className="py-5 text-xl font-medium text-white hover:text-primary text-left">
+                        <AccordionTrigger className="py-4 sm:py-5 text-sm xs:text-base sm:text-lg md:text-2xl font-medium text-white hover:text-primary text-left">
                           {faq.question}
                         </AccordionTrigger>
-                        <AccordionContent className="text-lg text-muted-foreground pb-5 px-1">
+                        <AccordionContent className="text-xs xs:text-sm sm:text-base md:text-xl text-muted-foreground pb-4 sm:pb-5 px-1">
                           {faq.answer}
                         </AccordionContent>
                       </AccordionItem>
@@ -703,7 +783,7 @@ export default function Home() {
             </AnimatedSection>
 
             {/* CTA Section */}
-          <AnimatedSection className="py-16 md:py-24 px-4 sm:px-6 relative bg-[#09090B]">
+          <AnimatedSection className="py-12 md:py-24 px-4 sm:px-6 relative bg-[#09090B]">
             <div className="absolute inset-0">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03),transparent_60%)]" />
               <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white/[0.02] to-transparent" />
@@ -712,7 +792,7 @@ export default function Home() {
 
             <div className="max-w-7xl mx-auto">
               <motion.div 
-                className="relative rounded-3xl overflow-hidden"
+                className="relative rounded-2xl sm:rounded-3xl overflow-hidden"
                 whileHover={{ 
                   scale: 1.01,
                   transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
@@ -741,9 +821,9 @@ export default function Home() {
                   />
                 </motion.div>
 
-                <div className="relative px-6 py-16 sm:px-12 sm:py-20 text-center">
+                <div className="relative px-4 sm:px-6 md:px-12 py-12 sm:py-16 md:py-20 text-center">
                   <motion.div
-                    className="space-y-6"
+                    className="space-y-4 sm:space-y-6"
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, margin: "-100px 0px" }}
@@ -759,14 +839,14 @@ export default function Home() {
                   >
                     <motion.div 
                       variants={fadeInUpVariant}
-                      className="inline-flex items-center justify-center px-4 py-1.5 mb-4 border border-primary/20 rounded-full bg-primary/10 backdrop-blur-sm"
+                      className="inline-flex items-center justify-center px-3 sm:px-4 py-1.5 mb-3 sm:mb-4 border border-primary/20 rounded-full bg-primary/10 backdrop-blur-sm"
                     >
-                      <span className="text-sm font-medium text-primary">Join thousands of teams</span>
+                      <span className="text-xs sm:text-sm font-medium text-primary">Join thousands of teams</span>
                     </motion.div>
                     
                     <motion.h2 
                       variants={fadeInUpVariant}
-                      className="text-4xl sm:text-5xl font-bold max-w-2xl mx-auto leading-tight"
+                      className="text-2xl sm:text-4xl md:text-5xl font-bold max-w-2xl mx-auto leading-tight"
                     >
                       Ready to Elevate Your{" "}
                       <motion.span 
@@ -782,33 +862,33 @@ export default function Home() {
                     
                     <motion.p 
                       variants={fadeInUpVariant}
-                      className="text-lg sm:text-xl text-muted-foreground/90 max-w-2xl mx-auto"
+                      className="text-base sm:text-lg md:text-xl text-muted-foreground/90 max-w-2xl mx-auto"
                     >
                       Join thousands of successful teams transforming their workflow with MissionBoard.
                     </motion.p>
 
                     <motion.div 
                       variants={fadeInUpVariant}
-                      className="flex flex-col sm:flex-row gap-4 justify-center mt-8"
+                      className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mt-6 sm:mt-8"
                     >
-                      <motion.div whileHover={{ scale: 0.98 }} whileTap={{ scale: 0.96 }}>
+                      <motion.div whileHover={{ scale: 0.98 }} whileTap={{ scale: 0.96 }} className="w-full sm:w-auto">
                         <Button
                           onClick={status === 'authenticated' 
                             ? () => router.push('/dashboard')
                             : handleGetStarted
                           }
                           size="lg"
-                          className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg h-14 px-8 rounded-xl shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-200"
+                          className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground text-base sm:text-lg h-12 sm:h-14 px-6 sm:px-8 rounded-xl shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-200"
                         >
                           {status === 'authenticated' ? 'Go to Your Dashboard' : 'Get Started'}
                         </Button>
                       </motion.div>
                       
-                      <motion.div whileHover={{ scale: 0.98 }} whileTap={{ scale: 0.96 }}>
+                      <motion.div whileHover={{ scale: 0.98 }} whileTap={{ scale: 0.96 }} className="w-full sm:w-auto">
                         <Button
                           variant="outline"
                           size="lg"
-                          className="border-primary/20 bg-background/50 hover:bg-background/80 backdrop-blur-sm text-lg h-14 px-8 rounded-xl transition-all duration-200"
+                          className="w-full sm:w-auto border-primary/20 bg-background/50 hover:bg-background/80 backdrop-blur-sm text-base sm:text-lg h-12 sm:h-14 px-6 sm:px-8 rounded-xl transition-all duration-200"
                           onClick={() => {
                             if (typeof window !== 'undefined') {
                               import('gsap').then(gsapModule => {
@@ -831,7 +911,7 @@ export default function Home() {
             </div>
           </AnimatedSection>
 
-            {/* Footer */}
+            {/* Footer - Reverted to original structure for optimal mobile view based on user feedback */}
             <footer className="py-12 px-4 sm:px-6 border-t border-white/[0.08] bg-[#09090B]/70 relative">
               <div className="absolute inset-0">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.02),transparent_50%)]" />
@@ -844,7 +924,7 @@ export default function Home() {
                   transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                   className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12"
                 >
-                  <div className="space-y-4">
+                  <div className="space-y-4 md:col-span-2 lg:col-span-1">
                     <motion.div 
                       className="flex items-center group cursor-pointer" 
                       onClick={() => router.push('/')}
@@ -852,7 +932,7 @@ export default function Home() {
                       transition={{ duration: 0.3 }}
                     >
                       <Image src="/appicon.png" alt="MissionBoard Logo" width={40} height={40} className="rounded-xl group-hover:scale-95 transition-transform duration-300 mr-1" />
-                      <h1 className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80 -mr-8">
+                      <h1 className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">
                         MissionBoard
                       </h1>
                     </motion.div>
@@ -864,14 +944,6 @@ export default function Home() {
                   <div className="space-y-4">
                     <h3 className="text-sm font-semibold text-foreground/90">Product</h3>
                     <ul className="space-y-3">
-                      {/* <motion.li whileHover={{ x: 3 }} transition={{ duration: 0.2 }}>
-                        <a href="#features" className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200 flex items-center">
-                          <svg className="h-4 w-4 mr-2 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                          Working
-                        </a>
-                      </motion.li> */}
                       <motion.li whileHover={{ x: 3 }} transition={{ duration: 0.2 }}>
                         <a href="#pricing" className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200 flex items-center">
                           <svg className="h-4 w-4 mr-2 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -915,14 +987,6 @@ export default function Home() {
                           <svg className="h-4 w-4 mr-2 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
-                          Careers
-                        </a>
-                      </motion.li>
-                      <motion.li whileHover={{ x: 3 }} transition={{ duration: 0.2 }}>
-                        <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200 flex items-center">
-                          <svg className="h-4 w-4 mr-2 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
                           Contact
                         </a>
                       </motion.li>
@@ -959,7 +1023,7 @@ export default function Home() {
                   transition={{ duration: 0.5, delay: 0.2 }}
                   className="border-t border-border/20 pt-8 flex flex-col sm:flex-row justify-between items-center"
                 >
-                  <p className="text-sm text-muted-foreground order-2 sm:order-1">
+                  <p className="text-sm text-muted-foreground order-2 sm:order-1 mt-4 sm:mt-0">
                     © {new Date().getFullYear()} MissionBoard. All rights reserved.
                   </p>
                   <div className="text-sm text-muted-foreground order-1 sm:order-2">
