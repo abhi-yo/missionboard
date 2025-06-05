@@ -368,38 +368,6 @@ export default function Home() {
               
               <div className="absolute inset-0 z-0">
                 
-                <div className="absolute inset-0 brightness-100 contrast-110">
-                
-                  {/* <div className="absolute inset-0 bg-gradient-to-b from-[#070707] via-[#050505] to-[#020202]" /> */}
-                  <motion.div 
-                    className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(255,255,255,0.05),transparent_70%)]" 
-                    animate={{ 
-                      opacity: [0.5, 0.7, 0.5],
-                      scale: [1, 1.05, 1]
-                    }}
-                    transition={{
-                      duration: 15,
-                      ease: "easeInOut",
-                      repeat: Infinity,
-                      repeatType: "reverse"
-                    }}
-                  />
-                  <motion.div 
-                    className="absolute inset-0 bg-[radial-gradient(circle_at_30%_80%,rgba(255,255,255,0.04),transparent_70%)]"
-                    animate={{ 
-                      opacity: [0.4, 0.6, 0.4],
-                      scale: [1, 1.03, 1]
-                    }}
-                    transition={{
-                      duration: 12,
-                      ease: "easeInOut",
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                      delay: 1
-                    }}
-                  />
-                </div>
-                
           
                 <Squares 
                   direction="diagonal"
@@ -696,8 +664,8 @@ export default function Home() {
             <AnimatedSection id="faqs" className="py-16 md:py-24 px-4 sm:px-6 bg-[#050505] relative">
             <div className="absolute inset-0">
                 <div className="absolute inset-0 bg-gradient-to-b from-[#070707] via-[#050505] to-[#020202]" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(255,255,255,0.05),transparent_70%)]" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_80%,rgba(255,255,255,0.04),transparent_70%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(255,255,255,0.05),transparent_70%)] ml-[50px]" />
+               
               </div>
               <div className="max-w-3xl mx-auto text-center mb-16 relative z-10">
               <span className="inline-block mb-4 px-4 py-1.5 bg-primary/10 border border-primary/30 rounded-full text-sm font-medium text-primary">
