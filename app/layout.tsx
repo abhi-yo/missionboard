@@ -14,14 +14,20 @@ export const metadata: Metadata = {
     apple: '/appicon.png',
   },
   openGraph: {
-    title: 'MissionBoard | Membership Command Center',
-    description: 'Modern membership management for clubs, non-profits, and community groups',
+    title: "MissionBoard | Membership Command Center",
+    description: "Modern membership management for clubs, non-profits, and community groups",
+    url: "https://missionboard-one.vercel.app/",
+    siteName: "MissionBoard",
     images: [
       {
-        url: '/og.png',
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "MissionBoard"
       },
     ],
-    type: 'website',
+    locale: "en_US",
+    type: "website",
   },
 };
 
