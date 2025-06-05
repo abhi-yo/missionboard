@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
-import { BillingInterval, /* MemberRole removed as it's not used here */ } from '@/lib/generated/prisma';
+import { BillingInterval } from '@/lib/generated/prisma';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
@@ -24,17 +24,26 @@ export async function GET(request: Request) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       console.log("[/api/plans GET] Unauthorized: No session or user ID");
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ 
+        error: "Unauthorized",
+        details: "Please log in to access this resource"
+      }, { status: 401 });
     }
 
     const adminUserWithOrg = await prisma.user.findUnique({
         where: { id: session.user.id },
         select: { organization: { select: { id: true } } }
+    }).catch(err => {
+      console.error(`[/api/plans GET] Database error finding admin user: ${err.message}`);
+      throw new Error(`Database error: ${err.message}`);
     });
 
     if (!adminUserWithOrg?.organization?.id) {
         console.log("[/api/plans GET] Admin user or their organization not found:", session.user.id);
-        return NextResponse.json({ message: "Admin user or their organization not found" }, { status: 404 });
+        return NextResponse.json({ 
+          error: "No organization found",
+          details: "Admin user or their organization not found. Please create an organization or contact support."
+        }, { status: 404 });
     }
     const organizationId = adminUserWithOrg.organization.id;
 
@@ -44,13 +53,21 @@ export async function GET(request: Request) {
         organizationId: organizationId,
       },
       orderBy: { createdAt: 'desc' },
+    }).catch(err => {
+      console.error(`[/api/plans GET] Database error fetching plans: ${err.message}`);
+      throw new Error(`Error fetching plans: ${err.message}`);
     });
     
     console.log(`[/api/plans GET] Found ${plans.length} plans for organization ${organizationId}`);
     return NextResponse.json(plans);
   } catch (error) {
-    console.error("[/api/plans GET] Error fetching plans:", error);
-    return NextResponse.json({ message: "Failed to fetch plans" }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    console.error(`[/api/plans GET] Error: ${errorMessage}`);
+    return NextResponse.json({ 
+      error: "Failed to fetch plans", 
+      details: errorMessage,
+      timestamp: new Date().toISOString()
+    }, { status: 500 });
   }
 }
 
@@ -60,26 +77,47 @@ export async function POST(request: Request) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       console.log("[/api/plans POST] Unauthorized: No session or user ID");
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ 
+        error: "Unauthorized",
+        details: "Please log in to access this resource" 
+      }, { status: 401 });
     }
 
     const adminUserWithOrg = await prisma.user.findUnique({
       where: { id: session.user.id }, 
       select: { id: true, organization: { select: { id: true } } }
+    }).catch(err => {
+      console.error(`[/api/plans POST] Database error finding admin user: ${err.message}`);
+      throw new Error(`Database error: ${err.message}`);
     });
 
     if (!adminUserWithOrg?.organization?.id) {
       console.log("[/api/plans POST] Admin user or their organization not found:", session.user.id);
-      return NextResponse.json({ message: "Admin user or their organization not found" }, { status: 404 });
+      return NextResponse.json({ 
+        error: "No organization found",
+        details: "Admin user or their organization not found. Please create an organization first." 
+      }, { status: 404 });
     }
     const organizationId = adminUserWithOrg.organization.id;
 
-    const body = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch (err) {
+      return NextResponse.json({ 
+        error: "Invalid request body",
+        details: "The request body is not valid JSON" 
+      }, { status: 400 });
+    }
+
     const validation = planSchema.safeParse(body);
 
     if (!validation.success) {
       console.log("[/api/plans POST] Validation failed:", validation.error.errors);
-      return NextResponse.json({ message: "Validation failed", errors: validation.error.flatten().fieldErrors }, { status: 400 });
+      return NextResponse.json({ 
+        error: "Validation failed", 
+        details: validation.error.flatten().fieldErrors 
+      }, { status: 400 });
     }
 
     const data = validation.data;
@@ -92,15 +130,26 @@ export async function POST(request: Request) {
         createdById: adminUserWithOrg.id,
         organizationId: organizationId,
       },
+    }).catch(err => {
+      console.error(`[/api/plans POST] Database error creating plan: ${err.message}`);
+      throw new Error(`Error creating plan: ${err.message}`);
     });
     
     console.log("[/api/plans POST] Plan created successfully:", newPlan.id, "for org", organizationId);
     return NextResponse.json(newPlan, { status: 201 });
   } catch (error) {
-    console.error("[/api/plans POST] Error creating plan:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    console.error(`[/api/plans POST] Error: ${errorMessage}`);
     if (error instanceof SyntaxError) {
-        return NextResponse.json({ message: "Bad Request: Invalid JSON" }, { status: 400 });
+        return NextResponse.json({ 
+          error: "Bad Request", 
+          details: "Invalid JSON" 
+        }, { status: 400 });
     }
-    return NextResponse.json({ message: "Failed to create plan" }, { status: 500 });
+    return NextResponse.json({ 
+      error: "Failed to create plan", 
+      details: errorMessage,
+      timestamp: new Date().toISOString()
+    }, { status: 500 });
   }
 } 

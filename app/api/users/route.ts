@@ -30,11 +30,17 @@ export async function GET() {
     const organization = await prisma.organization.findUnique({
       where: { adminId: session.user.id },
       select: { id: true }
+    }).catch(err => {
+      console.error(`[/api/users GET] Database error finding organization: ${err.message}`);
+      return null;
     });
 
     if (!organization) {
       console.error(`[/api/users GET] No organization found for admin ID: ${session.user.id}.`);
-      return NextResponse.json({ error: "User is not an admin of any organization or organization not found." }, { status: 404 });
+      return NextResponse.json({ 
+        error: "User is not an admin of any organization or organization not found.",
+        details: "You need to create an organization or be assigned as an admin."
+      }, { status: 404 });
     }
 
     console.log(`[/api/users GET] Fetching members for organization ID: ${organization.id}.`);
@@ -57,12 +63,20 @@ export async function GET() {
       orderBy: {
         createdAt: 'desc',
       },
+    }).catch(err => {
+      console.error(`[/api/users GET] Database error fetching members: ${err.message}`);
+      throw new Error(`Failed to fetch members: ${err.message}`);
     });
 
     return NextResponse.json(members);
   } catch (error) {
-    console.error("[MEMBERS_GET]", error);
-    return NextResponse.json({ error: "Internal error fetching members" }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    console.error(`[/api/users GET] Error: ${errorMessage}`);
+    return NextResponse.json({ 
+      error: "Error fetching members", 
+      details: errorMessage,
+      timestamp: new Date().toISOString()
+    }, { status: 500 });
   }
 }
 
@@ -80,11 +94,17 @@ export async function POST(req: Request) {
     const organization = await prisma.organization.findUnique({
         where: { adminId: session.user.id },
         select: { id: true }
+    }).catch(err => {
+      console.error(`[/api/users POST] Database error finding organization: ${err.message}`);
+      return null;
     });
 
     if (!organization) {
         console.log("[/api/users POST] Admin user not associated with an organization or organization not found");
-        return NextResponse.json({ error: "Admin user not associated with an organization or organization not found" }, { status: 404 });
+        return NextResponse.json({ 
+          error: "Admin user not associated with an organization",
+          details: "You need to create or join an organization as an admin first"
+        }, { status: 404 });
     }
 
     const body = await req.json();
@@ -112,13 +132,20 @@ export async function POST(req: Request) {
         notes: notes || "",
         organizationId: organization.id, // Associate with the admin's organization
       },
+    }).catch(err => {
+      console.error(`[/api/users POST] Database error creating member: ${err.message}`);
+      throw new Error(`Failed to create member: ${err.message}`);
     });
 
     console.log("[/api/users POST] Member created successfully:", member.id);
     return NextResponse.json(member);
   } catch (error) {
-    console.error("[MEMBERS_POST] Error:", error);
-    // Check for specific Prisma errors if needed, e.g., unique constraint violation if you add one for email per org
-    return NextResponse.json({ error: "Internal error creating member" }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    console.error(`[/api/users POST] Error: ${errorMessage}`);
+    return NextResponse.json({ 
+      error: "Error creating member", 
+      details: errorMessage,
+      timestamp: new Date().toISOString() 
+    }, { status: 500 });
   }
 } 
