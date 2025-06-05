@@ -29,6 +29,7 @@ declare module "next-auth/jwt" {
   }
 }
 
+// Ensure GITHUB credentials exist
 if (!process.env.GITHUB_ID || !process.env.GITHUB_SECRET) {
   throw new Error("Missing GITHUB_ID or GITHUB_SECRET environment variables");
 }
@@ -39,7 +40,19 @@ if (!process.env.NEXTAUTH_SECRET) {
   throw new Error("Missing NEXTAUTH_SECRET environment variable");
 }
 
-console.log("[DEBUG] NEXTAUTH_URL in authOptions:", process.env.NEXTAUTH_URL);
+// Handle NEXTAUTH_URL in different environments
+let nextAuthUrl = process.env.NEXTAUTH_URL;
+// Auto-detect URL in production environments like Vercel
+if (!nextAuthUrl && process.env.VERCEL_URL) {
+  nextAuthUrl = `https://${process.env.VERCEL_URL}`;
+  console.log(`[INFO] NEXTAUTH_URL not set, using auto-detected URL: ${nextAuthUrl}`);
+} else if (!nextAuthUrl) {
+  console.warn("[WARNING] NEXTAUTH_URL is not set and could not be auto-detected");
+  // Fallback to a relative URL which works in some cases
+  nextAuthUrl = process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:3000';
+}
+
+console.log("[DEBUG] NEXTAUTH_URL in authOptions:", nextAuthUrl);
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),

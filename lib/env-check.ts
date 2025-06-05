@@ -5,6 +5,7 @@ export interface EnvCheckResult {
   message: string;
   details: {
     missingVars?: string[];
+    autoDetectedVars?: string[];
     dbConnection?: 'success' | 'error';
     dbError?: string;
   };
@@ -12,8 +13,11 @@ export interface EnvCheckResult {
 
 const REQUIRED_ENV_VARS = [
   'DB_URL',
-  'NEXTAUTH_URL',
   'NEXTAUTH_SECRET',
+];
+
+const AUTO_DETECTED_ENV_VARS = [
+  { name: 'NEXTAUTH_URL', autoDetectSource: 'VERCEL_URL' }
 ];
 
 const RECOMMENDED_ENV_VARS = [
@@ -35,13 +39,31 @@ export async function checkEnvironment(): Promise<EnvCheckResult> {
     varName => !process.env[varName]
   );
 
-  // If missing required variables, return error immediately
-  if (missingRequired.length > 0) {
+  // Check for auto-detected variables
+  const autoDetectedVars: string[] = [];
+  const stillMissingVars: string[] = [];
+  
+  AUTO_DETECTED_ENV_VARS.forEach(varConfig => {
+    if (!process.env[varConfig.name] && process.env[varConfig.autoDetectSource]) {
+      // This variable is missing but can be auto-detected
+      autoDetectedVars.push(varConfig.name);
+    } else if (!process.env[varConfig.name]) {
+      // This variable is missing and cannot be auto-detected
+      stillMissingVars.push(varConfig.name);
+    }
+  });
+
+  // Combine still missing with required vars
+  const allMissingRequired = [...missingRequired, ...stillMissingVars];
+
+  // If missing required variables (excluding those that can be auto-detected), return error
+  if (allMissingRequired.length > 0) {
     return {
       status: 'error',
-      message: `Missing required environment variables: ${missingRequired.join(', ')}`,
+      message: `Missing required environment variables: ${allMissingRequired.join(', ')}`,
       details: {
-        missingVars: missingRequired,
+        missingVars: allMissingRequired,
+        autoDetectedVars
       }
     };
   }
@@ -78,17 +100,27 @@ export async function checkEnvironment(): Promise<EnvCheckResult> {
       details: {
         dbConnection: 'error',
         dbError,
+        autoDetectedVars
       }
     };
   }
 
-  // If we're missing recommended variables, return warning
-  if (missingRecommended.length > 0) {
+  // If we're missing recommended variables or using auto-detected values, return warning
+  if (missingRecommended.length > 0 || autoDetectedVars.length > 0) {
+    const warningParts = [];
+    if (missingRecommended.length > 0) {
+      warningParts.push(`Missing recommended variables: ${missingRecommended.join(', ')}`);
+    }
+    if (autoDetectedVars.length > 0) {
+      warningParts.push(`Auto-detected variables: ${autoDetectedVars.join(', ')}`);
+    }
+    
     return {
       status: 'warning',
-      message: `Environment check passed with warnings. Missing recommended variables: ${missingRecommended.join(', ')}`,
+      message: `Environment check passed with warnings. ${warningParts.join('. ')}`,
       details: {
-        missingVars: missingRecommended,
+        missingVars: missingRecommended.length > 0 ? missingRecommended : undefined,
+        autoDetectedVars: autoDetectedVars.length > 0 ? autoDetectedVars : undefined,
         dbConnection: 'success',
       }
     };

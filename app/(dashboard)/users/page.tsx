@@ -3,16 +3,17 @@ import { PageContainer } from "@/components/layout/page-container";
 import { UserList } from "@/components/dashboard/user-list"; // Renamed component
 import { User } from "@/types"; // Changed from Member to User
 import { headers } from 'next/headers'; // Import headers
+import { createApiUrl } from "@/lib/api-utils";
+import { ApiErrorDisplay } from "@/components/dashboard/api-error-display";
 
-async function getUsers(): Promise<User[]> { // Renamed function and return type
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-  
+async function getUsers(): Promise<User[]> {
   // Forward headers for authentication
   const forwardedHeaders = { 'cookie': headers().get('cookie') || '' };
 
-  const res = await fetch(`${baseUrl}/api/users`, {
+  // Use relative URL - this works in both production and development
+  const res = await fetch(createApiUrl('/users'), {
     cache: 'no-store',
-    headers: forwardedHeaders, // Add forwarded headers to the fetch call
+    headers: forwardedHeaders,
   });
 
   if (!res.ok) {
@@ -24,21 +25,30 @@ async function getUsers(): Promise<User[]> { // Renamed function and return type
   return res.json();
 }
 
-export default async function UsersPage() { // Renamed page component
-  const users = await getUsers(); // Renamed variable and function call
-
+export default async function UsersPage() {
+  let users: User[] = [];
+  let error = null;
+  
+  try {
+    users = await getUsers();
+  } catch (err) {
+    console.error('Error fetching users:', err);
+    error = err instanceof Error ? err.message : 'Failed to load users';
+  }
+  
   return (
-    <PageContainer className="space-y-6">
-      <div className="flex flex-col space-y-1.5">
-        <h1 className="text-3xl font-bold tracking-tight">User Directory</h1>
-        <p className="text-muted-foreground text-sm">
-          Manage your organization&apos;s members and their account settings.
-        </p>
-      </div>
-      
-      <div className="rounded-xl border border-border/30 bg-card/30 backdrop-blur-sm overflow-hidden shadow-sm">
-        <UserList users={users} /> {/* Renamed component and prop */}
-      </div>
+    <PageContainer
+      title="Team Members"
+      description="Manage your organization's team members."
+      showNewButton
+      newButtonLabel="Add Member"
+      newButtonLink="/users/new"
+    >
+      {error ? (
+        <ApiErrorDisplay error={error} />
+      ) : (
+        <UserList users={users} />
+      )}
     </PageContainer>
   );
 } 
