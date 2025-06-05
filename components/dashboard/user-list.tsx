@@ -39,6 +39,7 @@ import { userStatuses } from "@/lib/constants";
 import { MoreHorizontal, Search, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
+import { createApiUrl } from "@/lib/api-utils";
 
 interface UserListProps {
   users?: User[];
@@ -65,8 +66,8 @@ export function UserList({ users: initialUsersFromProps, className }: UserListPr
       setIsLoading(true);
       const fetchUsers = async () => {
         try {
-          const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-          const response = await fetch(`${baseUrl}/api/users`, { cache: 'no-store' });
+          // Use relative URL for API call
+          const response = await fetch(createApiUrl('/users'), { cache: 'no-store' });
           if (!response.ok) {
             throw new Error('Failed to fetch users');
           }

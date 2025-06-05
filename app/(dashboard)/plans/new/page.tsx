@@ -15,6 +15,7 @@ import { BillingInterval } from '@/lib/generated/prisma';
 import { toast } from 'sonner';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { createApiUrl } from "@/lib/api-utils";
 
 // Helper to get enum keys for select options
 const billingIntervalOptions = Object.keys(BillingInterval).map(key => ({
@@ -71,8 +72,7 @@ export default function NewPlanPage() {
     };
 
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-      const res = await fetch(`${baseUrl}/api/plans`, {
+      const res = await fetch(createApiUrl('/plans'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(planData),

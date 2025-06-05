@@ -28,6 +28,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { createApiUrl } from '@/lib/api-utils';
 
 interface PlanWithTypedPrice extends Omit<MembershipPlan, 'price'> {
   price: number; // Ensure price is treated as a number on the client
@@ -51,8 +52,7 @@ export default function PlansPage() {
     setIsLoading(true);
     setError(null);
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-      const response = await fetch(`${baseUrl}/api/plans`, { cache: 'no-store' });
+      const response = await fetch(createApiUrl('/plans'), { cache: 'no-store' });
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ message: 'Failed to fetch plans' }));
         throw new Error(errorData.message || 'Failed to fetch plans');
@@ -77,8 +77,7 @@ export default function PlansPage() {
     if (!planToDelete) return;
     setIsDeleting(true);
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-      const res = await fetch(`${baseUrl}/api/plans/${planToDelete.id}`, {
+      const res = await fetch(createApiUrl(`/plans/${planToDelete.id}`), {
         method: 'DELETE',
       });
 
@@ -106,8 +105,7 @@ export default function PlansPage() {
 
     setIsSubscribingPlanId(planId);
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-      const response = await fetch(`${baseUrl}/api/subscriptions`, {
+      const response = await fetch(createApiUrl('/subscriptions'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

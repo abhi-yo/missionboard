@@ -11,6 +11,7 @@ import { userStatuses } from "@/lib/constants";
 import { useRouter, useParams } from "next/navigation";
 import { Member } from "@/lib/generated/prisma";
 import { toast } from "sonner";
+import { createApiUrl } from "@/lib/api-utils";
 
 export default function EditMemberPage() {
   const router = useRouter();
@@ -33,8 +34,7 @@ export default function EditMemberPage() {
       const fetchMemberData = async () => {
         setIsFetching(true);
         try {
-          const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-          const response = await fetch(`${baseUrl}/api/members/${memberId}`);
+          const response = await fetch(createApiUrl(`/members/${memberId}`));
           if (!response.ok) {
             throw new Error("Failed to fetch member data");
           }
@@ -72,8 +72,7 @@ export default function EditMemberPage() {
     };
 
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-      const response = await fetch(`${baseUrl}/api/members/${memberId}`, {
+      const response = await fetch(createApiUrl(`/members/${memberId}`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -19,6 +19,7 @@ import { PlusCircle, Edit, Trash2, ShieldCheck, ShieldOff, Loader2 } from 'lucid
 import { subscriptionStatusLabels, subscriptionStatusColors } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
+import { createApiUrl } from '@/lib/api-utils';
 
 type SubscriptionStatus = 'ACTIVE' | 'CANCELED' | 'PAST_DUE' | 'UNPAID' | 'TRIAL' | string;
 
@@ -79,8 +80,7 @@ export function ManageSubscriptionModal({ member, activeSubscription: initialAct
   const fetchAvailablePlans = async () => {
     setIsLoadingPlans(true);
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-      const res = await fetch(`${baseUrl}/api/plans?active=true`);
+      const res = await fetch(createApiUrl('/plans?active=true'));
       if (!res.ok) throw new Error('Failed to fetch plans');
       const plansData: MembershipPlan[] = await res.json();
       setAvailablePlans(plansData.map(p => ({ ...p, price: Number(p.price) })));
@@ -104,8 +104,7 @@ export function ManageSubscriptionModal({ member, activeSubscription: initialAct
     }
     setIsSubmitting(true);
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-      const res = await fetch(`${baseUrl}/api/subscriptions`, {
+      const res = await fetch(createApiUrl('/subscriptions'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ memberId: member.id, planId: selectedPlanId }),
@@ -140,8 +139,7 @@ export function ManageSubscriptionModal({ member, activeSubscription: initialAct
     if (!currentSubscription) return;
     setIsSubmitting(true);
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-      const res = await fetch(`${baseUrl}/api/subscriptions/${currentSubscription.id}`, {
+      const res = await fetch(createApiUrl(`/subscriptions/${currentSubscription.id}`), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'CANCELED', cancelAtPeriodEnd: true, canceledAt: new Date().toISOString() }),
@@ -151,7 +149,7 @@ export function ManageSubscriptionModal({ member, activeSubscription: initialAct
         throw new Error(errorData.message || 'Failed to cancel subscription');
       }
       const updatedSubscription = await res.json();
-       const formattedUpdatedSubscription: Subscription = {
+      const formattedUpdatedSubscription: Subscription = {
         ...updatedSubscription,
         startDate: format(new Date(updatedSubscription.startDate), 'yyyy-MM-dd'),
         currentPeriodStart: format(new Date(updatedSubscription.currentPeriodStart), 'yyyy-MM-dd'),
