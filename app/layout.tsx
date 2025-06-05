@@ -12,7 +12,17 @@ export const metadata: Metadata = {
   icons: {
     icon: '/appicon.png',
     apple: '/appicon.png',
-  }
+  },
+  openGraph: {
+    title: 'MissionBoard | Membership Command Center',
+    description: 'Modern membership management for clubs, non-profits, and community groups',
+    images: [
+      {
+        url: '/og.png',
+      },
+    ],
+    type: 'website',
+  },
 };
 
 export default function RootLayout({
