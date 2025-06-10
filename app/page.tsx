@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { Features } from '@/components/ui/features-8'
 import { Squares } from '@/components/ui/squares-background'
+import { PowerZone } from '@/components/ui/power-zone'
 
 // Add utility class for extra small screens - will be used with Tailwind's responsive utilities
 import './xs-screens.css';
@@ -719,6 +720,8 @@ export default function Home() {
                 </motion.div>
               </div>
             </section>
+
+            <PowerZone />
 
             {/* How It Works Section */}
             {/* <AnimatedSection id="how-it-works" className="py-16 md:py-24 px-4 sm:px-6 bg-[#121212] relative">

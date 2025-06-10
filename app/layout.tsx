@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     siteName: "MissionBoard",
     images: [
       {
-        url: "https://missionboard-one.vercel.app/og.png",
+        url: "/og.png",
         width: 1200,
         height: 630,
         alt: "MissionBoard"
