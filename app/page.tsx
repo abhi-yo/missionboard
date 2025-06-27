@@ -440,7 +440,7 @@ export default function Home() {
               <div className="absolute inset-0 z-0">
                 <Squares 
                   direction="diagonal"
-                  className="opacity-30"
+                  className="opacity-60"
                   speed={0.1}
                   squareSize={80}
                   borderColor="#252525" 
